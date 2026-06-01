@@ -20,15 +20,15 @@ omp 的记忆系统是其最核心的差异化特性之一，提供了 **三套�
 
 ---
 
-## 二、三套记忆系统总览
+## 二、记忆系统总览（四个后端）
 
 ![OMP 三层记忆系统架构](assets/omp-memory-layers.png)
 
-用户通过 `memory.backend` 配置选择后端：
+用户通过 `memory.backend` 配置选择后端（共四种，`off` 为空实现）：
 
 ```yaml
 memory:
-  backend: mnemosyne   # "hindsight" | "mnemosyne" | "local" | "off"
+  backend: mnemosyne   # "off" | "local" | "hindsight" | "mnemosyne"
 ```
 
 | 系统 | 存储方式 | 运行位置 | 触发模式 | 适合场景 |
@@ -250,12 +250,16 @@ class HindsightRetainQueue {
 
 ### 4.8 MissionsSet
 
+每个 bank 每进程最多调用一次 `createBank`。使用普通的 `Set<string>` 追踪已创建的 bank，超出上限时按字母序淘汰前半部分：
+
 ```typescript
-// 每个 bank 每进程最多调用一次 createBank
-// 10,000 条上限，超出淘汰最老的一半
-class MissionsSet extends Set<string> {
-  cap = 10000;
-  evictOldestHalf() { ... }
+// bank.ts
+const MISSION_SET_CAP = 10_000;
+if (missionsSet.size > MISSION_SET_CAP) {
+  const keys = [...missionsSet].sort();       // 字母序，非时间序
+  for (const key of keys.slice(0, keys.length >> 1)) {
+    missionsSet.delete(key);
+  }
 }
 ```
 
@@ -300,6 +304,8 @@ sleep()（巩固）
 
 ### 5.2 Beam 双层记忆架构
 
+> **注意**：以下展示核心字段。实际 schema 通过 `addColumnIfMissing()` 迁移机制持续演进，完整定义见 `packages/mnemosyne/src/core/beam/schema.ts`。
+
 #### 工作记忆（working_memory）
 
 临时的、会话级的，TTL 24 小时。
@@ -309,8 +315,10 @@ CREATE TABLE working_memory (
   id TEXT PRIMARY KEY,
   content TEXT NOT NULL,
   source TEXT,
+  timestamp TEXT,
   session_id TEXT DEFAULT 'default',
   importance REAL DEFAULT 0.5,        -- 0.0-1.0 重要性评分
+  metadata_json TEXT,                 -- 元数据 JSON
   veracity TEXT DEFAULT 'unknown',    -- true/stated/unknown/inferred/tool/false
   memory_type TEXT DEFAULT 'unknown', -- fact/unknown
   consolidated_at TEXT,               -- 非 NULL = 已巩固
@@ -322,6 +330,7 @@ CREATE TABLE working_memory (
   trust_tier TEXT DEFAULT 'STATED',   -- STATED/INFERVED/...
   author_id TEXT,
   author_type TEXT,
+  channel_id TEXT,                    -- 频道来源（Discord/WeChat 等）
   event_date TEXT,                    -- 事件发生日期
   event_date_precision TEXT,          -- 精度：day/month/year
   temporal_tags TEXT DEFAULT '[]',    -- 时间标签 JSON
@@ -343,6 +352,7 @@ CREATE TABLE episodic_memory (
   id TEXT UNIQUE NOT NULL,
   content TEXT NOT NULL,
   -- ... 同 working_memory 大部分字段 ...
+  -- 额外包含：metadata_json, channel_id, timestamp
   tier INTEGER DEFAULT 1,             -- 1=完整, 2=压缩(30天), 3=极度压缩(180天)
   degraded_at TEXT,
   binary_vector BLOB,                 -- ONNX 嵌入向量 (384维)
@@ -362,12 +372,95 @@ CREATE TABLE memoria_facts (
   value TEXT,
   context_snippet TEXT,
   importance REAL DEFAULT 0.5,
+  timestamp TEXT,
   version_id INTEGER DEFAULT 0,       -- 事实版本号
   previous_value TEXT,                -- 上一个值（变更追踪）
+  updated_msg_idx INTEGER,            -- 更新所在消息索引
   valid_from_msg_idx INTEGER,         -- 有效期开始（消息索引粒度）
-  valid_to_msg INTEGER,               -- 有效期结束
+  valid_to_msg_idx INTEGER,           -- 有效期结束
   source_memory_id TEXT
 );
+```
+
+#### 其他辅助表
+
+schema.ts 中还定义了以下辅助表（均通过 `addColumnIfMissing()` 持续演进）：
+
+```sql
+-- 时间线事件
+CREATE TABLE memoria_timelines (
+  event_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  session_id TEXT, date TEXT, message_idx INTEGER,
+  description TEXT, source TEXT, source_memory_id TEXT
+);
+
+-- 提取的指令规则
+CREATE TABLE memoria_instructions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  session_id TEXT, message_idx INTEGER,
+  instruction TEXT, active INTEGER DEFAULT 1,
+  topic TEXT, context_snippet TEXT, source_memory_id TEXT
+);
+
+-- 提取的用户偏好
+CREATE TABLE memoria_preferences (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  session_id TEXT, message_idx INTEGER,
+  preference TEXT, topic TEXT,
+  evolution TEXT, context_snippet TEXT, source_memory_id TEXT
+);
+
+-- 知识图谱三元组（LLM 提取）
+CREATE TABLE memoria_kg (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  session_id TEXT, subject TEXT, predicate TEXT, object TEXT,
+  message_idx INTEGER, confidence REAL DEFAULT 0.7, source_memory_id TEXT
+);
+
+-- 巩固日志
+CREATE TABLE consolidation_log (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  session_id TEXT, items_consolidated INTEGER,
+  summary_preview TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 嵌入缓存
+CREATE TABLE memory_embeddings (
+  memory_id TEXT PRIMARY KEY,
+  embedding_json TEXT NOT NULL, model TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 验证记录（每条记忆最多保留 3 条，自动修剪触发器）
+CREATE TABLE memory_validations (
+  validation_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  memory_id TEXT NOT NULL, validator TEXT NOT NULL,
+  validated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  action TEXT NOT NULL, new_content TEXT, note TEXT
+);
+
+-- 注解三元组（见 5.6 节）
+CREATE TABLE annotations (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  memory_id TEXT NOT NULL, kind TEXT NOT NULL, value TEXT NOT NULL,
+  source TEXT, confidence REAL DEFAULT 1.0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 关系三元组（带时间有效性）
+CREATE TABLE triples (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  subject TEXT NOT NULL, predicate TEXT NOT NULL, object TEXT NOT NULL,
+  valid_from TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  valid_until TEXT, source TEXT, confidence REAL DEFAULT 1.0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- SHMR 和谐信念表（由 shmr.ts 创建）
+-- harmonic_beliefs, memory_resonance_log
+
+-- FTS5 虚拟表：fts_episodes, fts_working, fts_facts
+-- 均通过触发器自动同步主表的 INSERT/UPDATE/DELETE
 ```
 
 #### 暂存区（scratchpad）
@@ -433,7 +526,45 @@ query → tokenize + 停用词过滤 + 同义词扩展
   三路加权融合 → MMR 重排序 → top-K 结果
 ```
 
-### 5.4 Sleep（巩固）— 记忆的"睡眠"
+### 5.4 Polyphonic Recall — 多声部召回（高级模式）
+
+除了标准的线性三路融合召回，Mnemosyne 还实现了一种更先进的 **Polyphonic Recall** 策略，通过 `MNEMOSYNE_POLYPHONIC_RECALL=1` 启用。Orchestrator（`orchestrator.ts`）负责路由选择。
+
+#### 四个独立检索"声部"
+
+| 声部 | 权重 | 机制 | 独立开关 |
+|------|------|------|---------|
+| **vector** | 0.35 | 向量余弦相似度（top 20） | `MNEMOSYNE_VOICE_VECTOR=0` |
+| **graph** | 0.25 | 实体提取 → 情景图谱遍历（深度 2，边权≥0.3） | `MNEMOSYNE_VOICE_GRAPH=0` |
+| **fact** | 0.25 | 关键词 → consolidated facts 查找 | `MNEMOSYNE_VOICE_FACT=0` |
+| **temporal** | 0.15 | 仅时间敏感查询激活，7 天窗口指数衰减 | `MNEMOSYNE_VOICE_TEMPORAL=0` |
+
+#### 融合：Reciprocal Rank Fusion (RRF)
+
+```
+score(memory) = Σ 1 / (RRF_K + rank_in_voice)    // RRF_K = 60
+```
+
+多个声部同时命中的记忆得分叠加，自然实现了跨信号的鲁棒召回。
+
+#### 后处理
+
+1. **多样性重排**：Jaccard 声部重叠度 > 0.8 的候选被跳过，防止近似重复
+2. **上下文预算**：按字符预算（`contextBudget × 4`）截断，防止溢出上下文窗口
+3. **Hydration**：从 working_memory → episodic_memory 回溯完整内容
+
+#### 与线性召回的对比
+
+| 维度 | 线性召回 | Polyphonic |
+|------|---------|------------|
+| 检索源 | 单路向量相似度 | 四路并行（vector + graph + fact + temporal） |
+| 融合 | 加权求和 | RRF (K=60) |
+| 图谱感知 | ❌ | ✅ 实体提取 + 深度 2 遍历 |
+| 事实感知 | ❌ | ✅ consolidated fact 查找 |
+| 时间增强 | ❌ | ✅ 指数衰减 (7 天窗口) |
+| 多样性 | MMR | Jaccard 声部重叠过滤 |
+
+### 5.5 Sleep（巩固）— 记忆的"睡眠"
 
 ```typescript
 function sleep(beam, dryRun = false): SleepResult {
@@ -443,8 +574,9 @@ function sleep(beam, dryRun = false): SleepResult {
   
   // 2. 按 source 分组
   
-  // 3. 每组用 AAAC 编码合并为一条情景记忆
+  // 3. 每组用 AAAK 编码合并为一条情景记忆
   //    summary = `[${source}] ${aaakEncode(lines.join(" | "))}`
+  //    AAAK = 确定性文本压缩（CATEGORY_MAP 缩写 + PHRASE_MAP 短语替换）
   //    默认不用 LLM（节省成本）
   
   // 4. 写入 episodic_memory，标记 source IDs
@@ -453,7 +585,7 @@ function sleep(beam, dryRun = false): SleepResult {
 }
 ```
 
-### 5.5 Weibull 衰减函数（比 Tier 更精密）
+### 5.6 Weibull 衰减函数（比 Tier 更精密）
 
 之前远程分析中描述的"3 级 Tier 降级"只是粗粒度的 episodic memory 压缩。实际上 omp 还有一套更精密的 **Weibull 衰减函数**，用于 recall 时的时间加权。
 
@@ -519,7 +651,7 @@ const TIER3_MAX_CHARS = 300;
 const DEGRADE_BATCH_SIZE = 100;
 ```
 
-### 5.6 注解系统（AnnotationStore）
+### 5.7 注解系统（AnnotationStore）
 
 除了文本记忆，还有结构化的注解三元组：
 
@@ -537,7 +669,7 @@ annotations.getDistinctValues("mentions");
 
 底层存储在 `triples` 表中，支持 `queryByMemory`、`queryByKind`、`getDistinctValues`。
 
-### 5.7 Episodic Graph（情景图谱）
+### 5.8 Episodic Graph（情景图谱）
 
 ```typescript
 class EpisodicGraph {
@@ -546,7 +678,7 @@ class EpisodicGraph {
 }
 ```
 
-### 5.8 14 种记忆类型分类（typed-memory.ts）
+### 5.9 14 种记忆类型分类（typed-memory.ts）
 
 Mnemosyne 在写入时自动对每条记忆进行 **类型分类**，类型决定衰减速率、巩固策略和优先级。
 
@@ -586,7 +718,7 @@ Mnemosyne 在写入时自动对每条记忆进行 **类型分类**，类型决�
 }
 ```
 
-### 5.9 Veracity 真实性评分
+### 5.10 Veracity 真实性评分
 
 ```typescript
 const VERACITY_WEIGHTS = {
@@ -603,7 +735,7 @@ const VERACITY_WEIGHTS = {
 
 巩固时聚合多条源记忆的 veracity：取众数，权重相同时取权重更低的（更保守）。
 
-### 5.10 配置项
+### 5.11 配置项
 
 | 设置 | 默认值 | 说明 |
 |------|--------|------|
@@ -622,6 +754,46 @@ const VERACITY_WEIGHTS = {
 | `mnemosyne.embeddingApiUrl` | env | 嵌入 API 端点 |
 | `mnemosyne.llmMode` | `smol` | LLM 模式 |
 | `mnemosyne.debug` | `false` | 调试日志 |
+
+### 5.12 内容消毒（content-sanitizer.ts）
+
+写入前对内容进行安全处理：
+- **Data URI 检测**：将 `data:...base64,...` 替换为 `blob://sha256/` 引用
+- **大内容截断**：超过 1MB 的内容提取到磁盘 blob 存储
+- **高熵检测**：Shannon 熵分析识别 base64 编码的二进制内容
+- Blob 存储在分片目录结构 `~/.hermes/mnemosyne/blobs/{2-char}/{4-char}/{sha256}`
+
+### 5.13 LLM 结构化提取（extraction.ts + extraction/）
+
+四级降级策略的结构化事实提取：
+1. Host LLM adapter
+2. 远程 LLM（配置的 base URL）
+3. 本地 LLM
+4. 正则启发式（`heuristicExtractFacts()`，零 LLM 成本）
+
+提取输出 JSON 包含 5 类结构化数据：facts, instructions, preferences, timelines, kg（知识图谱三元组）。
+
+### 5.14 SHMR — 随机谐波记忆共振（shmr.ts）
+
+基于嵌入相似度（阈值 0.70）的事实聚类算法，从聚类中生成"和谐信念"（SPO 三元组 + 置信度），并解决矛盾。创建 `harmonic_beliefs` 和 `memory_resonance_log` 表。
+
+### 5.15 查询缓存（query-cache.ts）
+
+四级缓存加速增强召回：
+- Tier 1：精确规范化文本匹配
+- Tier 2：高余弦相似度（≥0.88）
+- Tier 3：中等余弦（≥0.78）+ Jaccard 词重叠（≥0.15）
+- Tier 4：词重叠启发式（70%+）
+
+SQLite 持久化，TTL 过期，LRU 淘汰。通过 `MNEMOSYNE_ENHANCED_RECALL=1` 启用。
+
+### 5.16 MCP Server 接口（mcp-server.ts）
+
+通过 Model Context Protocol（JSON-RPC 2.0）暴露 Mnemosyne 的记忆能力，支持 `listTools` 和 `callTool` 请求，使外部 AI agent 可以直接调用记忆工具。
+
+### 5.17 灾难恢复（dr/recovery.ts）
+
+SQLite 数据库的备份/恢复功能：gzip 压缩备份 + SHA-256 校验和 + 元数据文件。自动处理 SQLite sidecar 文件（`-wal`, `-shm`, `-journal`），使用 SQLite header magic bytes 进行完整性验证。
 
 ---
 
@@ -786,6 +958,12 @@ const MENTAL_MODEL_FIRST_TURN_DEADLINE_MS = 1500;
 | **注解系统** | ✅ 三元组 | ❌ | ❌ | ❌ | ❌ |
 | **会话内压缩** | ✅ | ✅ | ✅ | ✅ | ✅ 精密 |
 | **成本** | 本地计算 | 远程 API | 本地 LLM | 零 | 零 |
+| **Polyphonic Recall** | ✅ RRF 四路 | ❌ | ❌ | ❌ | ❌ |
+| **知识图谱** | ✅ memoria_kg + triples | ❌ | ❌ | ❌ | ❌ |
+| **MCP Server** | ✅ JSON-RPC 2.0 | ❌ | ❌ | ❌ | ❌ |
+| **灾难恢复** | ✅ gzip + SHA-256 | ❌ | ❌ | ❌ | ❌ |
+| **内容消毒** | ✅ blob 提取 | ❌ | ❌ | ❌ | ❌ |
+| **查询缓存** | ✅ 四级缓存 | ❌ | ❌ | ❌ | ❌ |
 
 ---
 
@@ -837,7 +1015,7 @@ const MENTAL_MODEL_FIRST_TURN_DEADLINE_MS = 1500;
 | 本地 Mnemosyne | 离线可用、隐私安全 | 需要磁盘空间、本地计算 |
 | Memories 管道 | 完全自动、零配置 | 粒度粗、无向量检索 |
 | Tier 降级 | 防膨胀、模拟遗忘 | 可能丢失重要旧信息 |
-| AAAC 压缩 | 无 LLM 成本 | 压缩质量不如 LLM |
+| AAAK 压缩 | 无 LLM 成本、确定性可复现 | 压缩质量不如 LLM |
 | Create-only seed | 安全、不覆盖 | 结构变更需手动干预 |
 
 ---
@@ -881,10 +1059,17 @@ packages/coding-agent/src/
 packages/mnemosyne/src/           # 独立 Mnemosyne 包
 ├── cli.ts                        # CLI 入口
 ├── config.ts                     # 配置
+├── db.ts                         # 数据库连接管理
+├── diagnose.ts                   # 诊断工具
+├── index.ts                      # 包入口
+├── mcp-server.ts                 # MCP JSON-RPC 2.0 服务器
+├── mcp-tools.ts                  # MCP 工具定义与执行
+├── types.ts                      # 类型定义
 └── core/
-    ├── aaak.ts                   # AAAC 确定性压缩算法
+    ├── aaak.ts                   # AAAK 确定性压缩算法
     ├── annotations.ts            # 注解三元组存储
     ├── banks.ts                  # Bank 管理
+    ├── binary-vectors.ts         # 二进制向量操作（余弦相似度）
     ├── beam/
     │   ├── schema.ts             # SQLite 表结构定义
     │   ├── index.ts              # BeamMemory 类
@@ -892,16 +1077,51 @@ packages/mnemosyne/src/           # 独立 Mnemosyne 包
     │   ├── consolidate.ts        # sleep + 降级 + 事实提取
     │   ├── store.ts              # CRUD 操作
     │   ├── types.ts              # 类型定义
-    │   └── helpers.ts            # 辅助函数
-    ├── episodic-graph.ts         # 情景图谱
+    │   └── helpers.ts            # 辅助函数（权重归一化等）
+    ├── chat-normalize.ts         # 聊天消息规范化
+    ├── content-sanitizer.ts      # 内容消毒（blob 提取、熵检测）
+    ├── cost-log.ts               # LLM 调用成本日志
     ├── embeddings.ts             # ONNX 嵌入
+    ├── entities.ts               # 实体提取 + Levenshtein 相似度
+    ├── episodic-graph.ts         # 情景图谱
+    ├── extraction.ts             # LLM 结构化事实提取（4 级降级）
+    ├── extraction/
+    │   ├── client.ts             # 提取 LLM 客户端
+    │   ├── diagnostics.ts        # 提取诊断
+    │   └── prompts.ts            # 提取 prompt 模板
+    ├── llm-backends.ts           # LLM 后端适配器
+    ├── local-llm.ts              # 本地 LLM 支持
+    ├── memory.ts                 # 核心记忆操作
     ├── mmr.ts                    # MMR 重排序
+    ├── orchestrator.ts           # 召回编排器（线性 vs Polyphonic）
+    ├── patterns.ts               # 模式匹配工具
+    ├── plugins.ts                # 插件系统
+    ├── polyphonic-recall.ts      # 多声部召回（RRF 四路融合）
+    ├── query-cache.ts            # 四级查询缓存
     ├── query-intent.ts           # 查询意图分类
+    ├── recall-diagnostics.ts     # 召回诊断（6 层追踪）
+    ├── runtime-options.ts        # 运行时选项
+    ├── shmr.ts                   # SHMR 随机谐波记忆共振
+    ├── streaming.ts              # 流式支持
     ├── synonyms.ts               # 同义词扩展
     ├── temporal-parser.ts        # 时间表达式解析
-    └── veracity-consolidation.ts # 真实性聚合
+    ├── token-counter.ts          # Token 计数
+    ├── triples.ts                # 三元组存储操作
+    ├── typed-memory.ts           # 类型分类（14 种 + 75 条正则）
+    ├── veracity-consolidation.ts # 真实性聚合
+    ├── dr/
+    │   ├── index.ts              # 灾难恢复入口
+    │   └── recovery.ts           # 备份/恢复（gzip + SHA-256）
+    ├── migrations/
+    │   ├── index.ts              # 迁移入口
+    │   └── e6-triplestore-split.ts
+    └── util/
+        ├── datetime.ts           # 日期时间工具
+        ├── env.ts                # 环境变量工具
+        ├── ids.ts                # ID 生成
+        ├── lru.ts                # LRU 缓存
+        └── regex.ts              # 正则工具
 ```
-
 ---
 
 ## 十二、总结
@@ -916,5 +1136,13 @@ omp 的记忆系统是目前开源 coding agent 中 **最成熟、最完整的�
 1. Mnemosyne 的 **Beam 双层架构 + 遗忘曲线 + 事实版本追踪**（接近认知科学模型）
 2. Hindsight 的 **Mental Model 种子系统 + 防反馈循环**（解决了记忆自激问题）
 3. 统一的 **MemoryBackend 抽象**（一套接口支持四套后端）
+4. **Polyphonic Recall 多声部召回**（RRF 四路融合 + 图谱遍历 + 事实查找 + 时间衰减）
+5. **SHMR 随机谐波记忆共振**（嵌入聚类 → 和谐信念生成 → 矛盾解决）
+6. **四级查询缓存 + 内容消毒 + 灾难恢复** 的工程完备性
 
 对于 Hermes Agent 而言，最值得借鉴的是 Mnemosyne 的本地 SQLite 方案——FTS5 + 向量混合检索、working→episodic 巩固、Tier 降级、veracity 评分——这些都可以在 Python 生态中用 sqlite-vss 或 chromadb 实现。
+
+---
+
+> **修订记录**
+> - v2 (2026-06-01): 源码交叉验证后修订。修正 MissionsSet 实现描述（非自定义类，字母序淘汰）；AAAC → AAAK；补充 Polyphonic Recall (5.4)、内容消毒 (5.12)、LLM 结构化提取 (5.13)、SHMR (5.14)、查询缓存 (5.15)、MCP Server (5.16)、灾难恢复 (5.17)；补全 schema 辅助表（共 15+ 张）；扩展代码结构索引（+30 个文件）；更新对比表。
