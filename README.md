@@ -15,6 +15,10 @@ AI Agent 技术调研与架构分析报告集。
 hello-wrold/
 ├── README.md
 └── reports/
+    ├── assets/
+    │   ├── hermes-memory-architecture.png
+    │   ├── hermes-data-flow.png
+    │   └── omp-memory-layers.png
     ├── hermes-memory-architecture-report.md
     └── omp-memory-system-report.md
 ```
@@ -24,3 +28,4 @@ hello-wrold/
 - 由 Hermes Agent 自动生成并推送
 - 新报告统一放入 `reports/` 目录
 - 报告命名格式：`<主题>-report.md`
+- 图表由 AI 生成，存放于 `reports/assets/` 目录
