@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpenClaw QMD 检索管道架构</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: #020617;
+      min-height: 100vh;
+      padding: 2rem;
+      color: white;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .header { margin-bottom: 2rem; }
+    .header-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem; }
+    .pulse-dot {
+      width: 12px; height: 12px; background: #fbbf24;
+      border-radius: 50%; animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.025em; }
+    .subtitle { color: #94a3b8; font-size: 0.875rem; margin-left: 1.75rem; }
+    .diagram-container {
+      background: rgba(15, 23, 42, 0.5);
+      border-radius: 1rem; border: 1px solid #1e293b;
+      padding: 1.5rem; overflow-x: auto;
+    }
+    svg { width: 100%; min-width: 960px; display: block; }
+    .cards {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem; margin-top: 2rem;
+    }
+    .card {
+      background: rgba(15, 23, 42, 0.5);
+      border-radius: 0.75rem; border: 1px solid #1e293b;
+      padding: 1.25rem;
+    }
+    .card-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; }
+    .card-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .card-dot.amber { background: #fbbf24; }
+    .card-dot.violet { background: #a78bfa; }
+    .card-dot.emerald { background: #34d399; }
+    .card h3 { font-size: 0.875rem; font-weight: 600; }
+    .card ul { list-style: none; color: #94a3b8; font-size: 0.75rem; }
+    .card li { margin-bottom: 0.375rem; }
+    .footer { text-align: center; margin-top: 1.5rem; color: #475569; font-size: 0.75rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="header-row">
+        <div class="pulse-dot"></div>
+        <h1>OpenClaw QMD 三段式级联检索管道</h1>
+      </div>
+      <p class="subtitle">BM25 粗筛 → Embedding 语义召回 → LLM Reranker 精排 | 基于 3 个本地 GGUF 模型</p>
+    </div>
+
+    <div class="diagram-container">
+      <svg viewBox="0 0 960 720">
+        <defs>
+          <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+          </marker>
+          <marker id="arrow-cyan" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#22d3ee"/>
+          </marker>
+          <marker id="arrow-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#fbbf24"/>
+          </marker>
+          <marker id="arrow-emerald" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#34d399"/>
+          </marker>
+          <marker id="arrow-violet" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#a78bfa"/>
+          </marker>
+          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.5"/>
+          </pattern>
+        </defs>
+
+        <!-- Background -->
+        <rect width="100%" height="100%" fill="url(#grid)"/>
+
+        <!-- ====== Arrows (drawn first, behind components) ====== -->
+
+        <!-- User Query → Stage 1 -->
+        <line x1="160" y1="75" x2="228" y2="75" stroke="#22d3ee" stroke-width="2" marker-end="url(#arrow-cyan)"/>
+
+        <!-- Stage 1 → Stage 2 -->
+        <line x1="440" y1="75" x2="508" y2="75" stroke="#34d399" stroke-width="2" marker-end="url(#arrow-emerald)"/>
+        <text x="474" y="65" fill="#94a3b8" font-size="8" text-anchor="middle">Top-K 候选</text>
+
+        <!-- Stage 2 → Stage 3 -->
+        <line x1="720" y1="75" x2="788" y2="75" stroke="#a78bfa" stroke-width="2" marker-end="url(#arrow-violet)"/>
+        <text x="754" y="65" fill="#94a3b8" font-size="8" text-anchor="middle">重排候选</text>
+
+        <!-- Stage 1 → FTS5 -->
+        <line x1="335" y1="110" x2="335" y2="178" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arrow-amber)"/>
+
+        <!-- Stage 2 → Embedding Model -->
+        <line x1="615" y1="110" x2="615" y2="178" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arrow-amber)"/>
+
+        <!-- Stage 2 → Vector Store -->
+        <line x1="615" y1="240" x2="615" y2="298" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arrow-violet)"/>
+
+        <!-- Stage 3 → Reranker -->
+        <line x1="855" y1="110" x2="855" y2="178" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arrow-amber)"/>
+
+        <!-- Stage 3 → Query Expansion -->
+        <line x1="788" y1="75" x2="788" y2="340" stroke="#fb7185" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+        <text x="775" y="220" fill="#fb7185" font-size="7" text-anchor="end" transform="rotate(-90,775,220)">查询扩展辅助</text>
+
+        <!-- FTS5 → SQLite -->
+        <line x1="335" y1="230" x2="335" y2="348" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arrow-violet)"/>
+
+        <!-- SQLite shared connection -->
+        <line x1="395" y1="380" x2="558" y2="380" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="476" y="373" fill="#a78bfa" font-size="7" text-anchor="middle">共享存储</text>
+
+        <!-- Stage 3 → Final Results -->
+        <line x1="855" y1="110" x2="855" y2="528" stroke="#34d399" stroke-width="2" marker-end="url(#arrow-emerald)"/>
+
+        <!-- ====== Stage Boxes ====== -->
+
+        <!-- User Query -->
+        <rect x="40" y="50" width="120" height="50" rx="6" fill="rgba(30, 41, 59, 0.6)" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="100" y="72" fill="white" font-size="11" font-weight="600" text-anchor="middle">🔍 用户查询</text>
+        <text x="100" y="87" fill="#94a3b8" font-size="8" text-anchor="middle">自然语言输入</text>
+
+        <!-- Stage 1: BM25 -->
+        <rect x="230" y="45" width="210" height="60" rx="6" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+        <rect x="230" y="45" width="210" height="60" rx="6" fill="rgba(8, 51, 68, 0.4)" stroke="transparent"/>
+        <text x="335" y="66" fill="#22d3ee" font-size="10" font-weight="700" text-anchor="middle">Stage 1: BM25 关键词搜索</text>
+        <text x="335" y="82" fill="white" font-size="9" text-anchor="middle">倒排索引 · TF-IDF 排序</text>
+        <text x="335" y="96" fill="#22d3ee" font-size="8" text-anchor="middle">~0.2s</text>
+
+        <!-- Stage 2: Embedding -->
+        <rect x="510" y="45" width="210" height="60" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <rect x="510" y="45" width="210" height="60" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="transparent"/>
+        <text x="615" y="66" fill="#34d399" font-size="10" font-weight="700" text-anchor="middle">Stage 2: 向量语义搜索</text>
+        <text x="615" y="82" fill="white" font-size="9" text-anchor="middle">Embedding 余弦相似度</text>
+        <text x="615" y="96" fill="#34d399" font-size="8" text-anchor="middle">~3s</text>
+
+        <!-- Stage 3: Reranker -->
+        <rect x="790" y="45" width="150" height="60" rx="6" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+        <rect x="790" y="45" width="150" height="60" rx="6" fill="rgba(76, 29, 149, 0.4)" stroke="transparent"/>
+        <text x="865" y="66" fill="#a78bfa" font-size="10" font-weight="700" text-anchor="middle">Stage 3: LLM 重排序</text>
+        <text x="865" y="82" fill="white" font-size="9" text-anchor="middle">交叉编码器精排</text>
+        <text x="865" y="96" fill="#a78bfa" font-size="8" text-anchor="middle">~2-19s</text>
+
+        <!-- ====== Model / Storage Components ====== -->
+
+        <!-- FTS5 Index -->
+        <rect x="260" y="180" width="150" height="50" rx="6" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="335" y="202" fill="white" font-size="10" font-weight="600" text-anchor="middle">SQLite FTS5</text>
+        <text x="335" y="218" fill="#94a3b8" font-size="8" text-anchor="middle">倒排索引 · 全文检索</text>
+
+        <!-- Embedding Model -->
+        <rect x="530" y="180" width="170" height="58" rx="6" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="615" y="200" fill="white" font-size="10" font-weight="600" text-anchor="middle">embeddinggemma-300M</text>
+        <text x="615" y="216" fill="#94a3b8" font-size="8" text-anchor="middle">Gemma 编码器 · 768 维向量</text>
+        <text x="615" y="230" fill="#fbbf24" font-size="7" text-anchor="middle">~300MB GGUF Q8_0</text>
+
+        <!-- Vector Store -->
+        <rect x="540" y="300" width="150" height="50" rx="6" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="615" y="322" fill="white" font-size="10" font-weight="600" text-anchor="middle">向量存储</text>
+        <text x="615" y="338" fill="#94a3b8" font-size="8" text-anchor="middle">BLOB 浮点数组 · SQLite</text>
+
+        <!-- Reranker Model -->
+        <rect x="775" y="180" width="160" height="58" rx="6" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="855" y="200" fill="white" font-size="10" font-weight="600" text-anchor="middle">qwen3-reranker-0.6b</text>
+        <text x="855" y="216" fill="#94a3b8" font-size="8" text-anchor="middle">Qwen3 交叉编码器 · 精排</text>
+        <text x="855" y="230" fill="#fbbf24" font-size="7" text-anchor="middle">~640MB GGUF Q8_0</text>
+
+        <!-- Query Expansion Model -->
+        <rect x="730" y="340" width="170" height="58" rx="6" fill="rgba(136, 19, 55, 0.4)" stroke="#fb7185" stroke-width="1.5"/>
+        <text x="815" y="360" fill="white" font-size="10" font-weight="600" text-anchor="middle">qmd-query-expansion-1.7B</text>
+        <text x="815" y="376" fill="#94a3b8" font-size="8" text-anchor="middle">查询意图扩展 · 同义词丰富</text>
+        <text x="815" y="390" fill="#fb7185" font-size="7" text-anchor="middle">~1.1GB GGUF</text>
+
+        <!-- SQLite Central -->
+        <rect x="260" y="350" width="135" height="60" rx="6" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="327" y="372" fill="white" font-size="10" font-weight="600" text-anchor="middle">SQLite 存储引擎</text>
+        <text x="327" y="388" fill="#94a3b8" font-size="8" text-anchor="middle">文档元数据 · 标签</text>
+        <text x="327" y="402" fill="#a78bfa" font-size="7" text-anchor="middle">文件路径 · 时间戳</text>
+
+        <!-- ====== Bottom: Result Pipeline ====== -->
+
+        <!-- Result Box -->
+        <rect x="680" y="530" width="260" height="80" rx="8" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="2"/>
+        <text x="810" y="556" fill="#34d399" font-size="12" font-weight="700" text-anchor="middle">📊 最终排序结果</text>
+        <text x="810" y="575" fill="white" font-size="9" text-anchor="middle">Top-K 精排文档片段</text>
+        <text x="810" y="593" fill="#94a3b8" font-size="8" text-anchor="middle">注入 LLM 上下文窗口</text>
+        <text x="810" y="607" fill="#34d399" font-size="7" text-anchor="middle">总延迟: ~5-22s（首次冷启动 ~19s）</text>
+
+        <!-- ====== Legend ====== -->
+        <rect x="40" y="530" width="280" height="170" rx="8" fill="rgba(15, 23, 42, 0.6)" stroke="#1e293b" stroke-width="1"/>
+        <text x="56" y="552" fill="white" font-size="10" font-weight="600">📋 模型清单（总计 ~2GB）</text>
+
+        <rect x="56" y="565" width="14" height="10" rx="2" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1"/>
+        <text x="76" y="574" fill="#fbbf24" font-size="8">embeddinggemma-300M</text>
+        <text x="260" y="574" fill="#94a3b8" font-size="8">~300MB</text>
+
+        <rect x="56" y="585" width="14" height="10" rx="2" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1"/>
+        <text x="76" y="594" fill="#fbbf24" font-size="8">qwen3-reranker-0.6b</text>
+        <text x="260" y="594" fill="#94a3b8" font-size="8">~640MB</text>
+
+        <rect x="56" y="605" width="14" height="10" rx="2" fill="rgba(136, 19, 55, 0.4)" stroke="#fb7185" stroke-width="1"/>
+        <text x="76" y="614" fill="#fb7185" font-size="8">qmd-query-expansion-1.7B</text>
+        <text x="260" y="614" fill="#94a3b8" font-size="8">~1.1GB</text>
+
+        <line x1="56" y1="628" x2="304" y2="628" stroke="#1e293b" stroke-width="0.5"/>
+        <text x="56" y="646" fill="#94a3b8" font-size="8">运行时: Node.js ≥22 + GGUF</text>
+        <text x="56" y="662" fill="#94a3b8" font-size="8">首次运行自动下载模型</text>
+        <text x="56" y="678" fill="#94a3b8" font-size="8">冷启动加载 ~19s</text>
+
+        <!-- Component Type Legend -->
+        <rect x="40" y="430" width="280" height="80" rx="8" fill="rgba(15, 23, 42, 0.6)" stroke="#1e293b" stroke-width="1"/>
+        <text x="56" y="452" fill="white" font-size="10" font-weight="600">图例</text>
+
+        <rect x="56" y="462" width="14" height="10" rx="2" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1"/>
+        <text x="76" y="471" fill="#94a3b8" font-size="8">检索阶段</text>
+
+        <rect x="156" y="462" width="14" height="10" rx="2" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1"/>
+        <text x="176" y="471" fill="#94a3b8" font-size="8">AI 模型</text>
+
+        <rect x="246" y="462" width="14" height="10" rx="2" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1"/>
+        <text x="266" y="471" fill="#94a3b8" font-size="8">存储</text>
+
+        <rect x="56" y="482" width="14" height="10" rx="2" fill="rgba(136, 19, 55, 0.4)" stroke="#fb7185" stroke-width="1"/>
+        <text x="76" y="491" fill="#94a3b8" font-size="8">辅助模型</text>
+
+        <rect x="156" y="482" width="14" height="10" rx="2" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1"/>
+        <text x="176" y="491" fill="#94a3b8" font-size="8">输出结果</text>
+
+        <line x1="246" y1="485" x2="260" y2="485" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="266" y="491" fill="#94a3b8" font-size="8">数据流</text>
+      </svg>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot amber"></div>
+          <h3>检索管道特征</h3>
+        </div>
+        <ul>
+          <li>• 三段级联：粗筛 → 召回 → 精排</li>
+          <li>• BM25 快速过滤大量无关文档</li>
+          <li>• Embedding 捕获语义相似性</li>
+          <li>• LLM Reranker 最终精排保精度</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot violet"></div>
+          <h3>模型依赖</h3>
+        </div>
+        <ul>
+          <li>• 需要 Node.js ≥22 运行时</li>
+          <li>• 首次自动下载 ~2GB GGUF 模型</li>
+          <li>• 冷启动需加载 3 个模型 (~19s)</li>
+          <li>• 模型下载后可完全离线运行</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot emerald"></div>
+          <h3>能力边界</h3>
+        </div>
+        <ul>
+          <li>• ✅ 真正的语义理解（同义词泛化）</li>
+          <li>• ✅ 跨语言 Embedding 匹配</li>
+          <li>• ❌ 不支持组合推理（AND 查询）</li>
+          <li>• ❌ 无信任评分 / 矛盾检测</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="footer">OpenClaw QMD Architecture · Based on Tobi Lütke's QMD Engine · Hermes Agent v2.1.0 源码分析</p>
+  </div>
+</body>
+</html>
