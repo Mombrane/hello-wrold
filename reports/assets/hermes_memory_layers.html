@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Hermes 记忆三层体系</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'JetBrains Mono', monospace; background: #fff; padding: 2rem; color: #1e293b; }
+    .container { max-width: 900px; margin: 0 auto; }
+    .header { margin-bottom: 1.5rem; }
+    h1 { font-size: 1.4rem; font-weight: 700; color: #0f172a; }
+    .subtitle { color: #64748b; font-size: 0.8rem; margin-top: 0.3rem; }
+    .diagram-container { border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.5rem; background: #fafbfc; }
+    svg { width: 100%; min-width: 700px; display: block; }
+    .footer { text-align: center; margin-top: 1.5rem; color: #94a3b8; font-size: 0.72rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Hermes 记忆三层体系</h1>
+      <p class="subtitle">会话记忆 → 事实记忆 → 用户画像 | 三层协同的持久化记忆架构</p>
+    </div>
+    <div class="diagram-container">
+      <svg viewBox="0 0 720 560">
+        <defs>
+          <marker id="ah-emerald" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#10b981"/></marker>
+          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0 L0 0 0 40" fill="none" stroke="#f1f5f9" stroke-width="0.5"/></pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="#fafbfc"/>
+        <rect width="100%" height="100%" fill="url(#grid)"/>
+
+        <!-- Layer 1: Session Store -->
+        <rect x="40" y="20" width="640" height="140" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+        <text x="60" y="45" fill="#1d4ed8" font-size="13" font-weight="700">Layer 1: 会话记忆 (Session Store)</text>
+
+        <rect x="60" y="60" width="190" height="85" rx="6" fill="#fff" stroke="#3b82f6" stroke-width="1.5"/>
+        <text x="155" y="80" fill="#0f172a" font-size="10" font-weight="600" text-anchor="middle">state.db</text>
+        <text x="155" y="96" fill="#64748b" font-size="8" text-anchor="middle">SQLite + FTS5</text>
+        <text x="155" y="112" fill="#334155" font-size="8" text-anchor="middle">• sessions 表（会话元数据）</text>
+        <text x="155" y="126" fill="#334155" font-size="8" text-anchor="middle">• messages 表（消息内容）</text>
+        <text x="155" y="140" fill="#3b82f6" font-size="8" text-anchor="middle">• messages_fts（全文索引）</text>
+
+        <rect x="270" y="60" width="160" height="85" rx="6" fill="#fff" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="350" y="82" fill="#0f172a" font-size="10" font-weight="600" text-anchor="middle">🔍 session_search</text>
+        <text x="350" y="100" fill="#64748b" font-size="8" text-anchor="middle">FTS5 全文检索</text>
+        <text x="350" y="116" fill="#64748b" font-size="8" text-anchor="middle">时间窗口定位</text>
+        <text x="350" y="132" fill="#64748b" font-size="8" text-anchor="middle">会话历史回溯</text>
+
+        <rect x="450" y="60" width="215" height="85" rx="6" fill="#f8fafc" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="557" y="82" fill="#0f172a" font-size="10" font-weight="600" text-anchor="middle">典型数据</text>
+        <text x="557" y="100" fill="#64748b" font-size="8" text-anchor="middle">• 完整对话历史</text>
+        <text x="557" y="116" fill="#64748b" font-size="8" text-anchor="middle">• 工具调用记录</text>
+        <text x="557" y="132" fill="#64748b" font-size="8" text-anchor="middle">• 会话元数据（标题/时间/来源）</text>
+
+        <!-- Arrow down -->
+        <line x1="360" y1="160" x2="360" y2="190" stroke="#10b981" stroke-width="2.5" marker-end="url(#ah-emerald)"/>
+        <text x="375" y="180" fill="#047857" font-size="8">沉淀</text>
+
+        <!-- Layer 2: Fact Store -->
+        <rect x="40" y="192" width="640" height="165" rx="10" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+        <text x="60" y="217" fill="#047857" font-size="13" font-weight="700">Layer 2: 事实记忆 (Fact Store)</text>
+
+        <rect x="60" y="232" width="190" height="110" rx="6" fill="#fff" stroke="#10b981" stroke-width="1.5"/>
+        <text x="155" y="252" fill="#0f172a" font-size="10" font-weight="600" text-anchor="middle">memory_store.db</text>
+        <text x="155" y="268" fill="#64748b" font-size="8" text-anchor="middle">SQLite + HRR 向量</text>
+        <text x="155" y="286" fill="#334155" font-size="8" text-anchor="middle">• facts 表（内容 + HRR 向量）</text>
+        <text x="155" y="300" fill="#334155" font-size="8" text-anchor="middle">• entities 表（实体识别）</text>
+        <text x="155" y="314" fill="#334155" font-size="8" text-anchor="middle">• fact_entities（关联表）</text>
+        <text x="155" y="328" fill="#10b981" font-size="8" text-anchor="middle">• memory_banks（分类叠加向量）</text>
+
+        <rect x="270" y="232" width="160" height="110" rx="6" fill="#fff" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="350" y="252" fill="#0f172a" font-size="10" font-weight="600" text-anchor="middle">🛠 fact_store</text>
+        <text x="350" y="270" fill="#64748b" font-size="8" text-anchor="middle">9 种操作：</text>
+        <text x="350" y="286" fill="#334155" font-size="7" text-anchor="middle">add / search / reason</text>
+        <text x="350" y="300" fill="#334155" font-size="7" text-anchor="middle">contradict / related</text>
+        <text x="350" y="314" fill="#334155" font-size="7" text-anchor="middle">update / delete / get / list</text>
+        <text x="350" y="332" fill="#e11d48" font-size="8" text-anchor="middle">🎯 fact_feedback（信任训练）</text>
+
+        <rect x="450" y="232" width="215" height="110" rx="6" fill="#f8fafc" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="557" y="252" fill="#0f172a" font-size="10" font-weight="600" text-anchor="middle">核心能力</text>
+        <text x="557" y="272" fill="#334155" font-size="8" text-anchor="middle">• HRR 相位向量代数（bind/unbind）</text>
+        <text x="557" y="290" fill="#334155" font-size="8" text-anchor="middle">• 多实体 AND 组合查询</text>
+        <text x="557" y="308" fill="#334155" font-size="8" text-anchor="middle">• 自动矛盾检测</text>
+        <text x="557" y="326" fill="#334155" font-size="8" text-anchor="middle">• Trust Score 动态评分 [0, 1]</text>
+
+        <!-- Arrow down -->
+        <line x1="360" y1="357" x2="360" y2="390" stroke="#10b981" stroke-width="2.5" marker-end="url(#ah-emerald)"/>
+        <text x="375" y="378" fill="#047857" font-size="8">注入</text>
+
+        <!-- Layer 3: User Profile -->
+        <rect x="40" y="392" width="640" height="140" rx="10" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="2"/>
+        <text x="60" y="417" fill="#6d28d9" font-size="13" font-weight="700">Layer 3: 用户画像 (User Profile)</text>
+
+        <rect x="60" y="432" width="190" height="85" rx="6" fill="#fff" stroke="#8b5cf6" stroke-width="1.5"/>
+        <text x="155" y="452" fill="#0f172a" font-size="10" font-weight="600" text-anchor="middle">系统提示注入</text>
+        <text x="155" y="470" fill="#64748b" font-size="8" text-anchor="middle">每轮对话自动加载</text>
+        <text x="155" y="486" fill="#64748b" font-size="8" text-anchor="middle">持久化偏好和上下文</text>
+        <text x="155" y="502" fill="#8b5cf6" font-size="8" text-anchor="middle">影响 Agent 行为模式</text>
+
+        <rect x="270" y="432" width="160" height="85" rx="6" fill="#fff" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="350" y="452" fill="#0f172a" font-size="10" font-weight="600" text-anchor="middle">📝 memory 工具</text>
+        <text x="350" y="472" fill="#334155" font-size="8" text-anchor="middle">• add — 新增条目</text>
+        <text x="350" y="488" fill="#334155" font-size="8" text-anchor="middle">• replace — 更新条目</text>
+        <text x="350" y="504" fill="#334155" font-size="8" text-anchor="middle">• remove — 删除条目</text>
+
+        <rect x="450" y="432" width="215" height="85" rx="6" fill="#f8fafc" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="557" y="452" fill="#0f172a" font-size="10" font-weight="600" text-anchor="middle">存储内容</text>
+        <text x="557" y="472" fill="#64748b" font-size="8" text-anchor="middle">• 用户偏好（姓名/时区/风格）</text>
+        <text x="557" y="490" fill="#64748b" font-size="8" text-anchor="middle">• 环境信息（OS/工具/项目）</text>
+        <text x="557" y="508" fill="#64748b" font-size="8" text-anchor="middle">• 交互习惯和工作流偏好</text>
+      </svg>
+    </div>
+    <p class="footer">Hermes Agent 记忆三层体系 · Session → Fact → Profile · 逐层沉淀、逐层抽象</p>
+  </div>
+</body>
+</html>

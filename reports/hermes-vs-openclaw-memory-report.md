@@ -40,22 +40,11 @@ OpenClaw 的原始记忆格式为本地 Markdown 文件：`USER.md`、`MEMORY.md
 
 ### 2.2 检索管道
 
-QMD 使用 **三段级联检索管道（Cascading Retrieval Pipeline）**：
+QMD 使用 **三段级联检索管道（Cascading Retrieval Pipeline）**，如下图所示：
 
-```
-用户查询
-  │
-  ├─ Stage 1: BM25 关键词搜索 ────── ~0.2s
-  │   └─ 基于 SQLite FTS5 的倒排索引
-  │
-  ├─ Stage 2: 向量语义搜索 ──────── ~3s
-  │   └─ embeddinggemma-300M 模型编码查询 + 文档
-  │   └─ 余弦相似度排序
-  │
-  └─ Stage 3: LLM 重排序 ────────── ~2-19s
-      ├─ qwen3-reranker-0.6b 精排
-      └─ qmd-query-expansion-1.7B 查询扩展
-```
+![OpenClaw QMD 检索管道](./assets/openclaw_qmd_arch.png)
+
+*图1：OpenClaw QMD 三段式级联检索管道——BM25 粗筛 → Embedding 语义召回 → LLM Reranker 精排*
 
 ### 2.3 核心组件
 
@@ -90,22 +79,9 @@ Hermes 的 Holographic Memory 是一个完全不同的范式。它不使用任�
 
 Hermes 的记忆管理由三个层次构成：
 
-```
-┌─────────────────────────────────────────────┐
-│  Layer 1: 会话记忆 (Session Store)           │
-│  state.db — SQLite + FTS5 — 对话历史检索      │
-│  session_search 工具                         │
-├─────────────────────────────────────────────┤
-│  Layer 2: 事实记忆 (Fact Store)              │
-│  memory_store.db — SQLite + HRR向量 — 深度记忆 │
-│  fact_store 工具 (9种操作)                    │
-│  fact_feedback 工具 (信任训练)                 │
-├─────────────────────────────────────────────┤
-│  Layer 3: 用户画像 (User Profile)             │
-│  系统提示注入 — 持久化偏好和上下文              │
-│  memory 工具 (add/replace/remove)             │
-└─────────────────────────────────────────────┘
-```
+![Hermes 记忆三层体系](./assets/hermes_memory_layers.png)
+
+*图2：Hermes 记忆三层体系——会话记忆 → 事实记忆 → 用户画像，逐层沉淀*
 
 ### 3.3 HRR 相位向量编码
 
@@ -146,23 +122,11 @@ fact_store(action="related", entity="珍珠")
 
 ### 3.5 检索管道
 
-与 QMD 的三段神经网络管道不同，Holographic 使用 **混合轻量级检索**：
+与 QMD 的三段神经网络管道不同，Holographic 使用 **混合轻量级检索**，如下图所示：
 
-```
-用户查询
-  │
-  ├─ Stage 1: FTS5 全文搜索 ────────── 权重 40%
-  │   └─ SQLite 内置倒排索引
-  │
-  ├─ Stage 2: Jaccard 词袋相似度 ────── 权重 30%
-  │   └─ Token 级别集合重叠
-  │
-  ├─ Stage 3: HRR 相位余弦相似度 ────── 权重 30%
-  │   └─ 基于 SHA-256 的相位向量代数
-  │
-  └─ 后处理: Trust Score 乘权 + 时间衰减
-      └─ 通过 fact_feedback 反馈训练
-```
+![Hermes Holographic 检索管道](./assets/hermes_holographic_arch.png)
+
+*图3：Hermes Holographic 混合检索架构——FTS5 关键词 + Jaccard 词重叠 + HRR 相位代数 + Trust 评分*
 
 ### 3.6 SQLite Schema
 
@@ -271,56 +235,15 @@ Hermes Holographic (Symbolic):
 
 ## 5. 架构图示
 
-### 5.1 OpenClaw QMD 检索管道
+### 5.1 架构图汇总
 
-![OpenClaw QMD Architecture](./assets/openclaw_qmd_arch.png)
+本节汇总全文架构图（已在前文对应章节内嵌展示）：
 
-*图1：OpenClaw QMD 三段式级联检索管道——BM25 粗筛 → Embedding 语义召回 → LLM Reranker 精排*
-
-### 5.2 Hermes Holographic 检索管道
-
-![Hermes Holographic Architecture](./assets/hermes_holographic_arch.png)
-
-*图2：Hermes Holographic 混合检索架构——FTS5 关键词 + Jaccard 词重叠 + HRR 相位代数 + Trust 评分*
-
-### 5.3 记忆三层体系
-
-```
-┌──────────────────────────────────────────────────┐
-│              Hermes 记忆三层体系                    │
-├──────────────────────────────────────────────────┤
-│                                                    │
-│  ┌──────────────────────────────────────┐         │
-│  │  Layer 1: 会话记忆                    │         │
-│  │  state.db (SQLite + FTS5)            │         │
-│  │  • sessions 表 (会话元数据)           │         │
-│  │  • messages 表 (消息内容)             │         │
-│  │  • messages_fts (全文索引)            │         │
-│  │  工具: session_search                │         │
-│  └──────────────────────────────────────┘         │
-│                      │                             │
-│                      ▼                             │
-│  ┌──────────────────────────────────────┐         │
-│  │  Layer 2: 事实记忆                    │         │
-│  │  memory_store.db (SQLite + HRR)      │         │
-│  │  • facts 表 (事实内容 + HRR向量)      │         │
-│  │  • entities 表 (实体识别)             │         │
-│  │  • memory_banks 表 (分类叠加向量)      │         │
-│  │  工具: fact_store (9种操作)           │         │
-│  │  工具: fact_feedback (信任训练)        │         │
-│  └──────────────────────────────────────┘         │
-│                      │                             │
-│                      ▼                             │
-│  ┌──────────────────────────────────────┐         │
-│  │  Layer 3: 用户画像                    │         │
-│  │  系统提示注入                         │         │
-│  │  • 用户偏好 (姓名/时区/风格)          │         │
-│  │  • 环境信息 (OS/工具/项目)            │         │
-│  │  工具: memory (add/replace/remove)   │         │
-│  └──────────────────────────────────────┘         │
-│                                                    │
-└──────────────────────────────────────────────────┘
-```
+| 图号 | 名称 | 位置 |
+|------|------|------|
+| 图1 | OpenClaw QMD 三段式级联检索管道 | §2.2 |
+| 图2 | Hermes 记忆三层体系 | §3.2 |
+| 图3 | Hermes Holographic 混合检索架构 | §3.5 |
 
 ---
 
