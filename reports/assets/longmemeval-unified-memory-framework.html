@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+body { margin: 0; padding: 40px; background: #fff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+.container { width: 1100px; margin: 0 auto; }
+h2 { text-align: center; color: #1a1a2e; font-size: 22px; margin-bottom: 30px; }
+.pipeline { display: flex; align-items: flex-start; gap: 20px; margin-bottom: 30px; }
+.stage { flex: 1; border-radius: 12px; padding: 20px; min-height: 200px; }
+.stage h3 { margin: 0 0 12px; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+.stage-num { display: inline-flex; width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.3); align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+.s1 { background: linear-gradient(135deg, #dbeafe, #eff6ff); border: 2px solid #3b82f6; }
+.s1 h3 { color: #1e40af; }
+.s2 { background: linear-gradient(135deg, #ede9fe, #f5f3ff); border: 2px solid #8b5cf6; }
+.s2 h3 { color: #6d28d9; }
+.s3 { background: linear-gradient(135deg, #d1fae5, #ecfdf5); border: 2px solid #10b981; }
+.s3 h3 { color: #047857; }
+.control-point { background: #fff; border-radius: 8px; padding: 12px; margin-bottom: 10px; border: 1px solid #e2e8f0; }
+.control-point .label { font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+.control-point .value { font-size: 14px; font-weight: 600; color: #1e293b; margin-top: 4px; }
+.control-point .detail { font-size: 12px; color: #64748b; margin-top: 4px; line-height: 1.4; }
+.arrow { font-size: 32px; color: #94a3b8; display: flex; align-items: center; padding-top: 80px; }
+
+.expansion { background: #fffbeb; border: 2px solid #f59e0b; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+.expansion h3 { color: #92400e; margin: 0 0 12px; font-size: 16px; }
+.exp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.exp-item { background: #fff; border-radius: 8px; padding: 10px 12px; border: 1px solid #fde68a; }
+.exp-item .name { font-size: 13px; font-weight: 600; color: #78350f; }
+.exp-item .scope { font-size: 11px; color: #92400e; }
+.exp-item .effect { font-size: 11px; color: #059669; margin-top: 4px; }
+
+.finding { background: #f0fdf4; border: 1px solid #86efac; border-radius: 10px; padding: 16px; margin-top: 20px; }
+.finding h4 { margin: 0 0 10px; color: #065f46; font-size: 14px; }
+.finding ul { margin: 0; padding-left: 20px; }
+.finding li { font-size: 13px; color: #064e3b; line-height: 1.6; }
+.highlight { font-weight: 600; color: #047857; }
+</style></head><body><div class="container">
+<h2>LongMemEval 统一记忆框架：三阶段 × 四控制点</h2>
+
+<div class="pipeline">
+  <div class="stage s1">
+    <h3><span class="stage-num">1</span> Indexing 索引</h3>
+    <div class="control-point">
+      <div class="label">控制点：Value（值粒度）</div>
+      <div class="value">Round-level 最优</div>
+      <div class="detail">Session > Round > Fact<br>综合表现排序</div>
+    </div>
+    <div class="control-point">
+      <div class="label">控制点：Key（键扩展）</div>
+      <div class="value">User Fact 扩展</div>
+      <div class="detail">+9.4% Recall@K<br>+5.4% QA 准确率</div>
+    </div>
+  </div>
+  
+  <div class="arrow">→</div>
+  
+  <div class="stage s2">
+    <h3><span class="stage-num">2</span> Retrieval 检索</h3>
+    <div class="control-point">
+      <div class="label">控制点：Query（查询扩展）</div>
+      <div class="value">时间查询扩展</div>
+      <div class="detail">GPT-4o 推断时间范围<br>+6.8~11.3% 时间推理召回</div>
+    </div>
+    <div class="control-point">
+      <div class="label">检索器选择</div>
+      <div class="value">稠密 >> BM25</div>
+      <div class="detail">Stella V5 / GTE / Contriever<br>远优于稀疏检索</div>
+    </div>
+  </div>
+  
+  <div class="arrow">→</div>
+  
+  <div class="stage s3">
+    <h3><span class="stage-num">3</span> Reading 阅读</h3>
+    <div class="control-point">
+      <div class="label">控制点：Reading Strategy</div>
+      <div class="value">Chain-of-Note (CoN)</div>
+      <div class="detail">对每个检索块提取相关笔记<br><span class="highlight">+10% QA 准确率</span></div>
+    </div>
+    <div class="control-point">
+      <div class="label">上下文格式</div>
+      <div class="value">结构化 JSON</div>
+      <div class="detail">略优于自然语言格式<br>CoT 适度提升</div>
+    </div>
+  </div>
+</div>
+
+<div class="expansion">
+<h3>🔑 索引扩展（Index Expansion）— LLM 提取辅助元数据</h3>
+<div class="exp-grid">
+  <div class="exp-item"><div class="name">Session Summary</div><div class="scope">整会话摘要</div></div>
+  <div class="exp-item"><div class="name">Session Keyphrases</div><div class="scope">整会话关键短语</div></div>
+  <div class="exp-item"><div class="name">Turn Keyphrases</div><div class="scope">每轮关键短语</div></div>
+  <div class="exp-item"><div class="name">Session User Facts</div><div class="scope">整会话用户事实</div><div class="effect">⭐ 效果最好</div></div>
+  <div class="exp-item"><div class="name">Turn User Facts</div><div class="scope">每轮用户事实</div></div>
+  <div class="exp-item"><div class="name">Temporal Events</div><div class="scope">带时间戳事件</div><div class="effect">时间推理关键</div></div>
+</div>
+</div>
+
+<div class="finding">
+<h4>📊 核心实验发现</h4>
+<ul>
+  <li>Round-level 粒度综合最优，Fact-level 有信息损失</li>
+  <li>键扩展的 <span class="highlight">merge 策略 > separate 策略</span></li>
+  <li>弱 LLM 做时间推断会产生误报，<span class="highlight">必须用强 LLM（GPT-4o）</span></li>
+  <li>CoN 在 Oracle（完美检索）下仍有效，<span class="highlight">阅读策略独立于检索质量</span></li>
+  <li>15-19% 实例检索正确但生成错误 → 阅读策略是优化空间</li>
+</ul>
+</div>
+
+</div></body></html>

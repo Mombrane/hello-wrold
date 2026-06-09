@@ -6,6 +6,7 @@ AI Agent 技术调研与架构分析报告集。
 
 | 日期 | 报告 | 主题 |
 |------|------|------|
+| 2026-06-09 | [LongMemEval 技术报告：评测、架构与自定义记忆系统接入指南](reports/longmemeval-technical-report.md) | ICLR 2025 长期记忆基准深度解析——5大能力×7种题型、属性控制数据构建、统一三阶段框架、LLM-as-Judge 评测、自定义系统接入方法 |
 | 2026-06-08 | [agentmemory 知识图谱：构建与召回全流程深度解析](reports/agentmemory-graph-pipeline-report.md) | 基于源码的图构建链路、Dijkstra 加权检索、RRF 三路融合、时间版本边、Snapshot 机制全解析 |
 | 2026-06-05 | [Supermemory：Agent 记忆实现方案深度调研](reports/supermemory-agent-memory-report.md) | containerTags 多容器隔离机制、Memory+RAG 混合检索、自动遗忘、定价与生态集成分析 |
 | 2026-06-04 | [Mem0 源码深度解析：AI Agent 记忆层架构](reports/mem0-source-code-analysis-report.md) | Mem0 核心源码分析——V3 记忆提取管线、三路混合检索、实体增强、评分融合，揭示"多层记忆"概念与单库实现的真相 |
@@ -25,7 +26,10 @@ hello-wrold/
     │   ├── hermes_holographic_arch.png
     │   ├── hermes-memory-architecture.png
     │   ├── hermes-data-flow.png
-    │   └── omp-memory-layers.png
+    │   ├── omp-memory-layers.png
+    │   ├── longmemeval-capability-taxonomy.png
+    │   └── longmemeval-unified-memory-framework.png
+    ├── longmemeval-technical-report.md
     ├── mem0-source-code-analysis-report.md
     ├── supermemory-agent-memory-report.md
     ├── hermes-vs-openclaw-memory-report.md
