@@ -6,6 +6,7 @@ AI Agent 技术调研与架构分析报告集。
 
 | 日期 | 报告 | 主题 |
 |------|------|------|
+| 2026-06-10 | [Claude Code 记忆系统源码解析：四层模型、写入与召回机制](reports/claude-code-memory-system-report.md) | 基于源码逆向分析——四层固定类型（user/feedback/project/reference）、双路径写入互斥、Sonnet 侧查询召回、漂移验证机制全解析 |
 | 2026-06-09 | [LongMemEval 技术报告：评测、架构与自定义记忆系统接入指南](reports/longmemeval-technical-report.md) | ICLR 2025 长期记忆基准深度解析——5大能力×7种题型、属性控制数据构建、统一三阶段框架、LLM-as-Judge 评测、自定义系统接入方法 |
 | 2026-06-08 | [agentmemory 知识图谱：构建与召回全流程深度解析](reports/agentmemory-graph-pipeline-report.md) | 基于源码的图构建链路、Dijkstra 加权检索、RRF 三路融合、时间版本边、Snapshot 机制全解析 |
 | 2026-06-05 | [Supermemory：Agent 记忆实现方案深度调研](reports/supermemory-agent-memory-report.md) | containerTags 多容器隔离机制、Memory+RAG 混合检索、自动遗忘、定价与生态集成分析 |
@@ -31,6 +32,7 @@ hello-wrold/
     │   └── longmemeval-unified-memory-framework.png
     ├── longmemeval-technical-report.md
     ├── mem0-source-code-analysis-report.md
+    ├── claude-code-memory-system-report.md
     ├── supermemory-agent-memory-report.md
     ├── hermes-vs-openclaw-memory-report.md
     ├── hermes-memory-architecture-report.md
