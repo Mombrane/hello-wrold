@@ -5,8 +5,8 @@
 
 ---
 
-<!-- IMAGE_PLACEHOLDER_0: 封面推广图 -->
-<!-- GPT Image Prompt: A minimal tech-style hero image, 16:9 aspect ratio. Center: a stylized human brain made of translucent circuit board layers, four distinct horizontal layers glowing in different shades of blue (#1a1a2e, #2d3a8c, #4361ee, #7b8cff). Small data nodes float between layers like memory fragments. Background: clean white (#f8f9fa) with subtle grid lines. Bottom-right corner: a small Claude logo silhouette. Style: flat vector illustration, clean lines, no text. Color palette: deep navy, electric blue, white. -->
+<!-- IMAGE_PLACEHOLDER_0: 封面推广图 (GPT Image 2) -->
+<!-- GPT Image Prompt: A glowing translucent brain made of four stacked horizontal layers, each layer a different shade of blue from dark navy at the bottom to bright electric blue at the top. Tiny luminous data particles float between the layers. Clean white background. Minimal, elegant, tech-style illustration. No text, no words, no letters. -->
 
 ![封面：Claude Code 记忆系统](images/cover.png)
 
@@ -45,8 +45,7 @@ export const MEMORY_TYPES = [
 
 四种类型是硬编码常量，不可扩展。每种类型有独立的 `description`、`when_to_save`（写入时机）、`how_to_use`（召回时机）和 `scope`（私有/团队）语义。
 
-<!-- IMAGE_PLACEHOLDER_1: 四层记忆模型总览 -->
-<!-- GPT Image Prompt: Infographic diagram, 16:9 aspect ratio, white background. Four horizontal cards stacked vertically, each with a distinct icon and color: (1) User icon (person silhouette) in light blue #7b8cff, labeled "user — 这个用户是谁？"; (2) Feedback icon (speech bubble with checkmark) in medium blue #4361ee, labeled "feedback — 我以后该怎么做？"; (3) Project icon (folder with clock) in deep blue #2d3a8c, labeled "project — 项目处在什么语境？"; (4) Reference icon (compass/external link) in navy #1a1a2e, labeled "reference — 去哪找外部信息？". Cards connected by subtle dotted lines on the left showing the scope: private (lock icon) vs team (people icon). Style: flat vector, clean typography, minimal. -->
+<!-- IMAGE_PLACEHOLDER_1: 四层记忆模型总览 (SVG) -->
 
 ![四层记忆模型](images/four-layer-model.png)
 
@@ -163,8 +162,7 @@ reference 存的是**指针**，不是内容本身。外部系统的数据是动
 
 记忆写入采用**双路径 + 互斥**架构。
 
-<!-- IMAGE_PLACEHOLDER_2: 双路径写入机制示意图 -->
-<!-- GPT Image Prompt: Technical diagram, 4:3 aspect ratio, white background. Left side: a large circle labeled "主代理" with an arrow going straight down to a file icon labeled "MEMORY.md + .md files". Right side: a smaller circle labeled "后台提取代理" with a dashed arrow also going to the same file icon. Between the two paths, a mutex lock icon (🔒) with bidirectional arrows, labeled "互斥". The main agent path is solid blue (#4361ee), the background agent path is dashed light blue (#7b8cff). Bottom: a small clock icon showing "每N轮触发". Style: flat vector, clean lines, minimal text. -->
+<!-- IMAGE_PLACEHOLDER_2: 双路径写入机制示意图 (SVG) -->
 
 ![双路径写入机制](images/dual-path-write.png)
 
@@ -234,8 +232,7 @@ function hasMemoryWritesSince(messages, sinceUuid): boolean {
 
 这是记忆召回的核心引擎，采用**二阶段选择**机制：
 
-<!-- IMAGE_PLACEHOLDER_3: 二阶段召回机制示意图 -->
-<!-- GPT Image Prompt: Technical flow diagram, 4:3 aspect ratio, white background. Stage 1 (left): a funnel icon labeled "扫描" with many small document icons entering the top, and fewer documents (max 200) coming out the bottom, each showing only a frontmatter header. An arrow labeled "读前30行 + 按mtime降序" connects to Stage 2 (right): a neural network/brain icon labeled "Sonnet选择器" with 5 highlighted documents coming out, connected by arrows to a "context window" icon. A small filter icon shows "排除已浮现 + 排除活跃工具文档". Style: flat vector, blue tones (#4361ee, #7b8cff, #1a1a2e), clean lines. -->
+<!-- IMAGE_PLACEHOLDER_3: 二阶段召回机制示意图 (SVG) -->
 
 ![二阶段召回机制](images/recall-mechanism.png)
 
@@ -418,8 +415,7 @@ type: {{user, feedback, project, reference}}
 
 `buildMemoryLines` 函数（`memdir.ts` 第 254-258 行）明确了记忆与 plan/task 的边界：
 
-<!-- IMAGE_PLACEHOLDER_4: 持久化机制边界对比 -->
-<!-- GPT Image Prompt: Comparison diagram, 16:9 aspect ratio, white background. Four columns with icons at top: (1) Memory icon (brain with layers) — "跨对话长期", (2) CLAUDE.md icon (document with gear) — "跨对话长期", (3) git log icon (branch/history) — "永久", (4) Plan/Task icon (checklist) — "单次对话". Below each icon, 2-3 bullet points showing what it stores. A horizontal "生命周期" timeline runs across the bottom from short (left) to long (right). Style: flat vector, blue tones (#1a1a2e, #2d3a8c, #4361ee, #7b8cff), clean lines, minimal text. -->
+<!-- IMAGE_PLACEHOLDER_4: 持久化机制边界对比 (SVG) -->
 
 ![持久化机制边界对比](images/boundary-comparison.png)
 
@@ -472,8 +468,7 @@ type: {{user, feedback, project, reference}}
 
 ## 11. 总结
 
-<!-- IMAGE_PLACEHOLDER_5: 架构总览图 -->
-<!-- GPT Image Prompt: Architecture overview diagram, 16:9 aspect ratio, white background. Center: a large "MEMORY.md" file icon. Left side (Write path): two arrows from top — one solid from "主代理" circle, one dashed from "后台提取代理" circle, both converging on the MEMORY.md icon with a mutex lock between them. Right side (Read path): from MEMORY.md, two arrows — one going up to "system prompt注入" (always), one going right to "Sonnet选择器" (per-query) with 5 file outputs. Bottom: a "漂移验证" shield icon protecting the read path. Four small colored dots (blue shades) representing the four memory types float around MEMORY.md. Style: flat vector, clean, minimal, blue palette (#1a1a2e, #2d3a8c, #4361ee, #7b8cff). -->
+<!-- IMAGE_PLACEHOLDER_5: 架构总览图 (SVG) -->
 
 ![架构总览](images/architecture-overview.png)
 

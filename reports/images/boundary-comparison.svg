@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="520" viewBox="0 0 960 520">
+  <rect width="960" height="520" fill="#ffffff"/>
+  <text x="480" y="40" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="bold" fill="#1a1a2e">持久化机制边界对比</text>
+
+  <!-- Header -->
+  <rect x="40" y="62" width="880" height="48" rx="6" fill="#1a1a2e" opacity="0.06"/>
+  <text x="170" y="92" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="bold" fill="#1a1a2e">维度</text>
+  <text x="370" y="92" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="bold" fill="#4361ee">Memory</text>
+  <text x="530" y="92" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="bold" fill="#2d3a8c">CLAUDE.md</text>
+  <text x="690" y="92" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="bold" fill="#1a1a2e">git log</text>
+  <text x="850" y="92" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="bold" fill="#6b7280">Plan/Task</text>
+
+  <!-- Rows -->
+  <line x1="40" y1="115" x2="920" y2="115" stroke="#c7d2fe" stroke-width="1"/>
+  <text x="60" y="148" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="bold" fill="#1a1a2e">生命周期</text>
+  <text x="370" y="148" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#4361ee">跨对话长期</text>
+  <text x="530" y="148" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#2d3a8c">跨对话长期</text>
+  <text x="690" y="148" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#1a1a2e">永久</text>
+  <text x="850" y="148" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#6b7280">单次对话</text>
+
+  <line x1="40" y1="168" x2="920" y2="168" stroke="#c7d2fe" stroke-width="0.5"/>
+  <text x="60" y="198" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="bold" fill="#1a1a2e">谁来写</text>
+  <text x="370" y="193" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#4361ee">AI 自动</text>
+  <text x="370" y="210" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#4361ee">+ 后台提取</text>
+  <text x="530" y="200" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#2d3a8c">人工维护</text>
+  <text x="690" y="200" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#1a1a2e">git commit</text>
+  <text x="850" y="200" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#6b7280">AI 在对话中</text>
+
+  <line x1="40" y1="225" x2="920" y2="225" stroke="#c7d2fe" stroke-width="0.5"/>
+  <text x="60" y="255" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="bold" fill="#1a1a2e">存什么</text>
+  <text x="370" y="255" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#4361ee">不可推导的信息</text>
+  <text x="530" y="255" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#2d3a8c">项目约定/规范</text>
+  <text x="690" y="255" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a2e">代码变更历史</text>
+  <text x="850" y="255" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#6b7280">当前任务方法</text>
+
+  <line x1="40" y1="275" x2="920" y2="275" stroke="#c7d2fe" stroke-width="0.5"/>
+  <text x="60" y="305" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="bold" fill="#1a1a2e">时效性</text>
+  <text x="370" y="305" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#4361ee">需漂移验证</text>
+  <text x="530" y="305" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#2d3a8c">需人工更新</text>
+  <text x="690" y="305" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a2e">永久有效</text>
+  <text x="850" y="305" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#6b7280">对话结束即弃</text>
+
+  <line x1="40" y1="325" x2="920" y2="325" stroke="#c7d2fe" stroke-width="0.5"/>
+  <text x="60" y="355" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="bold" fill="#1a1a2e">典型内容</text>
+  <text x="370" y="350" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="11" fill="#4361ee">"用户是资深Go工程师"</text>
+  <text x="530" y="350" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="11" fill="#2d3a8c">"用pnpm不用npm"</text>
+  <text x="690" y="350" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="11" fill="#1a1a2e">"fix: auth bug"</text>
+  <text x="850" y="350" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="11" fill="#6b7280">"第一步跑测试"</text>
+
+  <line x1="40" y1="370" x2="920" y2="370" stroke="#c7d2fe" stroke-width="0.5"/>
+  <text x="60" y="400" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="bold" fill="#1a1a2e">自动清理</text>
+  <text x="370" y="400" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#4361ee">无（靠验证）</text>
+  <text x="530" y="400" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#2d3a8c">无</text>
+  <text x="690" y="400" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a2e">无</text>
+  <text x="850" y="400" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#6b7280">自动丢弃</text>
+
+  <line x1="40" y1="420" x2="920" y2="420" stroke="#c7d2fe" stroke-width="0.5"/>
+  <text x="60" y="450" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="bold" fill="#1a1a2e">context消耗</text>
+  <text x="370" y="450" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#4361ee">最多5个文件</text>
+  <text x="530" y="450" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#2d3a8c">始终全量注入</text>
+  <text x="690" y="450" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a2e">按需查询</text>
+  <text x="850" y="450" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#6b7280">始终在上下文</text>
+
+  <!-- Summary -->
+  <rect x="40" y="472" width="880" height="35" rx="6" fill="#4361ee" opacity="0.06"/>
+  <text x="480" y="495" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a2e">git log 记录代码变了什么 / CLAUDE.md 记录项目约定什么 / Memory 记录人和语境是什么 / Plan 记录这次要做什么</text>
+</svg>
