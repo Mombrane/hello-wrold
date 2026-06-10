@@ -1,13 +1,23 @@
-# Claude Code 记忆系统源码解析：四层模型、写入与召回机制
+# 10分钟了解Claude Code记忆系统：源码拆解AI的"长期记忆"是怎么实现的
 
 > 基于 Claude Code 源码（`memdir/`、`services/extractMemories/`）的完整逆向分析。
 > 源码版本：2026-03-31。
 
 ---
 
-## 摘要
+<!-- IMAGE_PLACEHOLDER_0: 封面推广图 -->
+<!-- GPT Image Prompt: A minimal tech-style hero image, 16:9 aspect ratio. Center: a stylized human brain made of translucent circuit board layers, four distinct horizontal layers glowing in different shades of blue (#1a1a2e, #2d3a8c, #4361ee, #7b8cff). Small data nodes float between layers like memory fragments. Background: clean white (#f8f9fa) with subtle grid lines. Bottom-right corner: a small Claude logo silhouette. Style: flat vector illustration, clean lines, no text. Color palette: deep navy, electric blue, white. -->
 
-Claude Code 的记忆系统采用**四层固定类型分类**（user / feedback / project / reference），每层记忆均可压缩为一个核心追问：user 回答“这个用户是谁？”，feedback 回答“我以后该怎么做？”，project 回答“这个项目当前处在什么现实语境里？”，reference 回答“如果要查外部信息，我该去哪？”。系统通过**双路径写入**（主代理直写 + 后台提取代理）和**双层召回**（MEMORY.md 索引 + Sonnet 关联选择）实现对记忆的全生命周期管理。
+![封面：Claude Code 记忆系统](images/cover.png)
+
+
+你第三次跟 AI 说"我上次说过了"的时候，大概率会冒出一个念头：这东西怎么什么都不记得？
+
+这不是 AI 笨。这是它的设计——每次对话都是白纸一张。但如果你用的是 Claude Code，情况不太一样。它有一套记忆系统，能在对话之间持久化信息。下次开新会话，它还记得你是谁、你讨厌什么写法、这个项目为什么在做合规重构。
+
+这套系统的源码藏在 Claude Code 的 `memdir/` 和 `services/extractMemories/` 目录里。读完之后，发现它的设计比想象中精细得多——四层固定类型分类、双路径写入、双层召回、漂移验证，每个环节都有明确的设计意图。
+
+一句话概括：**代码可以被工具实时检索，但人的意图、偏好、决策动机和外部知识的"位置"无法从代码中推导——这正是记忆系统存在的根本原因。**
 
 ---
 
@@ -19,7 +29,7 @@ Claude Code 的记忆系统采用**四层固定类型分类**（user / feedback 
 
 > *"Memories are constrained to four types capturing context NOT derivable from the current project state. Code patterns, architecture, git history, and file structure are derivable (via grep/git/CLAUDE.md) and should NOT be saved as memories."*
 
-这意味着记忆系统只存储**无法从代码、git 历史或项目文件中推导出来的信息**。凡是可以通过 `grep`、`git log`、`CLAUDE.md` 获取的内容，都不属于记忆的范畴。
+一句话：凡是 `grep`、`git log`、`CLAUDE.md` 能查到的东西，都不属于记忆。记忆只存**工具链覆盖不到的信息**。
 
 ### 1.2 四类固定类型
 
@@ -35,11 +45,17 @@ export const MEMORY_TYPES = [
 
 四种类型是硬编码常量，不可扩展。每种类型有独立的 `description`、`when_to_save`（写入时机）、`how_to_use`（召回时机）和 `scope`（私有/团队）语义。
 
+<!-- IMAGE_PLACEHOLDER_1: 四层记忆模型总览 -->
+<!-- GPT Image Prompt: Infographic diagram, 16:9 aspect ratio, white background. Four horizontal cards stacked vertically, each with a distinct icon and color: (1) User icon (person silhouette) in light blue #7b8cff, labeled "user — 这个用户是谁？"; (2) Feedback icon (speech bubble with checkmark) in medium blue #4361ee, labeled "feedback — 我以后该怎么做？"; (3) Project icon (folder with clock) in deep blue #2d3a8c, labeled "project — 项目处在什么语境？"; (4) Reference icon (compass/external link) in navy #1a1a2e, labeled "reference — 去哪找外部信息？". Cards connected by subtle dotted lines on the left showing the scope: private (lock icon) vs team (people icon). Style: flat vector, clean typography, minimal. -->
+
+![四层记忆模型](images/four-layer-model.png)
+
+
 ---
 
 ## 2. 四层记忆模型详解
 
-### 2.1 user —— “这个用户是谁？”
+### 2.1 user —— "这个用户是谁？"
 
 | 维度 | 说明 |
 |------|------|
@@ -53,12 +69,12 @@ export const MEMORY_TYPES = [
 > *"Your goal in reading and writing these memories is to build up an understanding of who the user is and how you can be most helpful to them specifically. For example, you should collaborate with a senior software engineer differently than a student who is coding for the very first time."*
 
 **典型示例**：
-- “用户是一名数据科学家，当前聚焦于日志/可观测性”
-- “用户有十年 Go 经验，但第一次接触 React 前端——从前端解释时应类比后端概念”
+- "用户是一名数据科学家，当前聚焦于日志/可观测性"
+- "用户有十年 Go 经验，但第一次接触 React 前端——从前端解释时应类比后端概念"
 
 ---
 
-### 2.2 feedback —— “我以后该怎么做？”
+### 2.2 feedback —— "我以后该怎么做？"
 
 | 维度 | 说明 |
 |------|------|
@@ -71,27 +87,25 @@ export const MEMORY_TYPES = [
 
 > *"Record from failure AND success: if you only save corrections, you will avoid past mistakes but drift away from approaches the user has already validated, and may grow overly cautious."*
 
-feedback 的核心设计原则是**双向记录**：既记录纠正（“不要这样做”），也记录确认（“这样做是对的”）。如果只记纠正不记确认，模型会变得越来越保守，最终失去已验证的正确做法。
+feedback 的核心设计原则是**双向记录**：既记录纠正（"不要这样做"），也记录确认（"这样做是对的"）。只记纠正不记确认，模型会变得越来越保守，最终丢掉已验证的正确做法。
 
-**body 结构的设计意图**（第 63 行）：
+三段式中的 `Why` 不是可有可无的注释——它是模型在边缘情况下判断是否仍应遵循规则的关键依据。源码第 63 行说得很直接：
 
 > *"Knowing why lets you judge edge cases instead of blindly following the rule."*
 
-三段式中的 `Why` 不是可有可无的注释——它是模型在边缘情况下判断是否仍应遵循规则的关键依据。
-
 **典型示例**：
-- 纠正：“不要在测试中 mock 数据库——上次 mock 通过的测试在生产迁移中失败了。**Why:** mock 与生产环境的差异掩盖了迁移错误。”
-- 确认：“这次重构打包成一个 PR 是正确的选择。**Why:** 拆分成多个小 PR 只会增加无效的变更轮次。”
+- 纠正："不要在测试中 mock 数据库——上次 mock 通过的测试在生产迁移中失败了。**Why:** mock 与生产环境的差异掩盖了迁移错误。"
+- 确认："这次重构打包成一个 PR 是正确的选择。**Why:** 拆分成多个小 PR 只会增加无效的变更轮次。"
 
 **scope 规则**（第 59 行）：
 
 > *"Save as team only when the guidance is clearly a project-wide convention that every contributor should follow (e.g., a testing policy, a build invariant), not a personal style preference."*
 
-测试策略、构建规范等属于团队级 feedback；个人沟通偏好（如“不要在每个回复末尾总结”）属于私有 feedback。
+测试策略、构建规范属于团队级 feedback；个人沟通偏好属于私有 feedback。
 
 ---
 
-### 2.3 project —— “这个项目当前处在什么现实语境里？”
+### 2.3 project —— "这个项目当前处在什么现实语境里？"
 
 | 维度 | 说明 |
 |------|------|
@@ -104,27 +118,27 @@ feedback 的核心设计原则是**双向记录**：既记录纠正（“不要�
 
 > *"Information that you learn about ongoing work, goals, initiatives, bugs, or incidents within the project that is not otherwise derivable from the code or git history."*
 
-project 记忆存的是项目的“活语境”——截止日期、合规驱动的重构动机、线上事故原因、团队并行工作等。
+project 记忆存的是项目的"活语境"——截止日期、合规驱动的重构动机、线上事故原因、团队并行工作等。
 
 **关键规则一：绝对时间**（第 79 行末尾）：
 
 > *"Always convert relative dates in user messages to absolute dates when saving (e.g., 'Thursday' → '2026-03-05'), so the memory remains interpretable after time passes."*
 
-用户说的“周四”必须在存储时转化为绝对日期。否则三周后读到“周四”无法判断具体是哪一天。
+用户说的"周四"必须在存储时转化为绝对日期。否则三周后读到"周四"，根本不知道是哪天。
 
 **关键规则二：快速衰减**（第 82 行）：
 
 > *"Project memories decay fast, so the why helps future-you judge whether the memory is still load-bearing."*
 
-project 记忆的时效性最强——截止日期过了、发布完成了，记忆就过时了。因此 `Why` 字段对于判断记忆是否仍然有效至关重要。
+project 记忆的时效性最强。截止日期过了、发布完成了，记忆就过时了。`Why` 字段是判断记忆是否仍然有效的关键。
 
 **典型示例**：
-- “2026-03-05 起非关键合并冻结，移动端团队正在切发布分支。**Why:** 发布分支需要稳定基线。**How to apply:** 标记该日期之后的所有非关键 PR 工作。”
-- “认证中间件重写是法律/合规要求驱动的，不是技术债清理。**Why:** 会话令牌存储方式不符合新合规要求。**How to apply:** 作用域决策应优先考虑合规性而非工效学。”
+- "2026-03-05 起非关键合并冻结，移动端团队正在切发布分支。**Why:** 发布分支需要稳定基线。**How to apply:** 标记该日期之后的所有非关键 PR 工作。"
+- "认证中间件重写是法律/合规要求驱动的，不是技术债清理。**Why:** 会话令牌存储方式不符合新合规要求。**How to apply:** 作用域决策应优先考虑合规性而非工效学。"
 
 ---
 
-### 2.4 reference —— “如果要查外部信息，我该去哪？”
+### 2.4 reference —— "如果要查外部信息，我该去哪？"
 
 | 维度 | 说明 |
 |------|------|
@@ -140,14 +154,20 @@ project 记忆的时效性最强——截止日期过了、发布完成了，记
 reference 存的是**指针**，不是内容本身。外部系统的数据是动态的——存 URL/项目名/频道名，实际数据去源头实时查询。
 
 **典型示例**：
-- “pipeline bug 在 Linear 项目 'INGEST' 中跟踪”
-- “grafana.internal/d/api-latency 是值班延迟仪表盘——修改请求路径代码时应先检查此面板”
+- "pipeline bug 在 Linear 项目 'INGEST' 中跟踪"
+- "grafana.internal/d/api-latency 是值班延迟仪表盘——修改请求路径代码时应先检查此面板"
 
 ---
 
 ## 3. 写入机制
 
 记忆写入采用**双路径 + 互斥**架构。
+
+<!-- IMAGE_PLACEHOLDER_2: 双路径写入机制示意图 -->
+<!-- GPT Image Prompt: Technical diagram, 4:3 aspect ratio, white background. Left side: a large circle labeled "主代理" with an arrow going straight down to a file icon labeled "MEMORY.md + .md files". Right side: a smaller circle labeled "后台提取代理" with a dashed arrow also going to the same file icon. Between the two paths, a mutex lock icon (🔒) with bidirectional arrows, labeled "互斥". The main agent path is solid blue (#4361ee), the background agent path is dashed light blue (#7b8cff). Bottom: a small clock icon showing "每N轮触发". Style: flat vector, clean lines, minimal text. -->
+
+![双路径写入机制](images/dual-path-write.png)
+
 
 ### 3.1 路径一：主代理直写
 
@@ -163,7 +183,7 @@ reference 存的是**指针**，不是内容本身。外部系统的数据是动
 
 **实现位置**：`services/extractMemories/extractMemories.ts`（615 行）。
 
-后台提取代理是一个独立的异步子进程，fork 自主对话。其工作机制如下：
+后台提取代理是一个独立的异步子进程，fork 自主对话。工作机制：
 
 1. **触发时机**：每次用户 query 完成后（`handleStopHooks`），由 `executeExtractMemories()` 调用
 2. **频率控制**：通过 feature flag `tengu_bramble_lintel` 控制每 N 轮触发一次（默认每轮）
@@ -187,7 +207,7 @@ function hasMemoryWritesSince(messages, sinceUuid): boolean {
 }
 ```
 
-两条路径互斥的逻辑：如果主代理在响应中已经写了记忆文件，后台代理直接跳过此轮并推进光标。这确保了同一轮对话不会产生重复记忆。
+两条路径互斥的逻辑：如果主代理在响应中已经写了记忆文件，后台代理直接跳过此轮并推进光标。同一轮对话不会产生重复记忆。
 
 ### 3.4 写入时机总览
 
@@ -214,6 +234,12 @@ function hasMemoryWritesSince(messages, sinceUuid): boolean {
 
 这是记忆召回的核心引擎，采用**二阶段选择**机制：
 
+<!-- IMAGE_PLACEHOLDER_3: 二阶段召回机制示意图 -->
+<!-- GPT Image Prompt: Technical flow diagram, 4:3 aspect ratio, white background. Stage 1 (left): a funnel icon labeled "扫描" with many small document icons entering the top, and fewer documents (max 200) coming out the bottom, each showing only a frontmatter header. An arrow labeled "读前30行 + 按mtime降序" connects to Stage 2 (right): a neural network/brain icon labeled "Sonnet选择器" with 5 highlighted documents coming out, connected by arrows to a "context window" icon. A small filter icon shows "排除已浮现 + 排除活跃工具文档". Style: flat vector, blue tones (#4361ee, #7b8cff, #1a1a2e), clean lines. -->
+
+![二阶段召回机制](images/recall-mechanism.png)
+
+
 **阶段一：扫描**（`scanMemoryFiles`，`memoryScan.ts` 第 35-77 行）
 
 ```typescript
@@ -225,7 +251,7 @@ export async function scanMemoryFiles(memoryDir, signal): Promise<MemoryHeader[]
 }
 ```
 
-每个记忆文件只需读取 frontmatter（前 30 行），提取 `filename`、`description`、`type`、`mtimeMs` 四个字段。`MEMORY.md` 自身被排除在外（它已通过索引加载）。
+每个记忆文件只需读取 frontmatter（前 30 行），提取 `filename`、`description`、`type`、`mtimeMs` 四个字段。`MEMORY.md` 自身被排除（它已通过索引加载）。
 
 **阶段二：选择**（`selectRelevantMemories`，第 77-141 行）
 
@@ -246,7 +272,7 @@ async function selectRelevantMemories(query, memories, signal, recentTools): Pro
 选择器使用一个独立的 Sonnet 调用（`sideQuery`），输入为：
 - **用户原始 query**
 - **所有记忆文件的 manifest**：`[type] filename (ISO时间): description`
-- **最近使用的工具列表**（用于过滤策略，见下文）
+- **最近使用的工具列表**（用于过滤策略）
 
 输出为 JSON：`{ "selected_memories": ["user_role.md", "feedback_testing.md"] }`，最多 5 个。
 
@@ -259,7 +285,7 @@ async function selectRelevantMemories(query, memories, signal, recentTools): Pro
 - ✅ 仍召回该工具的 warnings/gotchas/已知问题（活跃使用恰是需要这些信息的时候）
 
 **已浮现去重**（第 44 行参数 `alreadySurfaced`）：
-- 前几轮已经展示过的记忆文件会被过滤掉，确保 5 个槽位用于新的候选记忆而非重复推荐
+- 前几轮已经展示过的记忆文件会被过滤掉，5 个槽位专门留给新的候选记忆
 
 ### 4.3 漂移验证
 
@@ -392,15 +418,43 @@ type: {{user, feedback, project, reference}}
 
 `buildMemoryLines` 函数（`memdir.ts` 第 254-258 行）明确了记忆与 plan/task 的边界：
 
-| 机制 | 用途 | 生命周期 |
-|------|------|---------|
-| **Memory** | 跨对话持久化的信息 | 长期 |
-| **Plan** | 非平凡实现任务的方法对齐 | 单次对话 |
-| **Task** | 当前对话中的分步工作跟踪 | 单次对话 |
+<!-- IMAGE_PLACEHOLDER_4: 持久化机制边界对比 -->
+<!-- GPT Image Prompt: Comparison diagram, 16:9 aspect ratio, white background. Four columns with icons at top: (1) Memory icon (brain with layers) — "跨对话长期", (2) CLAUDE.md icon (document with gear) — "跨对话长期", (3) git log icon (branch/history) — "永久", (4) Plan/Task icon (checklist) — "单次对话". Below each icon, 2-3 bullet points showing what it stores. A horizontal "生命周期" timeline runs across the bottom from short (left) to long (right). Style: flat vector, blue tones (#1a1a2e, #2d3a8c, #4361ee, #7b8cff), clean lines, minimal text. -->
+
+![持久化机制边界对比](images/boundary-comparison.png)
+
+
+| 维度 | Memory | CLAUDE.md | git log | Plan / Task |
+|------|--------|-----------|---------|-------------|
+| **生命周期** | 跨对话长期 | 跨对话长期 | 永久 | 单次对话 |
+| **谁来写** | AI自动 + 后台提取 | 人工维护 | git commit | AI在对话中 |
+| **存什么** | 不可推导的信息 | 项目约定/规范 | 代码变更历史 | 当前任务方法 |
+| **时效性** | 需要漂移验证 | 需要人工更新 | 永久有效 | 对话结束即弃 |
+| **典型内容** | "用户是资深Go工程师" | "用pnpm不用npm" | "fix: resolve auth bug" | "第一步先跑测试" |
+| **自动清理** | 无（需手动或漂移验证） | 无 | 无 | 对话结束自动丢弃 |
+| **上下文消耗** | 最多5个文件召回 | 始终全量注入 | 按需查询 | 始终在上下文中 |
+
+一句话区分：**git log 记录代码变了什么，CLAUDE.md 记录项目约定什么，Memory 记录人和语境是什么，Plan 记录这次要做什么。**
 
 ---
 
-## 9. 辅助模式（KAIROS）
+## 9. 代价与边界
+
+这套系统设计得精细，但也有明确的局限性：
+
+**Sonnet 选择器的准确性上限**。召回依赖一个独立的 Sonnet 调用来判断哪些记忆与当前 query 相关。这个判断本身可能出错——该召回的没召回，不该召回的召回了。256 token 的输出限制意味着它只能返回 5 个文件名，不能解释选择理由。
+
+**project 记忆的衰减问题**。源码明确说 project 记忆"decay fast"，但系统本身没有自动清理机制。过时的 project 记忆只能靠漂移验证来发现——模型在使用记忆时发现与当前状态冲突，才会更新或删除。如果模型没触发验证，过时记忆会一直存在。
+
+**双路径互斥的粒度**。互斥判断是按轮次（per-turn）的，不是按条目（per-entry）的。如果主代理在某一轮写了一条 user 类型的记忆，后台代理会跳过整轮——即使这轮对话中还有 feedback 或 project 类型的信息值得提取。
+
+**200 个文件的硬上限**。对于长期使用同一项目的团队，200 个记忆文件可能不够。没有自动归档或压缩机制，只能手动管理。
+
+**sideQuery 的延迟**。每次用户发消息都会触发一次 Sonnet sideQuery 来选择相关记忆。这意味着额外的 API 调用和延迟——虽然 `max_tokens: 256` 控制了成本，但高频对话场景下这个开销是持续存在的。
+
+---
+
+## 10. 辅助模式（KAIROS）
 
 通过 feature flag `KAIROS` 启用的特殊模式（`memdir.ts` 第 327-370 行）：
 
@@ -412,16 +466,23 @@ type: {{user, feedback, project, reference}}
 
 每晚由独立的 `/dream` skill 将日志提炼为 topic 文件并更新 `MEMORY.md` 索引。此模式下，`MEMORY.md` 仍加载到上下文中，但模型只读不写。
 
+这个设计解决了一个实际问题：长期运行的会话中，频繁写入记忆文件会打断主对话流程。KAIROS 把写入变成异步的批量操作，降低了对主流程的干扰。
+
 ---
 
-## 10. 总结
+## 11. 总结
 
-Claude Code 的记忆系统是一个精密的**四层固定类型分类 + 双路径写入 + 双层召回 + 漂移验证**架构：
+<!-- IMAGE_PLACEHOLDER_5: 架构总览图 -->
+<!-- GPT Image Prompt: Architecture overview diagram, 16:9 aspect ratio, white background. Center: a large "MEMORY.md" file icon. Left side (Write path): two arrows from top — one solid from "主代理" circle, one dashed from "后台提取代理" circle, both converging on the MEMORY.md icon with a mutex lock between them. Right side (Read path): from MEMORY.md, two arrows — one going up to "system prompt注入" (always), one going right to "Sonnet选择器" (per-query) with 5 file outputs. Bottom: a "漂移验证" shield icon protecting the read path. Four small colored dots (blue shades) representing the four memory types float around MEMORY.md. Style: flat vector, clean, minimal, blue palette (#1a1a2e, #2d3a8c, #4361ee, #7b8cff). -->
 
-- **四层记忆**覆盖了 AI 辅助编程所需的全部跨对话持久化信息：用户画像（user）、行为指导（feedback）、项目语境（project）、外部指针（reference）
-- **双路径写入**通过主代理直写和后台提取代理的互斥协作，确保记忆既能在模型主动判断时即时写入，也能在被动场景下自动补全
-- **双层召回**通过 MEMORY.md 索引和 Sonnet 侧查询并行选择，在保证覆盖率的同时控制上下文消耗（最多 5 个文件）
-- **漂移验证**要求模型在使用记忆前验证其时效性，防止过时信息产生错误建议
-- **严格的“不存可推导信息”原则**确保记忆系统保持低噪声，不与 `grep`/`git log`/`CLAUDE.md` 等实时工具产生冗余
+![架构总览](images/architecture-overview.png)
 
-该设计的核心洞察是：**代码可以被工具实时检索，但人的意图、偏好、决策动机和外部知识的“位置”无法从代码中推导**——这正是记忆系统存在的根本原因。
+
+Claude Code 的记忆系统是一个**四层固定类型 + 双路径写入 + 双层召回 + 漂移验证**的架构。每个环节都有明确的设计意图：
+
+- **四层记忆**回答四个问题：你是谁（user）、我该怎么做（feedback）、项目什么情况（project）、去哪查资料（reference）
+- **双路径写入**保证记忆不遗漏：主代理主动写 + 后台代理被动补，互斥不重复
+- **双层召回**保证记忆不浪费：索引全量注入 + Sonnet 侧查询精选 5 个
+- **漂移验证**保证记忆不失效：用之前先核实，冲突就更新
+
+这个系统存在的根本原因只有一句话：**代码可以被工具实时检索，但人的意图、偏好和决策动机不行。**
