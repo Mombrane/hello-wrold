@@ -6,6 +6,7 @@ AI Agent 技术调研与架构分析报告集。
 
 | 日期 | 报告 | 主题 |
 |------|------|------|
+| 2026-06-11 | [Hindsight 记忆系统深度分析：仿生四网络架构、TEMPR 时序实体图与 LongMemEval SOTA 源码解析](reports/hindsight-memory-analysis.md) | 仿生四网络(World/Experiences/Mental Models/Opinion Network)、TEMPR 时序实体图谱、5W 结构化事实提取、4路并行检索(Semantic+BM25+Graph+Temporal)+RRF+Cross-Encoder、Consolidation 自动整合、Reflect Agentic 反思、PostgreSQL 全栈存储 |
 | 2026-06-11 | [OpenAI Codex CLI 记忆系统深度分析：离线批处理管线、Git 记忆管理与 1430 行 Prompt 工程源码解析](reports/codex-memory-analysis.md) | JSONL+SQLite+Markdown 三层存储、Phase 1 并发 8 路提取(570行prompt)、Phase 2 Sub-Agent 整合(880行prompt)、ContextContributor 注入、Git diff 驱动增量更新、与 MemPalace/Mastra 三方对比 |
 | 2026-06-11 | [Mastra Observational Memory 深度分析：三 Agent 架构、异步缓冲与 LongMemEval 94.87% 源码解析](reports/mastra-memory-analysis.md) | Observer/Reflector 双 Agent 提示词工程、断言vs问题区分、时间锚定、5-40x压缩比、异步缓冲零延迟激活、与 MemPalace 对比 |
 | 2026-06-11 | [MemPalace 深度技术分析：宫殿架构、写入管道与召回机制源码全解析](reports/mempalace-deep-analysis-report.md) | 50个真实源码片段逐行解析——Wing/Room/Drawer/Closet分层架构、对话分块与批量写入、BM25+向量混合排序、排名基Closet Boost、Drawer-Grep增强、知识图谱时间查询、四层记忆堆栈(L0-L3) |
@@ -26,6 +27,13 @@ hello-wrold/
 ├── README.md
 └── reports/
     ├── assets/
+    │   ├── hindsight/
+    │   │   ├── hindsight-overview.png
+    │   │   ├── hindsight-learning-pipeline.png
+    │   │   ├── hindsight-memory-model.png
+    │   │   ├── hindsight-retrieval.png
+    │   │   ├── hindsight-benchmarks.png
+    │   │   └── hindsight-comparison.png
     │   ├── codex/
     │   │   ├── codex-memory-overview.png
     │   │   ├── codex-memory-config.png
