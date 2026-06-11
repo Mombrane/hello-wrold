@@ -6,6 +6,7 @@ AI Agent 技术调研与架构分析报告集。
 
 | 日期 | 报告 | 主题 |
 |------|------|------|
+| 2026-06-11 | [MemPalace 深度技术分析：宫殿架构、写入管道与召回机制源码全解析](reports/mempalace-deep-analysis-report.md) | 50个真实源码片段逐行解析——Wing/Room/Drawer/Closet分层架构、对话分块与批量写入、BM25+向量混合排序、排名基Closet Boost、Drawer-Grep增强、知识图谱时间查询、四层记忆堆栈(L0-L3) |
 | 2026-06-10 | [10分钟了解Claude Code记忆系统：源码拆解AI的"长期记忆"是怎么实现的](reports/claude-code-memory-system-report.md) | 基于源码逆向分析——四层固定类型（user/feedback/project/reference）、双路径写入互斥、Sonnet 侧查询召回、漂移验证机制全解析，含6张配图 |
 | 2026-06-09 | [LongMemEval 技术报告：评测、架构与自定义记忆系统接入指南](reports/longmemeval-technical-report.md) | ICLR 2025 长期记忆基准深度解析——5大能力×7种题型、属性控制数据构建、统一三阶段框架、LLM-as-Judge 评测、自定义系统接入方法 |
 | 2026-06-08 | [agentmemory 知识图谱：构建与召回全流程深度解析](reports/agentmemory-graph-pipeline-report.md) | 基于源码的图构建链路、Dijkstra 加权检索、RRF 三路融合、时间版本边、Snapshot 机制全解析 |
@@ -37,6 +38,7 @@ hello-wrold/
     │   ├── recall-mechanism.svg/.png  # 二阶段召回机制
     │   ├── boundary-comparison.svg/.png # 持久化机制边界对比
     │   └── architecture-overview.svg/.png # 架构总览
+    ├── mempalace-deep-analysis-report.md
     ├── claude-code-memory-system-report.md
     ├── longmemeval-technical-report.md
     ├── mem0-source-code-analysis-report.md
