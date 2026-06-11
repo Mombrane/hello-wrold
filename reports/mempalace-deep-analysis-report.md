@@ -46,7 +46,7 @@ MemPalace 是一个**本地优先、逐字存储**的 AI 记忆系统。它的�
 
 灵感来自两个经典方法：古希腊的**记忆宫殿法**（Method of Loci）和德国社会学家 Niklas Luhmann 的 **Zettelkasten 卡片盒笔记法**。
 
-![宫殿架构](../assets/mempalace/palace-architecture.png)
+![宫殿架构](assets/mempalace/palace-architecture.png)
 
 ### 六层结构
 
@@ -72,7 +72,7 @@ MemPalace 是一个**本地优先、逐字存储**的 AI 记忆系统。它的�
 
 ## 3. 记忆写入管道
 
-![写入管道](../assets/mempalace/mining-pipeline.png)
+![写入管道](assets/mempalace/mining-pipeline.png)
 
 ### 3.1 格式识别与解析
 
@@ -133,7 +133,7 @@ MemPalace 是一个**本地优先、逐字存储**的 AI 记忆系统。它的�
 
 ## 4. 记忆召回管道
 
-![搜索管道](../assets/mempalace/search-pipeline.png)
+![搜索管道](assets/mempalace/search-pipeline.png)
 
 搜索管道是 MemPalace 最核心的技术创新。从查询到结果，经过 6 个阶段：
 
@@ -174,7 +174,7 @@ MemPalace 是一个**本地优先、逐字存储**的 AI 记忆系统。它的�
 
 ## 5. Closet Boost 机制
 
-![Closet Boost](../assets/mempalace/closet-boost.png)
+![Closet Boost](assets/mempalace/closet-boost.png)
 
 ### 为什么用排名而非绝对距离？
 
@@ -205,7 +205,7 @@ Boost 直接从原始余弦距离中扣除，然后映射到有效相似度。�
 
 ## 6. BM25 + 向量混合排序
 
-![混合排序](../assets/mempalace/hybrid-rank.png)
+![混合排序](assets/mempalace/hybrid-rank.png)
 
 ### 两条信号流
 
@@ -241,7 +241,7 @@ final_score = 0.6 × vector_similarity + 0.4 × bm25_normalized
 
 ## 7. 知识图谱
 
-![知识图谱](../assets/mempalace/knowledge-graph.png)
+![知识图谱](assets/mempalace/knowledge-graph.png)
 
 MemPalace 内置一个**基于 SQLite 的时间实体关系图**，支持时间旅行查询。
 
@@ -300,7 +300,7 @@ Date-only 值的边界处理：`valid_from` 比较 `00:00:00`，`valid_to` 比�
 
 ## 8. 四层记忆堆栈
 
-![记忆堆栈](../assets/mempalace/memory-stack.png)
+![记忆堆栈](assets/mempalace/memory-stack.png)
 
 MemPalace 实现了一个四层记忆堆栈，模拟人类的记忆层次：
 
@@ -372,6 +372,8 @@ AAAK 是**有损压缩**，不是无损。当前检索基准仅 **84.2% R@5**（
 ## 10. 总结与启示
 
 ### 为什么 96.6% 这么高？
+
+![竞品对比](assets/mempalace/benchmark-comparison.png)
 
 根本原因：**信息无损**。
 
