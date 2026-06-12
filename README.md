@@ -6,6 +6,7 @@ AI Agent 技术调研与架构分析报告集。
 
 | 日期 | 报告 | 主题 |
 |------|------|------|
+| 2026-06-12 | [Zep/Graphiti：LLM 构建时间知识图谱技术深度调研](reports/graphiti-temporal-knowledge-graph-report.md) | 双时态事实模型、三层子图架构(Episode/Entity/Community)、增量式图构建、混合三路检索(Cosine+BM25+BFS)+5种重排策略、DMR 94.8%/LongMemEval +18.5% benchmark、与 GraphRAG/MemGPT 对比 |
 | 2026-06-11 | [Hindsight 记忆系统深度分析：仿生四网络架构、TEMPR 时序实体图与 LongMemEval SOTA 源码解析](reports/hindsight-memory-analysis.md) | 仿生四网络(World/Experiences/Mental Models/Opinion Network)、TEMPR 时序实体图谱、5W 结构化事实提取、4路并行检索(Semantic+BM25+Graph+Temporal)+RRF+Cross-Encoder、Consolidation 自动整合、Reflect Agentic 反思、PostgreSQL 全栈存储 |
 | 2026-06-11 | [OpenAI Codex CLI 记忆系统深度分析：离线批处理管线、Git 记忆管理与 1430 行 Prompt 工程源码解析](reports/codex-memory-analysis.md) | JSONL+SQLite+Markdown 三层存储、Phase 1 并发 8 路提取(570行prompt)、Phase 2 Sub-Agent 整合(880行prompt)、ContextContributor 注入、Git diff 驱动增量更新、与 MemPalace/Mastra 三方对比 |
 | 2026-06-11 | [Mastra Observational Memory 深度分析：三 Agent 架构、异步缓冲与 LongMemEval 94.87% 源码解析](reports/mastra-memory-analysis.md) | Observer/Reflector 双 Agent 提示词工程、断言vs问题区分、时间锚定、5-40x压缩比、异步缓冲零延迟激活、与 MemPalace 对比 |
@@ -41,6 +42,9 @@ hello-wrold/
     │   │   ├── codex-phase2-consolidation.png
     │   │   ├── codex-memory-injection.png
     │   │   └── codex-three-way-comparison.png
+    │   ├── graphiti/
+    │   │   ├── graphiti-architecture.png
+    │   │   └── graphiti-benchmark.png
     │   ├── openclaw_qmd_arch.png
     │   ├── hermes_holographic_arch.png
     │   ├── hermes-memory-architecture.png
@@ -55,6 +59,7 @@ hello-wrold/
     │   ├── recall-mechanism.svg/.png  # 二阶段召回机制
     │   ├── boundary-comparison.svg/.png # 持久化机制边界对比
     │   └── architecture-overview.svg/.png # 架构总览
+    ├── graphiti-temporal-knowledge-graph-report.md
     ├── codex-memory-analysis.md
     ├── mastra-memory-analysis.md
     ├── mempalace-deep-analysis-report.md
