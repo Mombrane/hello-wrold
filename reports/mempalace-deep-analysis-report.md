@@ -413,4 +413,89 @@ MemPalace 的哲学可以应用到 Hermes 的 memory 系统：
 
 ---
 
+## 11. 实锤审计：MemPalace 造假证据
+
+> **来源：** [MemPalace Exposed — by roman-rr](https://gist.github.com/roman-rr/0569fc487cc620f54a70c90ab50d32e3)
+>
+> 审计者逐行读完了全部 11,139 行 Python、32 个测试文件、19 个基准文件、24 个 MCP 工具，并用 GitHub API 分析了 42,497 个 star 的时间戳。
+
+### 11.1 核心结论：96.6% 的分数是 ChromaDB 的
+
+MemPalace 的检索引擎就是**原封不动的 ChromaDB**，使用默认嵌入模型 `all-MiniLM-L6-v2`，默认 HNSW 索引，余弦相似度。产生那个头条分数的核心代码只有一行：
+
+```python
+results = col.query(query_texts=[query], n_results=n_results)
+```
+
+其余 169 行全是参数解析和打印格式化。**用 50 行 Python 就能完全复现。**
+
+### 11.2 42,000 Stars 是买的——时间戳证据
+
+通过 GitHub API 采样 star 时间戳，发现明显的**机器人农场模式**：
+
+| 采样点 | 时间段 | 特征 |
+|--------|--------|------|
+| Page 100 (4月7日) | 63秒内10个star | 两个 star 落在同一秒（05:35:01） |
+| Page 4000 (4月11日) | 精确~30秒间隔 | 典型限速机器人农场节奏 |
+
+正常开源爆火项目需要数周到数月才能到 10K star，MemPalace **7 天 42,497 个**。
+
+### 11.3 "明星创始人"疑云
+
+- GitHub 账号 `milla-jovovich`：2025年9月创建，声称是演员 Milla Jovovich
+- **公开仓库数：0**，关注数：0，粉丝 8,276
+- 无任何身份验证，Issue 回复被社区标记为 AI 生成（Issue #618）
+- 实际作者 `bensig`（Ben Sigman）：主做比特币/加密项目，此前无有影响力的 Python 仓库
+
+### 11.4 版本号是编的
+
+项目创建 7 天，直接从 **v3.1.0** 开始——**不存在 v1 和 v2**。
+
+### 11.5 "记忆宫殿"不是真正架构
+
+所谓 wing/room/hall 只是 ChromaDB 文档上的元数据字符串字段，没有空间索引、没有坐标、没有新颖数据结构。
+
+"智能房间检测"的完整算法：
+
+```python
+for kw in keywords:
+    count = content_lower.count(kw.lower())  # 就是 str.count()
+```
+
+"实体检测"只是一行正则：`re.findall(r"\b([A-Z][a-z]{1,19})\b", text)`，无 NLP/NER。
+
+### 11.6 AAAK 方言：反而拖累性能
+
+号称使用信息论（Shannon 熵、Huffman 编码），实际是正则表达式文本摘要，**反而将基准分数从 96.6% 降到 84.2%**（下降 12.4%）。
+
+### 11.7 零学术基础 vs 竞品
+
+| 系统 | arXiv 论文 | 学术引用 |
+|------|-----------|---------|
+| Mem0 | arXiv:2504.19413 | 多 |
+| Zep/Graphiti | arXiv:2501.13956 | 多 |
+| Letta/MemGPT | arXiv:2310.08560 (UC Berkeley) | ~154 |
+| **MemPalace** | **无** | **整个代码库仅 1 次** |
+
+### 11.8 审计评分卡
+
+| 维度 | 评分 | 说明 |
+|------|------|------|
+| README 声称 vs 现实 | **B** | 17项声称：9真实、3不足、3部分、1误导、1幻影 |
+| 核心架构 | **B+** | 真实代码无存根，但只是 ChromaDB 薄包装 |
+| 科学基础 | **D** | 全部文档仅1次引用，零认知科学/信息论 |
+| 测试套件 | **B-** | ~55个真实集成测试，~65个mock重 |
+| MCP 服务器 | **A** | 24个工具全部真实可用（营销反而少报为19） |
+| 嵌入/向量搜索 | **A** | 真实 ChromaDB + 默认模型，无伪造分数 |
+| 基准测试 | **A** | 真实数据集、运行时计算、方法论诚实 |
+| GitHub Stars & 营销 | **F** | 机器人农场模式、未经验证的明星身份、版本号膨胀 |
+
+### 11.9 审计者总评
+
+> **MemPalace 是 80% 真实代码 + 20% 营销膨胀。** 代码能跑。Star 是假的。创新接近零。
+
+这不是一个纯粹的骗局——所有 24 个 MCP 工具确实能用，基准测试方法论也是诚实的。但用机器人刷星、虚构版本号、将 ChromaDB 的能力包装成自己的创新，这些行为无法回避。
+
+---
+
 *分析基于 MemPalace v3.4.0 全部核心源码（`palace.py`、`searcher.py`、`convo_miner.py`、`miner.py`、`layers.py`、`knowledge_graph.py`、`dialect.py`、`normalize.py`、`entity_detector.py`、`hallways.py`、`palace_graph.py`、`embedding.py`、`backends/base.py`、`backends/chroma.py`、`ids.py`、`dedup.py`）。*
