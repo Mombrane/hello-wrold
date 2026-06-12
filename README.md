@@ -6,6 +6,8 @@ AI Agent 技术调研与架构分析报告集。
 
 | 日期 | 报告 | 主题 |
 |------|------|------|
+| 2026-06-12 | [2026年大模型预训练与后训练技术研究报告](reports/llm-training-2026-report.md) | DeepSeek V4 Engram 架构、General-Reasoner 全域 RL 推理、合成数据 Scaling Laws、GRPO 变体、推理时间计算、2026 六大趋势 |
+| 2026-06-11
 | 2026-06-12 | [Zep/Graphiti：LLM 构建时间知识图谱技术深度调研](reports/graphiti-temporal-knowledge-graph-report.md) | 双时态事实模型、三层子图架构(Episode/Entity/Community)、增量式图构建、混合三路检索(Cosine+BM25+BFS)+5种重排策略、DMR 94.8%/LongMemEval +18.5% benchmark、与 GraphRAG/MemGPT 对比 |
 | 2026-06-11 | [Hindsight 记忆系统深度分析：仿生四网络架构、TEMPR 时序实体图与 LongMemEval SOTA 源码解析](reports/hindsight-memory-analysis.md) | 仿生四网络(World/Experiences/Mental Models/Opinion Network)、TEMPR 时序实体图谱、5W 结构化事实提取、4路并行检索(Semantic+BM25+Graph+Temporal)+RRF+Cross-Encoder、Consolidation 自动整合、Reflect Agentic 反思、PostgreSQL 全栈存储 |
 | 2026-06-11 | [OpenAI Codex CLI 记忆系统深度分析：离线批处理管线、Git 记忆管理与 1430 行 Prompt 工程源码解析](reports/codex-memory-analysis.md) | JSONL+SQLite+Markdown 三层存储、Phase 1 并发 8 路提取(570行prompt)、Phase 2 Sub-Agent 整合(880行prompt)、ContextContributor 注入、Git diff 驱动增量更新、与 MemPalace/Mastra 三方对比 |
@@ -28,6 +30,13 @@ hello-wrold/
 ├── README.md
 └── reports/
     ├── assets/
+    │   ├── locomo/
+    │   │   ├── locomo-pipeline.png
+    │   │   ├── locomo-qa-categories.png
+    │   │   ├── locomo-eval-tasks.png
+    │   │   ├── locomo-long-context-results.png
+    │   │   ├── locomo-rag-results.png
+    │   │   └── locomo-research-2026.png
     │   ├── hindsight/
     │   │   ├── hindsight-overview.png
     │   │   ├── hindsight-learning-pipeline.png
@@ -62,6 +71,7 @@ hello-wrold/
     ├── graphiti-temporal-knowledge-graph-report.md
     ├── codex-memory-analysis.md
     ├── mastra-memory-analysis.md
+    ├── locomo-技术调研报告.md
     ├── mempalace-deep-analysis-report.md
     ├── claude-code-memory-system-report.md
     ├── longmemeval-technical-report.md
