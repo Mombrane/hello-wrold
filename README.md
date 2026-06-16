@@ -6,6 +6,7 @@ AI Agent 技术调研与架构分析报告集。
 
 | 日期 | 报告 | 主题 |
 |------|------|------|
+| 2026-06-16 | [claude-mem 源码深度分析：记忆写入与召回机制](reports/claude-mem-report.md) | AI 压缩+渐进式披露、7 阶段写入管道、3 条召回通路、SQLite+ChromaDB 双存储、PostHog 遥测审计 |
 | 2026-06-12 | [2026年大模型预训练与后训练技术研究报告](reports/llm-training-2026-report.md) | DeepSeek V4 Engram 架构、General-Reasoner 全域 RL 推理、合成数据 Scaling Laws、GRPO 变体、推理时间计算、2026 六大趋势 |
 | 2026-06-12 | [Zep/Graphiti：LLM 构建时间知识图谱技术深度调研](reports/graphiti-temporal-knowledge-graph-report.md) | 双时态事实模型、三层子图架构(Episode/Entity/Community)、增量式图构建、混合三路检索(Cosine+BM25+BFS)+5种重排策略、DMR 94.8%/LongMemEval +18.5% benchmark、与 GraphRAG/MemGPT 对比 |
 | 2026-06-11 | [Hindsight 记忆系统深度分析：仿生四网络架构、TEMPR 时序实体图与 LongMemEval SOTA 源码解析](reports/hindsight-memory-analysis.md) | 仿生四网络(World/Experiences/Mental Models/Opinion Network)、TEMPR 时序实体图谱、5W 结构化事实提取、4路并行检索(Semantic+BM25+Graph+Temporal)+RRF+Cross-Encoder、Consolidation 自动整合、Reflect Agentic 反思、PostgreSQL 全栈存储 |
@@ -59,6 +60,12 @@ hello-wrold/
     │   ├── graphiti/
     │   │   ├── graphiti-architecture.png
     │   │   └── graphiti-benchmark.png
+    │   ├── claude-mem/
+    │   │   ├── arch-overview.png
+    │   │   ├── write-pipeline.png
+    │   │   ├── recall-paths.png
+    │   │   ├── progressive-disclosure.png
+    │   │   └── dual-storage.png
     │   ├── openclaw_qmd_arch.png
     │   ├── hermes_holographic_arch.png
     │   ├── hermes-memory-architecture.png
@@ -75,6 +82,7 @@ hello-wrold/
     │   └── architecture-overview.svg/.png # 架构总览
     ├── graphiti-temporal-knowledge-graph-report.md
     ├── llm-training-2026-report.md
+    ├── claude-mem-report.md
     ├── codex-memory-analysis.md
     ├── mastra-memory-analysis.md
     ├── locomo-技术调研报告.md
