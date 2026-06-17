@@ -6,6 +6,7 @@ AI Agent 技术调研与架构分析报告集。
 
 | 日期 | 报告 | 主题 |
 |------|------|------|
+| 2026-06-17 | [FastAPI vs Spring Boot vs Golang 框架对比分析报告](reports/fastapi-spring-golang-comparison-report.md) | 性能基准、开发效率、生态系统、适用场景多维度对比，含真实案例和批判性分析 |
 | 2026-06-16 | [claude-mem 源码深度分析：记忆写入与召回机制](reports/claude-mem-report.md) | AI 压缩+渐进式披露、7 阶段写入管道、3 条召回通路、SQLite+ChromaDB 双存储、PostHog 遥测审计 |
 | 2026-06-12 | [2026年大模型预训练与后训练技术研究报告](reports/llm-training-2026-report.md) | DeepSeek V4 Engram 架构、General-Reasoner 全域 RL 推理、合成数据 Scaling Laws、GRPO 变体、推理时间计算、2026 六大趋势 |
 | 2026-06-12 | [Zep/Graphiti：LLM 构建时间知识图谱技术深度调研](reports/graphiti-temporal-knowledge-graph-report.md) | 双时态事实模型、三层子图架构(Episode/Entity/Community)、增量式图构建、混合三路检索(Cosine+BM25+BFS)+5种重排策略、DMR 94.8%/LongMemEval +18.5% benchmark、与 GraphRAG/MemGPT 对比 |
@@ -80,6 +81,7 @@ hello-wrold/
     │   ├── recall-mechanism.svg/.png  # 二阶段召回机制
     │   ├── boundary-comparison.svg/.png # 持久化机制边界对比
     │   └── architecture-overview.svg/.png # 架构总览
+    ├── fastapi-spring-golang-comparison-report.md
     ├── graphiti-temporal-knowledge-graph-report.md
     ├── llm-training-2026-report.md
     ├── claude-mem-report.md
