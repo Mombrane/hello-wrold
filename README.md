@@ -6,6 +6,7 @@ AI Agent 技术调研与架构分析报告集。
 
 | 日期 | 报告 | 主题 |
 |------|------|------|
+| 2026-06-18 | [Headroom：AI Agent 上下文压缩机制深度分析](reports/headroom-deep-analysis.md) | 6 种专业压缩器架构、Kompress ML 双头模型、ContentRouter 智能路由、CCR 可逆压缩、60-95% Token 节省率分析 |
 | 2026-06-17 | [FastAPI vs Spring Boot vs Golang 框架对比分析报告](reports/fastapi-spring-golang-comparison-report.md) | 性能基准、开发效率、生态系统、适用场景多维度对比，含真实案例和批判性分析 |
 | 2026-06-17 | [WebSocket 技术调研：协议原理、各语言实现与 SSE 对比](reports/websocket-technology-report.md) | RFC 6455 帧格式、握手流程、6 语言主流实现对比、WebSocket vs SSE 全方位对比、决策树、安全与性能分析 |
 | 2026-06-16 | [claude-mem 源码深度分析：记忆写入与召回机制](reports/claude-mem-report.md) | AI 压缩+渐进式披露、7 阶段写入管道、3 条召回通路、SQLite+ChromaDB 双存储、PostHog 遥测审计 |
@@ -32,6 +33,11 @@ hello-wrold/
 ├── README.md
 └── reports/
     ├── assets/
+    │   ├── headroom/
+    │   │   ├── headroom-pipeline.png
+    │   │   ├── headroom-kompress-model.png
+    │   │   ├── headroom-router-decision.png
+    │   │   └── headroom-performance.png
     │   ├── llm-training-2026/
     │   │   ├── timeline.png
     │   │   ├── pretraining-evolution.png
@@ -89,6 +95,7 @@ hello-wrold/
     │   ├── recall-mechanism.svg/.png  # 二阶段召回机制
     │   ├── boundary-comparison.svg/.png # 持久化机制边界对比
     │   └── architecture-overview.svg/.png # 架构总览
+    ├── headroom-deep-analysis.md
     ├── fastapi-spring-golang-comparison-report.md
     ├── websocket-technology-report.md
     ├── graphiti-temporal-knowledge-graph-report.md
