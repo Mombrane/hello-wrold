@@ -6,6 +6,7 @@ AI Agent 技术调研与架构分析报告集。
 
 | 日期 | 报告 | 主题 |
 |------|------|------|
+| 2026-06-18 | [OpenCode vs Codex CLI 上下文压缩机制深度对比](reports/context-compression-report.md) | LLM 驱动语义压缩、结构化摘要模板 vs Memento 三层防御、增量更新、64K 保留窗口、自动继续、远程压缩加密令牌 |
 | 2026-06-18 | [Agent Loop 与 AI Agent 调研报告](reports/agent-loop-research.md) | Agent Loop 核心机制、ReAct/Reflexion/Plan-and-Execute 设计模式、三大核心组件、Agentic 自治光谱、Anthropic/OpenAI/LangChain 框架对比、2025-2026 趋势批判性分析 |
 | 2026-06-18 | [Headroom：AI Agent 上下文压缩机制深度分析](reports/headroom-deep-analysis.md) | 6 种专业压缩器架构、Kompress ML 双头模型、ContentRouter 智能路由、CCR 可逆压缩、60-95% Token 节省率分析 |
 | 2026-06-17 | [FastAPI vs Spring Boot vs Golang 框架对比分析报告](reports/fastapi-spring-golang-comparison-report.md) | 性能基准、开发效率、生态系统、适用场景多维度对比，含真实案例和批判性分析 |
@@ -88,6 +89,11 @@ hello-wrold/
     │   │   ├── recall-paths.png
     │   │   ├── progressive-disclosure.png
     │   │   └── dual-storage.png
+    │   ├── context-compression/
+    │   │   ├── opencode-flow.png
+    │   │   ├── codex-flow.png
+    │   │   ├── compare-grid.png
+    │   │   └── summary-cards.png
     │   ├── openclaw_qmd_arch.png
     │   ├── hermes_holographic_arch.png
     │   ├── hermes-memory-architecture.png
@@ -121,7 +127,8 @@ hello-wrold/
     ├── hermes-memory-architecture-report.md
     ├── agentmemory-graph-pipeline-report.md
     ├── omp-memory-system-report.md
-    └── java-hashmap-collision-disturbance-report.md
+    ├── java-hashmap-collision-disturbance-report.md
+    └── context-compression-report.md
 ```
 
 ## 🔧 维护说明
