@@ -6,6 +6,7 @@ AI Agent 技术调研与架构分析报告集。
 
 | 日期 | 报告 | 主题 |
 |------|------|------|
+| 2026-06-23 | [agentmemory BM25 检索：从分词到融合的全流程深度解析](reports/agentmemory-bm25-report.md) | BM25 评分算法、前缀匹配、同义词扩展、CJK 分词、索引分片持久化、RRF 三路融合全解析 |
 | 2026-06-22 | [Java RPC 技术调研报告](reports/java-rpc-technology-report.md) | RPC 核心原理、Socket/RMI 原生实现、手写简易框架、Dubbo/gRPC/Thrift 生产级框架对比、选型建议 |
 | 2026-06-18 | [OpenCode vs Codex CLI 上下文压缩机制深度对比](reports/context-compression-report.md) | LLM 驱动语义压缩、结构化摘要模板 vs Memento 三层防御、增量更新、64K 保留窗口、自动继续、远程压缩加密令牌 |
 | 2026-06-18 | [Agent Loop 与 AI Agent 调研报告](reports/agent-loop-research.md) | Agent Loop 核心机制、ReAct/Reflexion/Plan-and-Execute 设计模式、三大核心组件、Agentic 自治光谱、Anthropic/OpenAI/LangChain 框架对比、2025-2026 趋势批判性分析 |
@@ -42,6 +43,13 @@ hello-wrold/
     │   │   ├── agentic-spectrum.png
     │   │   ├── framework-comparison.png
     │   │   └── three-components.png
+    │   ├── agentmemory-bm25/
+    │   │   ├── bm25-architecture.png
+    │   │   ├── bm25-tokenize.png
+    │   │   ├── bm25-data-structures.png
+    │   │   ├── bm25-query-flow.png
+    │   │   ├── bm25-index-persistence.png
+    │   │   └── bm25-rrf-fusion.png
     │   ├── headroom/
     │   │   ├── headroom-pipeline.png
     │   │   ├── headroom-kompress-model.png
@@ -132,6 +140,7 @@ hello-wrold/
     ├── hermes-vs-openclaw-memory-report.md
     ├── hermes-memory-architecture-report.md
     ├── agentmemory-graph-pipeline-report.md
+    ├── agentmemory-bm25-report.md
     ├── omp-memory-system-report.md
     ├── java-hashmap-collision-disturbance-report.md
     └── context-compression-report.md
