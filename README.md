@@ -106,7 +106,8 @@ hello-wrold/
     │   ├── rpc/
     │   │   ├── rpc-architecture.png
     │   │   ├── rpc-java-layers.png
-    │   │   └── rpc-frameworks.png
+    │   │   ├── rpc-frameworks.png
+    │   │   └── rpc-rmi-vs-custom.png
     │   ├── openclaw_qmd_arch.png
     │   ├── hermes_holographic_arch.png
     │   ├── hermes-memory-architecture.png
