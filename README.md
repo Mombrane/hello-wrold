@@ -45,6 +45,11 @@ hello-wrold/
     │   │   ├── agentic-spectrum.png
     │   │   ├── framework-comparison.png
     │   │   └── three-components.png
+    │   ├── agent-loop-impl/
+    │   │   ├── diagram-1-agent-loop-cycle.png
+    │   │   ├── diagram-2-hermes-architecture.png
+    │   │   ├── diagram-3-comparison.png
+    │   │   └── diagram-4-tool-execution.png
     │   ├── agentmemory-bm25/
     │   │   ├── bm25-architecture.png
     │   │   ├── bm25-tokenize.png
@@ -125,6 +130,7 @@ hello-wrold/
     │   ├── boundary-comparison.svg/.png # 持久化机制边界对比
     │   └── architecture-overview.svg/.png # 架构总览
     ├── react-agent-architecture-report.md
+    ├── agent-loop-implementation-report.md
     ├── agent-loop-research.md
     ├── java-rpc-technology-report.md
     ├── headroom-deep-analysis.md
