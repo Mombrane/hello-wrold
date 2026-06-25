@@ -6,6 +6,7 @@ AI Agent 技术调研与架构分析报告集。
 
 | 日期 | 报告 | 主题 |
 |------|------|------|
+| 2026-06-25 | [Headroom 压缩器实践与探索报告](reports/headroom-compressor-practice.md) | 实测验证三个压缩器真实效果、发现 2 个 Bug（Tier-2 0%、非 ASCII 压坏）、SmartCrusher 68~88%、CodeCompressor ~55%、方法论结论 |
 | 2026-06-24 | [Agent Loop 源码实现深度对比：Hermes vs Claude Code](reports/agent-loop-implementation-report.md) | 4300行Python工业级引擎 vs 编译TypeScript轻量助手、5层错误恢复、上下文压缩、工具并行策略、批判性分析 |
 | 2026-06-24 | [ReAct 架构深度调研：从论文到工程实践](reports/react-agent-architecture-report.md) | ReAct 核心机制、演进历程、Hermes/Codex/Claude Code 三大实现源码对比、批判性分析 |
 | 2026-06-23 | [agentmemory BM25 检索：从分词到融合的全流程深度解析](reports/agentmemory-bm25-report.md) | BM25 评分算法、前缀匹配、同义词扩展、CJK 分词、索引分片持久化、RRF 三路融合全解析 |
@@ -62,6 +63,11 @@ hello-wrold/
     │   │   ├── headroom-kompress-model.png
     │   │   ├── headroom-router-decision.png
     │   │   └── headroom-performance.png
+    │   ├── headroom-practice/
+    │   │   ├── pipeline.png
+    │   │   ├── smartcrusher-flow.png
+    │   │   ├── bug-impact.png
+    │   │   └── comparison.png
     │   ├── llm-training-2026/
     │   │   ├── timeline.png
     │   │   ├── pretraining-evolution.png
@@ -134,6 +140,7 @@ hello-wrold/
     ├── agent-loop-research.md
     ├── java-rpc-technology-report.md
     ├── headroom-deep-analysis.md
+    ├── headroom-compressor-practice.md
     ├── fastapi-spring-golang-comparison-report.md
     ├── websocket-technology-report.md
     ├── graphiti-temporal-knowledge-graph-report.md
