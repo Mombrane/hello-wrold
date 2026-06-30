@@ -18,7 +18,9 @@
 
 ## 1. 概述
 
-**论文信息**：The Red Queen Gödel Machine: Co-Evolving Agents and Their Evaluators，2026 年 6 月 24 日发布，来自剑桥大学、NVIDIA、Flower Labs、MBZUAI、Inria 的联合研究（13 位作者），全文 37 页（正文 12 页 + 附录）。
+![范式转变](assets/rqgm/paradigm.png)
+
+**论文信息**：The Red Queen Gödel Machine: Co-Evolving Agents and Their Evaluators，2026 年 6 月 24 日发布，来自剑桥大学、NVIDIA、Flower Labs、MBZUAI、Inria 的联合研究（13 位作者），全文 37 页（正文 12 页 + 附录）。截至报告撰写时（2026-06-30），代码**尚未开源**——论文为初步预印本（preliminary preprint），作者注明「work in progress」，未来更新中可能发布代码。
 
 ### 研究动机
 
@@ -172,6 +174,8 @@ IMO 评分者的进化路径尤为有趣：它先通过引入「保守的专家�
 
 ## 6. 批判性分析
 
+![批判性权衡](assets/rqgm/tradeoff.png)
+
 ### 6.1 我对 RQGM 的整体评价
 
 RQGM 是自我改进智能体领域的一个重要进展，其核心贡献——将评估器纳入进化循环——是概念上简单但意义深远的突破。在三个领域、多种配置下的实验验证了共进化相对于固定评估器的优势，证据链相当扎实。
@@ -225,6 +229,8 @@ RQGM 让我思考一个问题：Hermes Agent 的技能系统是否可以借鉴�
 ---
 
 ## 7. 总结与启示
+
+![核心启示](assets/rqgm/summary.png)
 
 RQGM 的核心贡献可以用一句话概括：**把评估从搜索的外部约束变成了搜索的内生驱动力**。这一视角转换带来了三个层次的价值：
 

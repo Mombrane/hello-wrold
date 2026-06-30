@@ -127,7 +127,10 @@ hello-wrold/
     │   │   ├── arch.png
     │   │   ├── epoch.png
     │   │   ├── results.png
-    │   │   └── mechanism.png
+    │   │   ├── mechanism.png
+    │   │   ├── paradigm.png
+    │   │   ├── tradeoff.png
+    │   │   └── summary.png
     │   ├── deerflow/
     │   │   ├── arch.png
     │   │   ├── loop.png
