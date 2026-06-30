@@ -6,6 +6,7 @@ AI Agent 技术调研与架构分析报告集。
 
 | 日期 | 报告 | 主题 |
 |------|------|------|
+| 2026-06-30 | [Red Queen Gödel Machine 技术调研：智能体与评估器共进化框架](reports/rqgm-technical-report.md) | 受控效用演化、评估器与任务智能体共进化、三领域 SOTA 超越（编码/论文/IMO）、对抗性评审去偏、1.35-1.86× 提升、批判性分析 |
 | 2026-06-26 | [DeerFlow 2.0 深度技术分析：Agent Loop 与 Agentic 工作流](reports/deerflow-deep-analysis.md) | LangGraph ReAct 循环、26 层中间件洋葱模型、task() 子代理委托、流式处理、与 Hermes Agent 对比、批判性分析 |
 | 2026-06-25 | [Headroom 压缩器实践与探索报告](reports/headroom-compressor-practice.md) | 实测验证三个压缩器真实效果、发现 2 个 Bug（Tier-2 0%、非 ASCII 压坏）、SmartCrusher 68~88%、CodeCompressor ~55%、方法论结论 |
 | 2026-06-24 | [Agent Loop 源码实现深度对比：Hermes vs Claude Code](reports/agent-loop-implementation-report.md) | 4300行Python工业级引擎 vs 编译TypeScript轻量助手、5层错误恢复、上下文压缩、工具并行策略、批判性分析 |
@@ -122,6 +123,11 @@ hello-wrold/
     │   │   ├── rpc-java-layers.png
     │   │   ├── rpc-frameworks.png
     │   │   └── rpc-rmi-vs-custom.png
+    │   ├── rqgm/
+    │   │   ├── arch.png
+    │   │   ├── epoch.png
+    │   │   ├── results.png
+    │   │   └── mechanism.png
     │   ├── deerflow/
     │   │   ├── arch.png
     │   │   ├── loop.png
@@ -144,6 +150,7 @@ hello-wrold/
     │   ├── boundary-comparison.svg/.png # 持久化机制边界对比
     │   └── architecture-overview.svg/.png # 架构总览
     ├── react-agent-architecture-report.md
+    ├── rqgm-technical-report.md
     ├── agent-loop-implementation-report.md
     ├── agent-loop-research.md
     ├── java-rpc-technology-report.md
