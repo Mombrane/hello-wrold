@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 1020 720">
+    39|        <defs>
+    40|          <marker id="ah" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#64748b"/></marker>
+    41|          <marker id="ah-blue" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#3b82f6"/></marker>
+    42|          <marker id="ah-emerald" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#10b981"/></marker>
+    43|          <marker id="ah-violet" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#8b5cf6"/></marker>
+    44|          <marker id="ah-amber" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#d97706"/></marker>
+    45|          <marker id="ah-rose" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#e11d48"/></marker>
+    46|          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0 L0 0 0 40" fill="none" stroke="#f1f5f9" stroke-width="0.5"/></pattern>
+    47|        </defs>
+    48|        <rect width="100%" height="100%" fill="#fafbfc"/>
+    49|        <rect width="100%" height="100%" fill="url(#grid)"/>
+    50|
+    51|        <!-- ===== GUI-Owl 1.5 模型（核心） ===== -->
+    52|        <rect x="330" y="20" width="360" height="90" rx="10" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="2.5"/>
+    53|        <text x="510" y="48" fill="#6d28d9" font-size="14" font-weight="700" text-anchor="middle">GUI-Owl 1.5 模型</text>
+    54|        <text x="510" y="68" fill="#334155" font-size="9" text-anchor="middle">基于 Qwen3-VL · 专用 GUI 视觉语言模型</text>
+    55|        <text x="510" y="84" fill="#334155" font-size="8" text-anchor="middle">视觉理解 · 元素定位 · 动作决策 · 工具调用 · 记忆</text>
+    56|        <text x="510" y="100" fill="#64748b" font-size="7" text-anchor="middle">2B / 4B / 8B / 32B · Instruct / Thinking 双变体</text>
+    57|
+    58|        <!-- 模型家族标注 -->
+    59|        <rect x="40" y="38" width="100" height="35" rx="5" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1"/>
+    60|        <text x="90" y="60" fill="#6d28d9" font-size="8" text-anchor="middle">2B-Instruct</text>
+    61|        <rect x="155" y="38" width="100" height="35" rx="5" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1"/>
+    62|        <text x="205" y="60" fill="#6d28d9" font-size="8" text-anchor="middle">8B-Instruct</text>
+    63|        <rect x="760" y="38" width="120" height="35" rx="5" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1"/>
+    64|        <text x="820" y="60" fill="#6d28d9" font-size="8" text-anchor="middle">32B-Thinking</text>
+    65|
+    66|        <!-- 连线到核心 -->
+    67|        <line x1="140" y1="73" x2="328" y2="55" stroke="#8b5cf6" stroke-width="1" stroke-dasharray="3,2"/>
+    68|        <line x1="255" y1="73" x2="328" y2="55" stroke="#8b5cf6" stroke-width="1" stroke-dasharray="3,2"/>
+    69|        <line x1="760" y1="73" x2="692" y2="55" stroke="#8b5cf6" stroke-width="1" stroke-dasharray="3,2"/>
+    70|
+    71|        <!-- ===== 端到端模式 ===== -->
+    72|        <rect x="40" y="135" width="280" height="70" rx="8" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+    73|        <text x="180" y="158" fill="#047857" font-size="11" font-weight="700" text-anchor="middle">端到端 Agent 模式</text>
+    74|        <text x="180" y="175" fill="#334155" font-size="8" text-anchor="middle">截图 → GUI-Owl 1.5 → 动作输出</text>
+    75|        <text x="180" y="192" fill="#64748b" font-size="7" text-anchor="middle">&lt;tool_call&gt; 直接解析执行</text>
+    76|
+    77|        <!-- ===== 多 Agent 模式 ===== -->
+    78|        <rect x="700" y="135" width="280" height="70" rx="8" fill="#fef2f2" stroke="#e11d48" stroke-width="2"/>
+    79|        <text x="840" y="158" fill="#be123c" font-size="11" font-weight="700" text-anchor="middle">多 Agent 协作模式</text>
+    80|        <text x="840" y="175" fill="#334155" font-size="8" text-anchor="middle">Planner → Executor → Verifier</text>
+    81|        <text x="840" y="192" fill="#64748b" font-size="7" text-anchor="middle">Notetaker 记录上下文</text>
+    82|
+    83|        <!-- GUI-Owl → 两种模式 -->
+    84|        <line x1="400" y1="110" x2="250" y2="133" stroke="#8b5cf6" stroke-width="1.5" marker-end="url(#ah-violet)"/>
+    85|        <text x="310" y="120" fill="#8b5cf6" font-size="7">端到端</text>
+    86|        <line x1="620" y1="110" x2="770" y2="133" stroke="#8b5cf6" stroke-width="1.5" marker-end="url(#ah-violet)"/>
+    87|        <text x="680" y="120" fill="#8b5cf6" font-size="7">多 Agent</text>
+    88|
+    89|        <!-- ===== 执行层：ADB 工具 ===== -->
+    90|        <rect x="330" y="225" width="360" height="55" rx="8" fill="#fff" stroke="#94a3b8" stroke-width="1.5"/>
+    91|        <text x="510" y="248" fill="#0f172a" font-size="11" font-weight="700" text-anchor="middle">ADB 执行层</text>
+    92|        <text x="510" y="268" fill="#64748b" font-size="8" text-anchor="middle">click · long_press · type · swipe · system_button · wait · open_app</text>
+    93|
+    94|        <!-- 模式 → ADB -->
+    95|        <line x1="180" y1="205" x2="400" y2="223" stroke="#10b981" stroke-width="1.5" marker-end="url(#ah-emerald)"/>
+    96|        <line x1="840" y1="205" x2="620" y2="223" stroke="#e11d48" stroke-width="1.5" marker-end="url(#ah-rose)"/>
+    97|
+    98|        <!-- ===== 多平台部署 ===== -->
+    99|        <rect x="20" y="310" width="980" height="65" rx="8" fill="none" stroke="#d97706" stroke-width="1" stroke-dasharray="8,4"/>
+   100|        <text x="32" y="305" fill="#d97706" font-size="9" font-weight="600">多平台支持</text>
+   101|
+   102|        <rect x="45" y="325" width="200" height="40" rx="6" fill="#fffbeb" stroke="#d97706" stroke-width="1.5"/>
+   103|        <text x="145" y="342" fill="#92400e" font-size="10" font-weight="600" text-anchor="middle">📱 Android</text>
+   104|        <text x="145" y="356" fill="#78716c" font-size="7" text-anchor="middle">ADB · ADB Keyboard</text>
+   105|
+   106|        <rect x="265" y="325" width="200" height="40" rx="6" fill="#fffbeb" stroke="#d97706" stroke-width="1.5"/>
+   107|        <text x="365" y="342" fill="#92400e" font-size="10" font-weight="600" text-anchor="middle">🪷 HarmonyOS</text>
+   108|        <text x="365" y="356" fill="#78716c" font-size="7" text-anchor="middle">HDC (v3 支持)</text>
+   109|
+   110|        <rect x="485" y="325" width="200" height="40" rx="6" fill="#fffbeb" stroke="#d97706" stroke-width="1.5"/>
+   111|        <text x="585" y="342" fill="#92400e" font-size="10" font-weight="600" text-anchor="middle">💻 Desktop/PC</text>
+   112|        <text x="585" y="356" fill="#78716c" font-size="7" text-anchor="middle">pyautogui · pyperclip</text>
+   113|
+   114|        <rect x="705" y="325" width="200" height="40" rx="6" fill="#fffbeb" stroke="#d97706" stroke-width="1.5"/>
+   115|        <text x="805" y="342" fill="#92400e" font-size="10" font-weight="600" text-anchor="middle">🌐 Browser</text>
+   116|        <text x="805" y="356" fill="#78716c" font-size="7" text-anchor="middle">Playwright · CSS SoM</text>
+   117|
+   118|        <!-- ADB → 平台 -->
+   119|        <line x1="400" y1="280" x2="200" y2="323" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
+   120|        <line x1="510" y1="280" x2="510" y2="323" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
+   121|        <line x1="620" y1="280" x2="800" y2="323" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
+   122|
+   123|        <!-- ===== 阿里云生态 ===== -->
+   124|        <rect x="20" y="400" width="460" height="65" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+   125|        <text x="250" y="422" fill="#1d4ed8" font-size="11" font-weight="700" text-anchor="middle">☁️ 阿里云生态</text>
+   126|        <text x="250" y="440" fill="#334155" font-size="8" text-anchor="middle">Bailian (百炼) API · 无影云手机 · Modelscope Demo</text>
+   127|        <text x="250" y="456" fill="#64748b" font-size="7" text-anchor="middle">云端推理 → 无需本地 GPU · 按量计费</text>
+   128|
+   129|        <!-- ===== 应用知识库 ===== -->
+   130|        <rect x="520" y="400" width="480" height="65" rx="8" fill="#f0fdf4" stroke="#10b981" stroke-width="1.5"/>
+   131|        <text x="760" y="422" fill="#047857" font-size="11" font-weight="700" text-anchor="middle">📦 内置应用知识库</text>
+   132|        <text x="760" y="440" fill="#334155" font-size="8" text-anchor="middle">微信 QQ 淘宝 京东 抖音 小红书 B站 美团 饿了么 WhatsApp...</text>
+   133|        <text x="760" y="456" fill="#64748b" font-size="7" text-anchor="middle">100+ 应用包名映射 · 国产应用深度适配</text>
+   134|
+   135|        <!-- ===== 子项目系列 ===== -->
+   136|        <rect x="20" y="490" width="980" height="55" rx="8" fill="none" stroke="#94a3b8" stroke-width="1"/>
+   137|        <text x="32" y="484" fill="#94a3b8" font-size="8">相关子项目</text>
+   138|        <text x="40" y="508" fill="#334155" font-size="8">GUI-Critic-R1</text>
+   139|        <text x="40" y="522" fill="#64748b" font-size="7">错误诊断</text>
+   140|        <text x="40" y="536" fill="#94a3b8" font-size="6">NeurIPS 25</text>
+   141|
+   142|        <text x="170" y="508" fill="#334155" font-size="8">Mobile-Agent-E</text>
+   143|        <text x="170" y="522" fill="#64748b" font-size="7">自我进化</text>
+   144|
+   145|        <text x="310" y="508" fill="#334155" font-size="8">PC-Agent</text>
+   146|        <text x="310" y="522" fill="#64748b" font-size="7">桌面操作</text>
+   147|        <text x="310" y="536" fill="#94a3b8" font-size="6">ICLR 25 WS</text>
+   148|
+   149|        <text x="430" y="508" fill="#334155" font-size="8">UI-S1</text>
+   150|        <text x="430" y="522" fill="#64748b" font-size="7">强化学习</text>
+   151|        <text x="430" y="536" fill="#94a3b8" font-size="6">ACL 2026</text>
+   152|
+   153|        <text x="530" y="508" fill="#334155" font-size="8">ToolCUA</text>
+   154|        <text x="530" y="522" fill="#64748b" font-size="7">工具编排</text>
+   155|        <text x="530" y="536" fill="#94a3b8" font-size="6">2026.05</text>
+   156|
+   157|        <text x="660" y="508" fill="#334155" font-size="8">OSWorld-MCP</text>
+   158|        <text x="660" y="522" fill="#64748b" font-size="7">MCP基准</text>
+   159|
+   160|        <!-- ===== 图例 ===== -->
+   161|        <rect x="20" y="565" width="450" height="40" rx="6" fill="#fff" stroke="#e2e8f0" stroke-width="1"/>
+   162|        <rect x="30" y="575" width="12" height="8" rx="2" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1"/>
+   163|        <text x="46" y="583" fill="#64748b" font-size="7">GUI-Owl 模型</text>
+   164|        <rect x="130" y="575" width="12" height="8" rx="2" fill="#ecfdf5" stroke="#10b981" stroke-width="1"/>
+   165|        <text x="146" y="583" fill="#64748b" font-size="7">端到端执行</text>
+   166|        <rect x="220" y="575" width="12" height="8" rx="2" fill="#fef2f2" stroke="#e11d48" stroke-width="1"/>
+   167|        <text x="236" y="583" fill="#64748b" font-size="7">多Agent</text>
+   168|        <rect x="300" y="575" width="12" height="8" rx="2" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+   169|        <text x="316" y="583" fill="#64748b" font-size="7">平台</text>
+   170|        <rect x="360" y="575" width="12" height="8" rx="2" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+   171|        <text x="376" y="583" fill="#64748b" font-size="7">云服务</text>
+   172|
+   173|      </svg>

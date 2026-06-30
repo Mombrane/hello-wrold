@@ -6,6 +6,7 @@ AI Agent 技术调研与架构分析报告集。
 
 | 日期 | 报告 | 主题 |
 |------|------|------|
+| 2026-06-30 | [MobileAgent 项目深度调研报告](reports/mobileagent-research-2025.md) | 阿里通义实验室 GUI Agent 家族（8,892 Stars）全系分析：v1→v3.5 版本演进、GUI-Owl 1.5 模型族（2B-235B）、多 Agent 到端到端架构跃迁、ToolCUA GUI+Tool 混合编排、跨平台覆盖、批判性分析与国内 App 适配评估 |
 | 2026-06-30 | [Phone Use：AI 手机操控代理调研报告](reports/phone-use-report.md) | Phone Use 定义与全景、Apple/Google/Anthropic/字节/百度工业布局、PhoneWorld/PhoneHarness/OmegaUse 学术前沿、OpenOmniBot/OpenGUI/MobileGym 三大开源项目源码深度分析、技术架构对比、批判性分析与实用建议 |
 | 2026-06-30 | [CORAL Protocol 深度技术调研：Internet of Agents](reports/coral-protocol-report.md) | CoralOS/Kubernetes for agents、A2A MCP 多智能体通信、Anemoi GAIA 63.64%、coral-agent.toml 标准化、竞品对比、工程成熟度批判分析 |
 | 2026-06-30 | [HGM 论文+源码联合分析：CMP 搜索与代码实现](reports/hgm-code-analysis-report.md) | ICLR 2026 Oral、2668行源码逐模块解读、CMP+Thompson采样+UCB-Air 核心算法、Docker沙箱自改进管道、8个代码实战细节、与RQGM对比 |
@@ -150,6 +151,14 @@ hello-wrold/
     │   │   ├── cmp.png
     │   │   ├── selfimprove.png
     │   │   └── dataflow.png
+    │   ├── mobileagent/
+    │   │   ├── evolution.png
+    │   │   ├── architecture.png
+    │   │   ├── models.png
+    │   │   ├── platforms.png
+    │   │   ├── toolcua.png
+    │   │   ├── insights.png
+    │   │   └── takeaways.png
     │   ├── openclaw_qmd_arch.png
     │   ├── hermes_holographic_arch.png
     │   ├── hermes-memory-architecture.png
@@ -176,6 +185,7 @@ hello-wrold/
     ├── rqgm-technical-report.md
     ├── hgm-code-analysis-report.md
     ├── phone-use-report.md
+    ├── mobileagent-research-2025.md
     ├── coral-protocol-report.md
     ├── agent-loop-implementation-report.md
     ├── agent-loop-research.md

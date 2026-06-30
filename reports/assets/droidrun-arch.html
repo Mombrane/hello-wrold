@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>MobileRun 架构图</title>
+  <!-- No external font: use system monospace -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'JetBrains Mono', 'Noto Sans SC', 'DejaVu Sans Mono', monospace; background: #fff; padding: 2rem; color: #1e293b; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .header { margin-bottom: 1.5rem; }
+    h1 { font-size: 1.4rem; font-weight: 700; color: #0f172a; }
+    .subtitle { color: #64748b; font-size: 0.8rem; margin-top: 0.3rem; }
+    .diagram-container { border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.5rem; background: #fafbfc; }
+    svg { width: 100%; min-width: 940px; display: block; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+    .card { border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.25rem; background: #fff; }
+    .card-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; }
+    .card-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .card-dot.blue { background: #3b82f6; }
+    .card-dot.emerald { background: #10b981; }
+    .card-dot.violet { background: #8b5cf6; }
+    .card-dot.amber { background: #d97706; }
+    .card-dot.rose { background: #e11d48; }
+    .card h3 { font-size: 0.8rem; font-weight: 600; color: #0f172a; }
+    .card ul { list-style: none; color: #64748b; font-size: 0.72rem; }
+    .card li { margin-bottom: 0.3rem; }
+    .footer { text-align: center; margin-top: 1.5rem; color: #94a3b8; font-size: 0.72rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>MobileRun (DroidRun) 架构概览</h1>
+      <p class="subtitle">多 Agent 协作 · LLM 驱动移动设备自动化 · v0.6.8</p>
+    </div>
+    <div class="diagram-container">
+      <svg viewBox="0 0 1000 720">
+        <defs>
+          <marker id="ah" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#64748b"/></marker>
+          <marker id="ah-blue" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#3b82f6"/></marker>
+          <marker id="ah-emerald" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#10b981"/></marker>
+          <marker id="ah-violet" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#8b5cf6"/></marker>
+          <marker id="ah-amber" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#d97706"/></marker>
+          <marker id="ah-rose" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#e11d48"/></marker>
+          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0 L0 0 0 40" fill="none" stroke="#f1f5f9" stroke-width="0.5"/></pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="#fafbfc"/>
+        <rect width="100%" height="100%" fill="url(#grid)"/>
+
+        <!-- ===== LLM 提供者层 (顶部) ===== -->
+        <rect x="20" y="20" width="960" height="70" rx="8" fill="none" stroke="#d97706" stroke-width="1" stroke-dasharray="8,4"/>
+        <text x="32" y="16" fill="#d97706" font-size="9" font-weight="600">LLM 提供者 (可配置)</text>
+
+        <rect x="45" y="42" width="100" height="40" rx="5" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+        <text x="95" y="60" fill="#92400e" font-size="10" font-weight="600" text-anchor="middle">OpenAI</text>
+        <text x="95" y="74" fill="#78716c" font-size="7" text-anchor="middle">GPT-4o / 5</text>
+
+        <rect x="165" y="42" width="100" height="40" rx="5" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+        <text x="215" y="60" fill="#92400e" font-size="10" font-weight="600" text-anchor="middle">Anthropic</text>
+        <text x="215" y="74" fill="#78716c" font-size="7" text-anchor="middle">Claude Sonnet 4</text>
+
+        <rect x="285" y="42" width="100" height="40" rx="5" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+        <text x="335" y="60" fill="#92400e" font-size="10" font-weight="600" text-anchor="middle">Gemini</text>
+        <text x="335" y="74" fill="#78716c" font-size="7" text-anchor="middle">Flash / Pro</text>
+
+        <rect x="405" y="42" width="100" height="40" rx="5" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+        <text x="455" y="60" fill="#92400e" font-size="10" font-weight="600" text-anchor="middle">DeepSeek</text>
+        <text x="455" y="74" fill="#78716c" font-size="7" text-anchor="middle">V4 / R1</text>
+
+        <rect x="525" y="42" width="100" height="40" rx="5" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+        <text x="575" y="60" fill="#92400e" font-size="10" font-weight="600" text-anchor="middle">Ollama</text>
+        <text x="575" y="74" fill="#78716c" font-size="7" text-anchor="middle">Local Models</text>
+
+        <rect x="645" y="42" width="100" height="40" rx="5" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+        <text x="695" y="60" fill="#92400e" font-size="10" font-weight="600" text-anchor="middle">OpenRouter</text>
+        <text x="695" y="74" fill="#78716c" font-size="7" text-anchor="middle">Multi-Provider</text>
+
+        <!-- LLM → Agent 连线 -->
+        <line x1="95" y1="82" x2="400" y2="115" stroke="#d97706" stroke-width="1" stroke-dasharray="3,2"/>
+        <line x1="400" y1="82" x2="400" y2="115" stroke="#d97706" stroke-width="1" stroke-dasharray="3,2"/>
+
+        <!-- ===== MobileAgent 总调度器 ===== -->
+        <rect x="300" y="115" width="200" height="70" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+        <text x="400" y="142" fill="#1d4ed8" font-size="13" font-weight="700" text-anchor="middle">MobileAgent</text>
+        <text x="400" y="158" fill="#334155" font-size="9" text-anchor="middle">总调度器 (Orchestrator)</text>
+        <text x="400" y="174" fill="#64748b" font-size="8" text-anchor="middle">按 reasoning 标志路由</text>
+
+        <!-- 模式分支标注 -->
+        <text x="240" y="208" fill="#64748b" font-size="8" text-anchor="middle">reasoning=False</text>
+        <text x="560" y="208" fill="#64748b" font-size="8" text-anchor="middle">reasoning=True</text>
+
+        <!-- reasoning=False → FastAgent -->
+        <line x1="360" y1="185" x2="250" y2="215" stroke="#3b82f6" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+        <!-- reasoning=True → ManagerAgent -->
+        <line x1="440" y1="185" x2="550" y2="215" stroke="#3b82f6" stroke-width="2" marker-end="url(#ah-blue)"/>
+
+        <!-- ===== FastAgent (Direct Mode) ===== -->
+        <rect x="160" y="215" width="180" height="65" rx="8" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+        <text x="250" y="240" fill="#047857" font-size="12" font-weight="700" text-anchor="middle">FastAgent</text>
+        <text x="250" y="256" fill="#334155" font-size="9" text-anchor="middle">XML 工具调用 · ReAct</text>
+        <text x="250" y="272" fill="#64748b" font-size="8" text-anchor="middle">Direct Mode 专用</text>
+
+        <!-- FastAgent 可用工具标注 -->
+        <text x="175" y="298" fill="#94a3b8" font-size="7">click | type | swipe | open_app | complete</text>
+
+        <!-- ===== ManagerAgent (Planner) ===== -->
+        <rect x="460" y="215" width="180" height="65" rx="8" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="2"/>
+        <text x="550" y="240" fill="#6d28d9" font-size="12" font-weight="700" text-anchor="middle">ManagerAgent</text>
+        <text x="550" y="256" fill="#334155" font-size="9" text-anchor="middle">制定计划 · 拆解子目标</text>
+        <text x="550" y="272" fill="#64748b" font-size="8" text-anchor="middle">Reasoning Mode 专用</text>
+
+        <!-- Manager → Executor 循环 -->
+        <line x1="550" y1="280" x2="550" y2="310" stroke="#8b5cf6" stroke-width="2" marker-end="url(#ah-violet)"/>
+        <text x="562" y="298" fill="#8b5cf6" font-size="7">子目标</text>
+
+        <!-- ===== ExecutorAgent (Actor) ===== -->
+        <rect x="460" y="310" width="180" height="65" rx="8" fill="#fef2f2" stroke="#e11d48" stroke-width="2"/>
+        <text x="550" y="335" fill="#be123c" font-size="12" font-weight="700" text-anchor="middle">ExecutorAgent</text>
+        <text x="550" y="351" fill="#334155" font-size="9" text-anchor="middle">单轮执行 · 原子操作</text>
+        <text x="550" y="367" fill="#64748b" font-size="8" text-anchor="middle">Reasoning Mode 专用</text>
+
+        <!-- Executor 反馈回 Manager -->
+        <path d="M 640 342 Q 680 280 550 280 Q 420 280 460 247" fill="none" stroke="#e11d48" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="670" y="310" fill="#e11d48" font-size="7">结果反馈</text>
+
+        <!-- ===== ToolRegistry (共享) ===== -->
+        <rect x="20" y="130" width="150" height="140" rx="8" fill="#fff" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="95" y="152" fill="#0f172a" font-size="10" font-weight="700" text-anchor="middle">ToolRegistry</text>
+        <text x="95" y="168" fill="#64748b" font-size="8" text-anchor="middle">统一工具注册表</text>
+        <line x1="30" y1="178" x2="160" y2="178" stroke="#e2e8f0" stroke-width="1"/>
+        <text x="95" y="195" fill="#334155" font-size="8" text-anchor="middle">· click / click_at</text>
+        <text x="95" y="210" fill="#334155" font-size="8" text-anchor="middle">· type / swipe</text>
+        <text x="95" y="225" fill="#334155" font-size="8" text-anchor="middle">· long_press</text>
+        <text x="95" y="240" fill="#334155" font-size="8" text-anchor="middle">· open_app / wait</text>
+        <text x="95" y="255" fill="#334155" font-size="8" text-anchor="middle">· system_button</text>
+
+        <!-- 扩展能力标注 -->
+        <rect x="20" y="285" width="150" height="50" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+        <text x="95" y="305" fill="#64748b" font-size="8" text-anchor="middle">扩展: MCP工具</text>
+        <text x="95" y="320" fill="#64748b" font-size="8" text-anchor="middle">自定义工具 · 外部Agent</text>
+
+        <!-- ToolRegistry → Agent 连线 -->
+        <line x1="170" y1="200" x2="300" y2="150" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="220" y="172" fill="#94a3b8" font-size="7">工具签名注入</text>
+
+        <!-- ===== Portal App ===== -->
+        <rect x="700" y="130" width="160" height="80" rx="8" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+        <text x="780" y="155" fill="#92400e" font-size="11" font-weight="700" text-anchor="middle">Portal App</text>
+        <text x="780" y="172" fill="#334155" font-size="8" text-anchor="middle">Android 无障碍服务</text>
+        <text x="780" y="188" fill="#64748b" font-size="7" text-anchor="middle">HTTP · WS · ContentProvider</text>
+        <text x="780" y="202" fill="#64748b" font-size="7" text-anchor="middle">a11y tree + 截图</text>
+
+        <!-- Portal 接口标注 -->
+        <rect x="700" y="220" width="160" height="40" rx="5" fill="#fef2f2" stroke="#e11d48" stroke-width="1"/>
+        <text x="780" y="237" fill="#be123c" font-size="8" text-anchor="middle">iOS Portal (实验性)</text>
+        <text x="780" y="252" fill="#64748b" font-size="7" text-anchor="middle">Swift · iOS Accessibility</text>
+
+        <!-- ===== 设备层 ===== -->
+        <rect x="700" y="280" width="160" height="90" rx="8" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="780" y="302" fill="#0f172a" font-size="10" font-weight="700" text-anchor="middle">📱 物理设备</text>
+        <text x="780" y="320" fill="#64748b" font-size="8" text-anchor="middle">Android / iOS</text>
+        <text x="780" y="338" fill="#64748b" font-size="8" text-anchor="middle">USB · WiFi · 远程</text>
+        <text x="780" y="356" fill="#64748b" font-size="7" text-anchor="middle">ADB · WebRTC 屏幕流</text>
+
+        <!-- Agent → Portal 连线 -->
+        <line x1="500" y1="150" x2="698" y2="155" stroke="#d97706" stroke-width="1.5" marker-end="url(#ah-amber)"/>
+        <text x="600" y="143" fill="#d97706" font-size="7" text-anchor="middle">adb · API</text>
+
+        <!-- FastAgent 到设备连线 -->
+        <line x1="340" y1="247" x2="698" y2="247" stroke="#10b981" stroke-width="1" stroke-dasharray="3,2"/>
+
+        <!-- ===== 共享状态 ===== -->
+        <rect x="20" y="440" width="960" height="65" rx="8" fill="#f0fdf4" stroke="#10b981" stroke-width="1" stroke-dasharray="6,3"/>
+        <text x="500" y="465" fill="#047857" font-size="11" font-weight="700" text-anchor="middle">MobileAgentState（共享状态）</text>
+        <text x="500" y="483" fill="#334155" font-size="9" text-anchor="middle">action_history · error_tracking · plan · progress · memory · custom_variables</text>
+        <text x="500" y="498" fill="#64748b" font-size="8" text-anchor="middle">所有 Agent 通过 llama-index Workflow Events 共享状态</text>
+
+        <!-- ===== 可观测性 ===== -->
+        <rect x="20" y="520" width="280" height="60" rx="8" fill="#fff" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="160" y="542" fill="#0f172a" font-size="10" font-weight="600" text-anchor="middle">可观测性</text>
+        <text x="160" y="558" fill="#64748b" font-size="8" text-anchor="middle">Arize Phoenix · Langfuse · Telemetry</text>
+        <text x="160" y="572" fill="#64748b" font-size="8" text-anchor="middle">Trajectory 轨迹保存</text>
+
+        <!-- ===== Cloud / CLI / API 入口 ===== -->
+        <rect x="340" y="520" width="200" height="60" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+        <text x="440" y="542" fill="#1d4ed8" font-size="10" font-weight="600" text-anchor="middle">用户入口</text>
+        <text x="440" y="558" fill="#334155" font-size="8" text-anchor="middle">CLI · Python API · Docker</text>
+        <text x="440" y="572" fill="#334155" font-size="8" text-anchor="middle">Mobilerun Cloud (托管)</text>
+
+        <!-- ===== n8n 集成 ===== -->
+        <rect x="580" y="520" width="200" height="60" rx="8" fill="#fff" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="680" y="542" fill="#0f172a" font-size="10" font-weight="600" text-anchor="middle">自动化集成</text>
+        <text x="680" y="558" fill="#64748b" font-size="8" text-anchor="middle">n8n-nodes-droidrun</text>
+        <text x="680" y="572" fill="#64748b" font-size="8" text-anchor="middle">Macro 录制 / 回放</text>
+
+        <!-- ===== 图例 ===== -->
+        <rect x="700" y="395" width="280" height="40" rx="6" fill="#fff" stroke="#e2e8f0" stroke-width="1"/>
+        <rect x="710" y="405" width="12" height="8" rx="2" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+        <text x="726" y="413" fill="#64748b" font-size="7">调度器</text>
+        <rect x="770" y="405" width="12" height="8" rx="2" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1"/>
+        <text x="786" y="413" fill="#64748b" font-size="7">规划</text>
+        <rect x="820" y="405" width="12" height="8" rx="2" fill="#fef2f2" stroke="#e11d48" stroke-width="1"/>
+        <text x="836" y="413" fill="#64748b" font-size="7">执行</text>
+        <rect x="870" y="405" width="12" height="8" rx="2" fill="#ecfdf5" stroke="#10b981" stroke-width="1"/>
+        <text x="886" y="413" fill="#64748b" font-size="7">直接</text>
+        <rect x="920" y="405" width="12" height="8" rx="2" fill="#fffbeb" stroke="#d97706" stroke-width="1"/>
+        <text x="936" y="413" fill="#64748b" font-size="7">云/LLM</text>
+        <rect x="710" y="422" width="12" height="8" rx="2" fill="#fff" stroke="#94a3b8" stroke-width="1"/>
+        <text x="726" y="430" fill="#64748b" font-size="7">基础设施</text>
+
+      </svg>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-header"><div class="card-dot violet"></div><h3>Reasoning Mode</h3></div>
+        <ul>
+          <li>• ManagerAgent 制定多步计划</li>
+          <li>• ExecutorAgent 逐步执行</li>
+          <li>• 反馈闭环：结果回传 Manager 决策</li>
+          <li>• 适合复杂任务（订机票、配置系统）</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-dot emerald"></div><h3>Direct Mode</h3></div>
+        <ul>
+          <li>• FastAgent XML 工具调用</li>
+          <li>• ReAct: Thought → Tool Call → Observe</li>
+          <li>• 无规划开销，响应快</li>
+          <li>• 适合简单任务（截图、发消息）</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-dot amber"></div><h3>核心数据流</h3></div>
+        <ul>
+          <li>• a11y tree (~2KB) 为主要 UI 感知</li>
+          <li>• 截图仅在 vision=True 时附加</li>
+          <li>• Portal App 提供实时 UI 树 + 截图</li>
+          <li>• 状态共享：所有 Agent 读写同一 State</li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer">DroidRun · MobileRun v0.6.8 · droidrun/mobilerun · MIT License · 2026-06-30</p>
+  </div>
+</body>
+</html>
