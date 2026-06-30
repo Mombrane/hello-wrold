@@ -6,6 +6,7 @@ AI Agent 技术调研与架构分析报告集。
 
 | 日期 | 报告 | 主题 |
 |------|------|------|
+| 2026-06-30 | [Phone Use：AI 手机操控代理调研报告](reports/phone-use-report.md) | Phone Use 定义与全景、Apple/Google/Anthropic/字节/百度工业布局、PhoneWorld/PhoneHarness/OmegaUse 学术前沿、OpenOmniBot/OpenGUI/MobileGym 三大开源项目源码深度分析、技术架构对比、批判性分析与实用建议 |
 | 2026-06-30 | [CORAL Protocol 深度技术调研：Internet of Agents](reports/coral-protocol-report.md) | CoralOS/Kubernetes for agents、A2A MCP 多智能体通信、Anemoi GAIA 63.64%、coral-agent.toml 标准化、竞品对比、工程成熟度批判分析 |
 | 2026-06-30 | [HGM 论文+源码联合分析：CMP 搜索与代码实现](reports/hgm-code-analysis-report.md) | ICLR 2026 Oral、2668行源码逐模块解读、CMP+Thompson采样+UCB-Air 核心算法、Docker沙箱自改进管道、8个代码实战细节、与RQGM对比 |
 | 2026-06-30 | [omp (oh-my-pi) Agent Loop 深度源码分析](reports/omp-agent-loop-report.md) | 双层 while 循环架构、streamAssistantResponse 12 步 LLM 调用管线、TTSR 流规则匹配、8 种子代理隔离后端、Advisor 第二模型审查、Harmony Leak 防御、与 Hermes 对比 + 可操作建议 |
@@ -174,6 +175,7 @@ hello-wrold/
     ├── react-agent-architecture-report.md
     ├── rqgm-technical-report.md
     ├── hgm-code-analysis-report.md
+    ├── phone-use-report.md
     ├── coral-protocol-report.md
     ├── agent-loop-implementation-report.md
     ├── agent-loop-research.md
