@@ -6,6 +6,7 @@ AI Agent 技术调研与架构分析报告集。
 
 | 日期 | 报告 | 主题 |
 |------|------|------|
+| 2026-06-30 | [pi 引擎深度分析：OpenClaw 的 AI Agent 运行时](reports/pi-engine-deep-analysis.md) | pi 引擎四层架构、API Registry 机制、双层 Agent Loop + 双队列中断、Context Compaction 自动压缩、240+ 模型目录、批判性分析 |
 | 2026-06-30 | [Red Queen Gödel Machine 技术调研：智能体与评估器共进化框架](reports/rqgm-technical-report.md) | 受控效用演化、评估器与任务智能体共进化、三领域 SOTA 超越（编码/论文/IMO）、对抗性评审去偏、1.35-1.86× 提升、批判性分析 |
 | 2026-06-26 | [DeerFlow 2.0 深度技术分析：Agent Loop 与 Agentic 工作流](reports/deerflow-deep-analysis.md) | LangGraph ReAct 循环、26 层中间件洋葱模型、task() 子代理委托、流式处理、与 Hermes Agent 对比、批判性分析 |
 | 2026-06-25 | [Headroom 压缩器实践与探索报告](reports/headroom-compressor-practice.md) | 实测验证三个压缩器真实效果、发现 2 个 Bug（Tier-2 0%、非 ASCII 压坏）、SmartCrusher 68~88%、CodeCompressor ~55%、方法论结论 |
@@ -152,6 +153,14 @@ hello-wrold/
     │   ├── recall-mechanism.svg/.png  # 二阶段召回机制
     │   ├── boundary-comparison.svg/.png # 持久化机制边界对比
     │   └── architecture-overview.svg/.png # 架构总览
+    ├── pi-engine/
+    │   ├── architecture.png
+    │   ├── api-registry.png
+    │   ├── eventstream.png
+    │   ├── agent-loop.png
+    │   ├── tool-exec.png
+    │   └── compaction.png
+    ├── pi-engine-deep-analysis.md
     ├── react-agent-architecture-report.md
     ├── rqgm-technical-report.md
     ├── agent-loop-implementation-report.md
