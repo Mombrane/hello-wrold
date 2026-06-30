@@ -6,6 +6,8 @@ AI Agent 技术调研与架构分析报告集。
 
 | 日期 | 报告 | 主题 |
 |------|------|------|
+| 2026-06-30 | [omp (oh-my-pi) Agent Loop 深度源码分析](reports/omp-agent-loop-report.md) | 双层 while 循环架构、streamAssistantResponse 12 步 LLM 调用管线、TTSR 流规则匹配、8 种子代理隔离后端、Advisor 第二模型审查、Harmony Leak 防御、与 Hermes 对比 + 可操作建议 |
+| 2026-06-30 | [oh-my-pi (omp) 项目调研报告](reports/oh-my-pi-research-2026-06-30.md) | 15K+ 星终端编码 agent、42 供应商/32 工具/55K Rust 核心、20 大特性、与 Claude Code/Codex CLI 对比 |
 | 2026-06-30 | [pi 引擎深度分析：OpenClaw 的 AI Agent 运行时](reports/pi-engine-deep-analysis.md) | pi 引擎四层架构、API Registry 机制、双层 Agent Loop + 双队列中断、Context Compaction 自动压缩、240+ 模型目录、批判性分析 |
 | 2026-06-30 | [Red Queen Gödel Machine 技术调研：智能体与评估器共进化框架](reports/rqgm-technical-report.md) | 受控效用演化、评估器与任务智能体共进化、三领域 SOTA 超越（编码/论文/IMO）、对抗性评审去偏、1.35-1.86× 提升、批判性分析 |
 | 2026-06-26 | [DeerFlow 2.0 深度技术分析：Agent Loop 与 Agentic 工作流](reports/deerflow-deep-analysis.md) | LangGraph ReAct 循环、26 层中间件洋葱模型、task() 子代理委托、流式处理、与 Hermes Agent 对比、批判性分析 |
@@ -185,6 +187,8 @@ hello-wrold/
     ├── hermes-memory-architecture-report.md
     ├── agentmemory-graph-pipeline-report.md
     ├── agentmemory-bm25-report.md
+    ├── omp-agent-loop-report.md
+    ├── oh-my-pi-research-2026-06-30.md
     ├── omp-memory-system-report.md
     ├── java-hashmap-collision-disturbance-report.md
     ├── context-compression-report.md
