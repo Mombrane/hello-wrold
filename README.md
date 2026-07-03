@@ -7,6 +7,7 @@ AI Agent 技术调研与架构分析报告集。
 | 日期 | 报告 | 主题 |
 |------|------|------|
 | 2026-07-03 | [Hermes TL Workflow vs Claude Dynamic Workflow 深度对比](reports/workflow-comparison-report.md) | 七阶段人工把关 vs JS 脚本编排：架构/规模/质量/成本/场景五维对比，6 张架构图，3 个子代理并行调研，批判性分析与实战建议 |
+| 2026-07-03 | [DeepSeek 开源模型发展路径与技术演进](reports/deepseek-model-evolution.md) | 16 篇论文原文调研、3 子代理并行调研+交叉验证——从 DeepSeek LLM (2024.01) 到 V4 Pro (2026.04) 全系模型演进：MLA→CSA+HCA 注意力链、DeepSeekMoE 架构进化、GRPO 算法从 Math 到 R1 Nature 发表、FP8 训练突破、V3.1/V3.2 系列迭代、FlashMLA/DeepGEMM/DeepEP/3FS 基础设施六件套、Janus/OCR 多模态、许可协议变迁、V4 成本估算与批判性分析 |
 | 2026-07-03 | [Qwen2 vs Qwen3 实现深度对比分析](reports/qwen2-vs-qwen3-implementation-report.md) | 两代 Qwen 模型架构、MoE、训练策略、后训练管线全维度对比——QKV bias/QK-Norm/共享专家/GRPO推理RL/混合思考模式/思考预算/小模型蒸馏，8张架构图，子代理双重审查修正 |
 | 2026-06-30 | [MobileAgent 项目深度调研报告](reports/mobileagent-research-2025.md) | 阿里通义实验室 GUI Agent 家族（8,892 Stars）全系分析：v1→v3.5 版本演进、GUI-Owl 1.5 模型族（2B-235B）、多 Agent 到端到端架构跃迁、ToolCUA GUI+Tool 混合编排、跨平台覆盖、批判性分析与国内 App 适配评估 |
 | 2026-06-30 | [Phone Use：AI 手机操控代理调研报告](reports/phone-use-report.md) | Phone Use 定义与全景、Apple/Google/Anthropic/字节/百度工业布局、PhoneWorld/PhoneHarness/OmegaUse 学术前沿、OpenOmniBot/OpenGUI/MobileGym 三大开源项目源码深度分析、技术架构对比、批判性分析与实用建议 |
