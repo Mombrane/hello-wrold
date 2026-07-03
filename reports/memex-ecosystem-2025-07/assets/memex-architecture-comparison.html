@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memex Ecosystem Architecture Comparison</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap');
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  color: #0f172a;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+.container { max-width: 1200px; width: 100%; }
+.header { text-align: center; margin-bottom: 32px; }
+.header h1 { font-size: 22px; font-weight: 700; color: #0f172a; margin-bottom: 6px; }
+.header .dot { display: inline-block; width: 8px; height: 8px; background: #10b981; border-radius: 50%; margin-right: 8px; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+.header p { font-size: 12px; color: #64748b; }
+.diagram-card {
+  background: #fafbfc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+.summary-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.card {
+  background: #fafbfc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px;
+}
+.card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.card-dot { width: 7px; height: 7px; border-radius: 50%; }
+.card-dot.blue { background: #3b82f6; }
+.card-dot.emerald { background: #10b981; }
+.card-dot.violet { background: #8b5cf6; }
+.card-dot.amber { background: #d97706; }
+.card-header h3 { font-size: 12px; font-weight: 600; color: #0f172a; }
+.card ul { list-style: none; font-size: 10px; color: #475569; line-height: 1.8; }
+.card ul li::before { content: '• '; color: #94a3b8; }
+.footer { text-align: center; font-size: 10px; color: #94a3b8; margin-top: 16px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1><span class="dot"></span>Memex 生态架构对比</h1>
+    <p>四种 Agent 记忆方案的设计哲学与技术选型 — 2026-07</p>
+  </div>
+  <div class="diagram-card">
+    <svg viewBox="0 0 1100 720" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#f1f5f9" stroke-width="0.5"/>
+        </pattern>
+        <marker id="arrowGray" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6 Z" fill="#94a3b8"/>
+        </marker>
+        <marker id="arrowBlue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6 Z" fill="#3b82f6"/>
+        </marker>
+      </defs>
+      <rect width="1100" height="720" fill="url(#grid)"/>
+
+      <!-- Legend -->
+      <g transform="translate(30, 20)">
+        <text x="0" y="0" font-size="10" font-weight="700" fill="#0f172a">图例</text>
+        <rect x="0" y="8" width="20" height="12" rx="3" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+        <text x="26" y="18" font-size="9" fill="#475569">Wiki 派 (Markdown 知识库)</text>
+        <rect x="190" y="8" width="20" height="12" rx="3" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5"/>
+        <text x="216" y="18" font-size="9" fill="#475569">检索派 (向量+BM25)</text>
+        <rect x="390" y="8" width="20" height="12" rx="3" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1.5"/>
+        <text x="416" y="18" font-size="9" fill="#475569">压缩派 (多层级摘要)</text>
+        <rect x="600" y="8" width="20" height="12" rx="3" fill="#fffbeb" stroke="#d97706" stroke-width="1.5"/>
+        <text x="626" y="18" font-size="9" fill="#475569">图谱派 (实体关系网络)</text>
+      </g>
+
+      <!-- ===== ai-memex-cli (Wiki) ===== -->
+      <g transform="translate(25, 70)">
+        <rect x="0" y="0" width="250" height="38" rx="6" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+        <text x="12" y="16" font-size="11" font-weight="600" fill="#1e40af">ai-memex-cli (7 ★)</text>
+        <text x="12" y="30" font-size="8" fill="#64748b">TS · npm · Karpathy LLM Wiki</text>
+
+        <!-- Layers -->
+        <rect x="10" y="55" width="230" height="28" rx="4" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+        <text x="20" y="73" font-size="9" fill="#475569">L3: Agent Skill (/memex:* workflows)</text>
+        <rect x="10" y="90" width="230" height="28" rx="4" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+        <text x="20" y="108" font-size="9" fill="#475569">L2: CLI Toolbox (永不调LLM)</text>
+        <rect x="10" y="125" width="230" height="28" rx="4" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+        <text x="20" y="143" font-size="9" fill="#475569">L1: Vault (raw/ + wiki/ + Git)</text>
+
+        <text x="10" y="175" font-size="8" fill="#94a3b8">8+ agents · dual vault · distill</text>
+        <text x="10" y="188" font-size="8" fill="#94a3b8">watch --daemon --heal 自愈循环</text>
+      </g>
+
+      <!-- ===== nicosuave/memex (Search) ===== -->
+      <g transform="translate(295, 70)">
+        <rect x="0" y="0" width="250" height="38" rx="6" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+        <text x="12" y="16" font-size="11" font-weight="600" fill="#065f46">nicosuave/memex (76 ★)</text>
+        <text x="12" y="30" font-size="8" fill="#64748b">Rust · brew · 极致检索性能</text>
+
+        <rect x="10" y="55" width="230" height="28" rx="4" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+        <text x="20" y="73" font-size="9" fill="#475569">Tantivy BM25 全文索引</text>
+        <rect x="10" y="90" width="230" height="28" rx="4" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+        <text x="20" y="108" font-size="9" fill="#475569">ONNX 本地嵌入 (5 models)</text>
+        <rect x="10" y="125" width="230" height="28" rx="4" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+        <text x="20" y="143" font-size="9" fill="#475569">TUI · 后台索引 · CUDA/CoreML</text>
+
+        <text x="10" y="175" font-size="8" fill="#94a3b8">Claude + Codex + OpenCode</text>
+        <text x="10" y="188" font-size="8" fill="#94a3b8">BM25 hybrid · 增量索引</text>
+      </g>
+
+      <!-- ===== vimo-ai/memex (Compression) ===== -->
+      <g transform="translate(565, 70)">
+        <rect x="0" y="0" width="250" height="38" rx="6" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="2"/>
+        <text x="12" y="16" font-size="11" font-weight="600" fill="#4c1d95">vimo-ai/memex (28 ★)</text>
+        <text x="12" y="30" font-size="8" fill="#64748b">Rust+Vue · L0-L4 压缩 · MCP</text>
+
+        <rect x="10" y="55" width="230" height="28" rx="4" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+        <text x="20" y="73" font-size="9" fill="#475569">L0→L4 多层级压缩 (Qwen3 0.6B)</text>
+        <rect x="10" y="90" width="230" height="28" rx="4" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+        <text x="20" y="108" font-size="9" fill="#475569">FTS5 + LanceDB + RRF 混合检索</text>
+        <rect x="10" y="125" width="230" height="28" rx="4" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+        <text x="20" y="143" font-size="9" fill="#475569">MCP Server · Web UI · archive</text>
+
+        <text x="10" y="175" font-size="8" fill="#94a3b8">BGE-M3 embedding · Ollama 本地</text>
+        <text x="10" y="188" font-size="8" fill="#94a3b8">V2 读写分离 · 分层归档</text>
+      </g>
+
+      <!-- ===== memexa (Graph) ===== -->
+      <g transform="translate(835, 70)">
+        <rect x="0" y="0" width="240" height="38" rx="6" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+        <text x="12" y="16" font-size="11" font-weight="600" fill="#92400e">memexa 镜我 (53 ★)</text>
+        <text x="12" y="30" font-size="8" fill="#64748b">Python · 中文原生 · 记忆图谱</text>
+
+        <rect x="10" y="55" width="220" height="28" rx="4" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+        <text x="20" y="73" font-size="9" fill="#475569">6 数据源 (微信/QQ/邮件/…)  </text>
+        <rect x="10" y="90" width="220" height="28" rx="4" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+        <text x="20" y="108" font-size="9" fill="#475569">双 LLM 抽取 + 逐字溯源</text>
+        <rect x="10" y="125" width="220" height="28" rx="4" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+        <text x="20" y="143" font-size="9" fill="#475569">MCP Server · 桌面端 (闭源)</text>
+
+        <text x="10" y="175" font-size="8" fill="#94a3b8">多通道召回 + cross-encoder</text>
+        <text x="10" y="188" font-size="8" fill="#94a3b8">Demo 开源 · 引擎专有</text>
+      </g>
+
+      <!-- Comparison axis -->
+      <g transform="translate(25, 320)">
+        <rect x="0" y="0" width="1050" height="60" rx="6" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+        <text x="20" y="22" font-size="10" font-weight="600" fill="#0f172a">设计哲学轴线</text>
+
+        <!-- Spectrum bar -->
+        <line x1="120" y1="40" x2="930" y2="40" stroke="#cbd5e1" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="120" cy="40" r="4" fill="#3b82f6"/>
+        <circle cx="930" cy="40" r="4" fill="#10b981"/>
+        <text x="85" y="56" font-size="8" fill="#3b82f6" text-anchor="end">积累 (Accumulate)</text>
+        <text x="965" y="56" font-size="8" fill="#10b981">检索 (Retrieve)</text>
+
+        <!-- Positions -->
+        <circle cx="160" cy="40" r="4" fill="#d97706"/>
+        <text x="160" y="18" font-size="8" fill="#d97706" text-anchor="middle">memexa</text>
+        <circle cx="280" cy="40" r="4" fill="#8b5cf6"/>
+        <text x="280" y="18" font-size="8" fill="#8b5cf6" text-anchor="middle">vimo-memex</text>
+        <circle cx="480" cy="40" r="4" fill="#3b82f6"/>
+        <text x="480" y="56" font-size="8" fill="#3b82f6" text-anchor="middle">ai-memex-cli</text>
+        <circle cx="830" cy="40" r="4" fill="#10b981"/>
+        <text x="830" y="18" font-size="8" fill="#10b981" text-anchor="middle">nicosuave/memex</text>
+      </g>
+
+      <!-- Decision Matrix -->
+      <g transform="translate(25, 410)">
+        <text x="0" y="16" font-size="11" font-weight="600" fill="#0f172a">选型决策矩阵</text>
+        <rect x="0" y="24" width="1050" height="105" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+        <!-- Headers -->
+        <line x1="0" y1="46" x2="1050" y2="46" stroke="#e2e8f0" stroke-width="0.5"/>
+        <text x="180" y="40" font-size="9" font-weight="600" fill="#475569">ai-memex-cli</text>
+        <text x="410" y="40" font-size="9" font-weight="600" fill="#475569">nicosuave/memex</text>
+        <text x="660" y="40" font-size="9" font-weight="600" fill="#475569">vimo-ai/memex</text>
+        <text x="900" y="40" font-size="9" font-weight="600" fill="#475569">memexa</text>
+        <!-- Row: Memory type -->
+        <text x="14" y="64" font-size="9" fill="#64748b">记忆形态</text>
+        <text x="180" y="64" font-size="9" fill="#475569">结构化 Wiki</text>
+        <text x="410" y="64" font-size="9" fill="#475569">原始对话片段</text>
+        <text x="660" y="64" font-size="9" fill="#475569">多层摘要+原文</text>
+        <text x="900" y="64" font-size="9" fill="#475569">结构化记忆卡</text>
+        <!-- Row: LLM -->
+        <text x="14" y="82" font-size="9" fill="#64748b">LLM 依赖</text>
+        <text x="180" y="82" font-size="9" fill="#475569">外部 Agent</text>
+        <text x="410" y="82" font-size="9" fill="#475569">无 (纯检索)</text>
+        <text x="660" y="82" font-size="9" fill="#475569">Ollama 本地</text>
+        <text x="900" y="82" font-size="9" fill="#475569">双 LLM 管线</text>
+        <!-- Row: Search -->
+        <text x="14" y="100" font-size="9" fill="#64748b">检索方式</text>
+        <text x="180" y="100" font-size="9" fill="#475569">全文+关键词</text>
+        <text x="410" y="100" font-size="9" fill="#475569">BM25+向量 (CUDA)</text>
+        <text x="660" y="100" font-size="9" fill="#475569">FTS5+向量+RRF</text>
+        <text x="900" y="100" font-size="9" fill="#475569">多通道+cross-encoder</text>
+        <!-- Row: Data scope -->
+        <text x="14" y="118" font-size="9" fill="#64748b">数据源</text>
+        <text x="180" y="118" font-size="9" fill="#475569">网页+文档+会话</text>
+        <text x="410" y="118" font-size="9" fill="#475569">Agent 会话记录</text>
+        <text x="660" y="118" font-size="9" fill="#475569">Claude Code 会话</text>
+        <text x="900" y="118" font-size="9" fill="#475569">微信/QQ/邮件/…</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="summary-cards">
+    <div class="card">
+      <div class="card-header"><div class="card-dot blue"></div><h3>共同趋势</h3></div>
+      <ul>
+        <li>从"检索"到"积累"的范式转移</li>
+        <li>Agent 中立成为架构共识</li>
+        <li>本地优先，数据不出机器</li>
+        <li>Markdown + Git 作为通用载体</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-dot emerald"></div><h3>未解问题</h3></div>
+      <ul>
+        <li>知识腐烂：旧知识自动过期机制缺失</li>
+        <li>假阳性：相似 ≠ 适用</li>
+        <li>跨项目知识迁移无成熟方案</li>
+        <li>检索质量 vs. 存储成本的平衡</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-dot violet"></div><h3>与 Hermes 对比</h3></div>
+      <ul>
+        <li>Hermes 已内置 memory + session DB</li>
+        <li>FTS5 搜索覆盖大部分检索场景</li>
+        <li>ai-memex-cli 的独特价值：人可读 wiki</li>
+        <li>如需跨 Agent 知识共享，可考虑引入</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer">Memex Ecosystem Research · 2026-07-01 · Data from GitHub</div>
+</div>
+</body>
+</html>

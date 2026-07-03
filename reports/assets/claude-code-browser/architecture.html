@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head><style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { 
+    background: #ffffff; 
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    display: flex; justify-content: center; align-items: center;
+    width: 1066px; height: 600px;
+  }
+  svg { width: 100%; height: 100%; }
+</style></head>
+<body>
+<svg viewBox="0 0 1066 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    </marker>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6366f1"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10b981"/>
+    </marker>
+    <linearGradient id="gradCLI" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f9fafb"/><stop offset="100%" stop-color="#f3f4f6"/>
+    </linearGradient>
+    <linearGradient id="gradBridge" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#eff6ff"/><stop offset="100%" stop-color="#dbeafe"/>
+    </linearGradient>
+    <linearGradient id="gradBrowser" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f0fdf4"/><stop offset="100%" stop-color="#dcfce7"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Title -->
+  <text x="533" y="36" text-anchor="middle" font-size="18" font-weight="700" fill="#1f2937">Claude Code CLI 浏览器连接架构</text>
+
+  <!-- ===== LAYER 1: Claude Code CLI ===== -->
+  <rect x="40" y="60" width="986" height="130" rx="8" fill="url(#gradCLI)" stroke="#d1d5db" stroke-width="1.5"/>
+  <text x="60" y="85" font-size="14" font-weight="700" fill="#374151">Layer 1: Claude Code CLI</text>
+
+  <!-- Box: CLI Process -->
+  <rect x="60" y="98" width="260" height="80" rx="6" fill="#ffffff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="190" y="120" text-anchor="middle" font-size="13" font-weight="600" fill="#4f46e5">claude --chrome</text>
+  <text x="190" y="140" text-anchor="middle" font-size="11" fill="#6b7280">终端启动标志</text>
+  <text x="190" y="158" text-anchor="middle" font-size="11" fill="#9ca3af">v2.0.73+ 可用</text>
+
+  <!-- Box: /chrome command -->
+  <rect x="350" y="98" width="260" height="80" rx="6" fill="#ffffff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="480" y="120" text-anchor="middle" font-size="13" font-weight="600" fill="#4f46e5">/chrome 命令</text>
+  <text x="480" y="140" text-anchor="middle" font-size="11" fill="#6b7280">会话内连接管理</text>
+  <text x="480" y="158" text-anchor="middle" font-size="11" fill="#9ca3af">重连/默认启用/切换浏览器</text>
+
+  <!-- Box: MCP Server Registration -->
+  <rect x="640" y="98" width="370" height="80" rx="6" fill="#ffffff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="825" y="120" text-anchor="middle" font-size="13" font-weight="600" fill="#4f46e5">MCP 工具注册</text>
+  <text x="825" y="140" text-anchor="middle" font-size="11" fill="#6b7280">自动注册 claude-in-chrome 服务器</text>
+  <text x="825" y="158" text-anchor="middle" font-size="11" fill="#9ca3af">navigate / click / type / screenshot / console …</text>
+
+  <!-- Arrows CLI → Bridge -->
+  <line x1="190" y1="178" x2="190" y2="208" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="480" y1="178" x2="480" y2="208" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="825" y1="178" x2="825" y2="208" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ===== LAYER 2: Native Messaging Bridge ===== -->
+  <rect x="40" y="210" width="986" height="120" rx="8" fill="url(#gradBridge)" stroke="#93c5fd" stroke-width="1.5"/>
+  <text x="60" y="235" font-size="14" font-weight="700" fill="#1e40af">Layer 2: Native Messaging 桥接层</text>
+
+  <!-- Box: Native Messaging Host -->
+  <rect x="60" y="248" width="310" height="70" rx="6" fill="#ffffff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="215" y="270" text-anchor="middle" font-size="13" font-weight="600" fill="#2563eb">Native Messaging Host</text>
+  <text x="215" y="290" text-anchor="middle" font-size="11" fill="#6b7280">JSON 配置文件</text>
+  <text x="215" y="306" text-anchor="middle" font-size="10" fill="#9ca3af">~/.config/google-chrome/NativeMessagingHosts/</text>
+
+  <!-- Box: STDIO Communication -->
+  <rect x="400" y="248" width="290" height="70" rx="6" fill="#ffffff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="545" y="270" text-anchor="middle" font-size="13" font-weight="600" fill="#2563eb">STDIO 通信</text>
+  <text x="545" y="290" text-anchor="middle" font-size="11" fill="#6b7280">JSON-RPC 协议</text>
+  <text x="545" y="306" text-anchor="middle" font-size="10" fill="#9ca3af">CLI ↔ Extension 双向消息</text>
+
+  <!-- Box: Permission Model -->
+  <rect x="720" y="248" width="290" height="70" rx="6" fill="#ffffff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="865" y="270" text-anchor="middle" font-size="13" font-weight="600" fill="#2563eb">权限模型</text>
+  <text x="865" y="290" text-anchor="middle" font-size="11" fill="#6b7280">继承扩展的站点权限</text>
+  <text x="865" y="306" text-anchor="middle" font-size="10" fill="#9ca3af">高风险操作需用户确认</text>
+
+  <!-- Arrows Bridge → Browser -->
+  <line x1="215" y1="318" x2="215" y2="350" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+  <line x1="545" y1="318" x2="545" y2="350" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+  <line x1="865" y1="318" x2="865" y2="350" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+  <!-- ===== LAYER 3: Chrome Browser ===== -->
+  <rect x="40" y="352" width="986" height="130" rx="8" fill="url(#gradBrowser)" stroke="#86efac" stroke-width="1.5"/>
+  <text x="60" y="377" font-size="14" font-weight="700" fill="#166534">Layer 3: Chrome 浏览器 &amp; 扩展</text>
+
+  <!-- Box: Extension -->
+  <rect x="60" y="390" width="310" height="80" rx="6" fill="#ffffff" stroke="#10b981" stroke-width="1.5"/>
+  <text x="215" y="412" text-anchor="middle" font-size="13" font-weight="600" fill="#059669">Claude in Chrome 扩展</text>
+  <text x="215" y="430" text-anchor="middle" font-size="11" fill="#6b7280">v1.0.36+ · Chrome Web Store</text>
+  <text x="215" y="448" text-anchor="middle" font-size="10" fill="#9ca3af">接收指令 → CDP → 浏览器操作</text>
+
+  <!-- Box: Chrome Debugger API -->
+  <rect x="400" y="390" width="290" height="80" rx="6" fill="#ffffff" stroke="#10b981" stroke-width="1.5"/>
+  <text x="545" y="412" text-anchor="middle" font-size="13" font-weight="600" fill="#059669">Chrome Debugger API (CDP)</text>
+  <text x="545" y="430" text-anchor="middle" font-size="11" fill="#6b7280">chrome.debugger 权限</text>
+  <text x="545" y="448" text-anchor="middle" font-size="10" fill="#9ca3af">导航/点击/输入/截图/控制台</text>
+
+  <!-- Box: Webpage -->
+  <rect x="720" y="390" width="290" height="80" rx="6" fill="#ffffff" stroke="#10b981" stroke-width="1.5"/>
+  <text x="865" y="412" text-anchor="middle" font-size="13" font-weight="600" fill="#059669">目标网页</text>
+  <text x="865" y="430" text-anchor="middle" font-size="11" fill="#6b7280">localhost / 任意网站</text>
+  <text x="865" y="448" text-anchor="middle" font-size="10" fill="#9ca3af">共享登录状态 / 多Tab支持</text>
+
+  <!-- ===== LAYER 4: Use Cases ===== -->
+  <rect x="40" y="500" width="986" height="85" rx="8" fill="#fafafa" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="4,2"/>
+  <text x="60" y="520" font-size="13" font-weight="700" fill="#6b7280">典型应用场景</text>
+  
+  <rect x="60" y="530" width="145" height="40" rx="4" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+  <text x="132" y="554" text-anchor="middle" font-size="11" fill="#166534">🔍 实时调试</text>
+  
+  <rect x="215" y="530" width="145" height="40" rx="4" fill="#eff6ff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="287" y="554" text-anchor="middle" font-size="11" fill="#1e40af">🎨 设计验证</text>
+  
+  <rect x="370" y="530" width="145" height="40" rx="4" fill="#fef3c7" stroke="#fcd34d" stroke-width="1"/>
+  <text x="442" y="554" text-anchor="middle" font-size="11" fill="#92400e">🧪 自动化测试</text>
+
+  <rect x="525" y="530" width="145" height="40" rx="4" fill="#fce7f3" stroke="#f9a8d4" stroke-width="1"/>
+  <text x="597" y="554" text-anchor="middle" font-size="11" fill="#9d174d">📊 数据提取</text>
+
+  <rect x="680" y="530" width="160" height="40" rx="4" fill="#ede9fe" stroke="#c4b5fd" stroke-width="1"/>
+  <text x="760" y="554" text-anchor="middle" font-size="11" fill="#5b21b6">📝 Google Docs/Gmail</text>
+
+  <rect x="850" y="530" width="160" height="40" rx="4" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="930" y="554" text-anchor="middle" font-size="11" fill="#475569">🎬 录制 GIF</text>
+</svg>
+</body>
+</html>
