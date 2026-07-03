@@ -211,6 +211,8 @@ OCR 可能是第一个被 VLM 完全吞噬的传统 CV 子领域。Qwen2.5-VL �
 
 ## 6. 批判性分析
 
+![批判性分析：真实力 vs 虚火](assets/cv-report/critical-analysis.png)
+
 ### 6.1 VLM 的「虚火」与「真实力」
 
 我对 VLM 的评价是：**在理解性任务上真实可用，在精确性任务上仍有差距**。
