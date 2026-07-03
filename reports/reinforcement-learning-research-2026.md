@@ -159,7 +159,7 @@ Meta FAIR的**Self-play SWE-RL**（ICML 2026）展示了另一个激动人心的
 |------|---------|---------|
 | 自动驾驶 | DiffusionDriveV2 + GRPO | NAVSIM 91.2 PDMS 新纪录 |
 | 自动驾驶安全 | WorldRFT (AAAI 2026) | RL精调碰撞率降低83% |
-| 推荐系统 | CharacterFlywheel (Meta) | 15代迭代，参与度+8.8% |
+| 推荐系统 | CharacterFlywheel (Meta) | 15代迭代，参与广度+8.8%，深度+19.4% |
 | 云资源调度 | Alibaba Eureka + GRPO | GPU需求预测履约率+16% |
 | 机器人 | STARE-VLA | SimplerEnv 98%成功率 |
 
@@ -209,4 +209,90 @@ GRPO在LLM推理训练中表现优异，但它真的比PPO更好吗？目前的�
 
 ---
 
-*报告完。详细算法推导和论文引用请见三份子报告原文。*
+## 七、补充：遗漏的重要方向
+
+> 经子代理 review 后补充以下内容。完整补充报告见 `reinforcement-learning-supplement-2026.md`。
+
+### 7.1 OpenAI o1/o3：RL 是推理能力的核心引擎
+
+OpenAI o 系列（o1 → o3-mini）的训练高度依赖 RL：
+
+- **RL + MCTS**（蒙特卡洛树搜索）：类似 AlphaGo，在推理空间搜索最优路径
+- **PRM + ORM**：过程奖励模型评判推理步骤，结果奖励模型评判最终答案
+- o3 在 AIME 2024 达 ~96.7%，ARC-AGI 取得突破
+
+o1/o3 的成功标志着一个关键转变：**RL 不再是"锦上添花"的对齐工具，而是大模型获得推理能力的核心引擎。**
+
+### 7.2 Anthropic：从 Constitutional AI 到 Constitutional Classifiers
+
+Anthropic 的路线不同于 OpenAI——用 **AI 反馈替代人类反馈**（RLAIF）：
+
+| 技术 | 核心思路 |
+|------|---------|
+| Constitutional AI | 用宪法原则替代人类偏好做 RL 训练 |
+| RLAIF 规模化 | Claude 训练中用 AI 生成偏好数据 |
+| Constitutional Classifiers (2025) | 用宪法原则训练分类器检测有害输出 |
+| 可解释性 + RL | 从神经元层面监控和改进 RL 训练 |
+
+### 7.3 Google DeepMind：RL 遍地开花
+
+- **AlphaProof + AlphaGeometry 2**：2024年 IMO 银牌水平（28/42分），RL + 形式化证明
+- **Gemini Robotics**：RL + VLA（视觉-语言-动作）模型，机器人精细操作
+- **Genie 2**：交互式世界模型，从单张图片生成可玩的3D世界
+- **Gemini 训练**：大规模使用 RLHF 对齐
+
+### 7.4 开源 RL 训练框架生态
+
+| 框架 | Stars | 特点 |
+|------|-------|------|
+| **TRL** (HuggingFace) | 18,752⭐ | PPO/DPO/GRPO全支持，生态最成熟 |
+| **LLaMA-Factory** | 40,000+⭐ | 中文社区首选，RLHF/DPO/ORPO/SimPO |
+| **OpenRLHF** | 9,736⭐ | Ray分布式，支持70B+模型 |
+| **verl** (字节跳动) | — | 大规模分布式 RLHF，Qwen2.5-32B |
+| **simpleRL-reason** (港科大) | 3,867⭐ | GRPO最小复现，7B模型AIME 2024达39.3% |
+
+**GRPO 已成为这些框架的标配算法**——这侧面印证了 DeepSeek-R1 的影响力。
+
+### 7.5 代码生成的 RL
+
+代码领域天然适配 RLVR（可验证奖励 = 编译通过 + 测试通过）：
+
+- **Seed-Coder**（字节）：RL + 代码生成，HumanEval 93.3%
+- **DeepSeek-Coder-V2**：GRPO 训练代码推理
+- **SWE-RL**：SWE-bench Verified 提升 +10.4分
+
+### 7.6 中文 RL 生态
+
+中国在 RL 领域的贡献不仅 DeepSeek：
+
+| 团队 | 贡献 |
+|------|------|
+| **DeepSeek** | R1（Nature，⭐91,977），全球 RL4LLM 标杆 |
+| **阿里 Qwen** | Qwen3（⭐27,356），RL 后训练 |
+| **字节跳动** | DAPO 算法、verl 框架、Seed-Coder |
+| **月之暗面** | Kimi K1.5，RL + 长上下文推理 |
+| **港科大** | simpleRL-reason，GRPO 最小可复现版本 |
+
+**我的判断**：中文社区在开源 RL 框架和算法创新方面处于全球领先地位。DeepSeek-R1 的影响力不亚于当年 AlphaGo——它让全世界相信纯 RL 能训练推理能力。
+
+---
+
+## 八、核查结果总结
+
+| 核查项 | 结论 |
+|--------|------|
+| 8个算法年份 | ✅ 全部正确 |
+| DeepSeek-R1 Nature DOI (10.1038/s41586-025-09422-z) | ✅ |
+| Self-play SWE-RL ICML 2026, +10.4分 | ✅ |
+| SimPO AlpacaEval 72.4%, Arena-Hard 59.1% | ✅ |
+| Turn-PPO EACL 2026 | ✅ |
+| PCL-Reasoner AIME 2024 90.9% | ✅ |
+| GRPO 首次提出 DeepSeekMath | ✅ |
+| CharacterFlywheel 参与广度+8.8%，深度+19.4% | ⚠️ 已修正 |
+| 2026年7月遗漏重大突破 | ✅ 无遗漏 |
+
+**总体评价**：报告事实准确率极高，唯一需修正处已更新。
+
+---
+
+*报告完。参考来源见各子报告和补充报告。*

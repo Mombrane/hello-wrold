@@ -1,6 +1,6 @@
 # Hermes Technical Lead Workflow vs Claude Code Dynamic Workflow — 深度对比分析
 
-> **核心发现：两者是互补关系而非竞争关系。Hermes TL Workflow 用"人工审查"保证质量，适合 1-4 任务的精准开发；Claude Dynamic Workflow 用"脚本编排"实现规模化，适合几百 agent 的批量任务。但 Hermes 的 45 条实战陷阱库是真正的护城河——这些不是通用知识，是从 12 轮完整迭代、数十个真实项目中提炼的特定错误模式。**
+> **核心发现：两者是互补关系而非竞争关系。Hermes TL Workflow 用"人工审查"保证质量，适合 1-4 任务的精准开发；Claude Dynamic Workflow 用"脚本编排"实现规模化，适合几百 agent 的批量任务。但 Hermes 的 45+ 条实战陷阱库是真正的护城河——这些不是通用知识，是从 12 轮完整迭代、数十个真实项目中提炼的特定错误模式。**
 
 ---
 
@@ -20,11 +20,13 @@
 
 ### Hermes Technical Lead Workflow
 
-由 Hermes Agent 团队开发（当前 v2.0.0），将 Hermes 定位为"技术主管"，在 7 个阶段中逐阶段把关。使用 Claude Code 作为唯一的 worker 实现。已完成 **15+ 期实战验证**（pucking-images 项目 R1-R12），积累了 45 条针对 Claude Code 系统性错误的陷阱清单。
+由 Hermes Agent 团队开发（当前 v2.0.0），将 Hermes 定位为"技术主管"，在 7 个阶段中逐阶段把关。使用 Claude Code 作为唯一的 worker 实现。已完成 **15+ 期实战验证**（pucking-images 项目 R1-R12），积累了 45+ 条针对 Claude Code 系统性错误的陷阱清单。
 
 ### Claude Code Dynamic Workflow
 
-Anthropic 在 **2026 年 5 月（Week 22）** 作为 research preview 推出（需 v2.1.154+）。Claude 为你写一个 JavaScript 编排脚本，脚本自己管理数十到数百个子 agent。内置 `/deep-research` 等捆绑工作流。
+Anthropic 在 **2026 年 5 月（Week 22）** 作为 research preview 推出（需 v2.1.154+）。Claude 为你写一个 JavaScript 编排脚本，脚本自己管理数十到数百个子 agent。内置 `/deep-research` 等捆绑工作流。支持 `/effort ultracode` 模式让 Claude 自动决定何时使用工作流。
+
+![演进时间线](assets/workflow-comparison/background-timeline.png)
 
 | 维度 | Hermes TL Workflow | Claude Dynamic Workflow |
 |------|-------------------|------------------------|
@@ -96,6 +98,15 @@ Hermes 审查阶段零成本，这是天然的成本优势。
 
 内置完整的定时开发模板：git sync → 需求发现 → 需求选择 → 执行开发 → 状态更新 → 全面测试 → git push。支持"无待处理需求"时的静默维护运行。
 
+### Hermes 的并行与优化能力
+
+Hermes TL Workflow 不仅逐阶段把关，还内置了多种效率优化：
+
+- **混合依赖 3-wave 委派**：独立任务先并行 → 完成后 → 依赖任务串行。最大化并行度的同时保证依赖正确
+- **delegate_task 子代理**：对于编译修复、安全审计等轻量任务，使用 Hermes 原生子代理（非 Claude Code），零额外成本
+- **Hermes 直接写 OpenSpec**：当探索阶段足够深入时，Hermes 跳过 Claude Code 的 propose 阶段，直接手写规格文档，节省 ~$1.00
+- **手动修复 → 重新委派**：当 Claude Code 超时但 `git diff` 显示进度时，Hermes 手动修复机械性编译错误，再委派剩余业务逻辑
+
 ---
 
 ## 4. Claude Dynamic Workflow 深度解析
@@ -121,25 +132,23 @@ Hermes 审查阶段零成本，这是天然的成本优势。
 |------|----------|------|
 | 审计全部文件 | `ultracode: audit every API endpoint...` | 对每个文件运行相同的检查 |
 | 修复直到通过 | `ultracode: keep fixing until...` | 循环迭代直到条件满足 |
-| 批量迁移 | `ultracode: migrate all fetch calls...` | 数百文件并行修改 |
+| 批量迁移 | `ultracode: migrate all fetch calls...` | 数百文件并行修改（支持 `/batch` 拆 5-30 worktree） |
 | 综合审查 | `ultracode: review every changed file...` | 每个文件独立审查，汇总一份报告 |
-| 深度调研 | `/deep-research <question>` | 多源交叉验证研究 |
+| 深度调研 | `/deep-research <question>` | 内置捆绑工作流，多源交叉验证研究 |
 | 问题发现 | `ultracode: find issues until the list stops growing` | 持续扫描直到没有新发现 |
 
-### 运行时特性
+工作流脚本保存在 `.claude/workflows/`（项目级）或 `~/.claude/workflows/`（用户级），自动变为 `/` 斜杠命令补全。保存的工作流支持 `args` 输入参数传递。
+
+### 运行时特性与限制
 
 - **后台运行**：主会话保持响应
 - **进度面板**：`/workflows` 查看每个 phase 的 agent 数、token 数和耗时
-- **可暂停/恢复**：`p` 暂停，同会话内重新运行 `/workflows` 继续
+- **可手动暂停/恢复**：按 `p` 暂停，同会话内重新运行 `/workflows` 继续（退出 Claude Code 后下次启动会从头开始）
 - **查看详情**：钻入每个 phase 查看 agent 的提示词、工具调用和结果
 - **对抗性审核**：多个独立 agent 互相验证发现，降低幻觉率
-
-### 限制
-
-- 一个脚本最多运行 **15 分钟**后会被暂停（可恢复）
-- 脚本**不可**调用 shell 命令或访问文件系统
-- 仅能通过 `agent()` 和 `pipeline()` API 与 subagents 交互
-- 作为 research preview，仍处于早期阶段
+- **并发限制**：最多 **16 并发 agent**，单次运行最多 **1,000 agent 总量**
+- **运行范围**：交互模式、`claude -p` 非交互模式、Agent SDK 均可使用
+- **组织管理**：管理员可通过 managed settings 为整个组织关闭 workflows
 
 ---
 
@@ -168,12 +177,13 @@ Hermes 审查阶段零成本，这是天然的成本优势。
 
 ### Hermes TL Workflow 的「护城河」
 
-我认为 Hermes TL Workflow 最被低估的价值是 **45 条陷阱清单**。这些不是泛泛的"写好代码"建议，而是从真实的 Claude Code 输出中抓到的 **具体、可复现的错误模式**。例如：
+我认为 Hermes TL Workflow 最被低估的价值是 **45+ 条陷阱清单**。这些不是泛泛的"写好代码"建议，而是从真实的 Claude Code 输出中抓到的 **具体、可复现的错误模式**。例如：
 
 - "Claude Code 导入了一个 React 组件但从未在 JSX 中渲染"——这个问题在代码编译、lint、测试全过的前提下依然存在，只有人工审查才能发现
 - "Git stash pop 冲突时 `--theirs` 和 `--ours` 语义反转"——这不是 Claude Code 的问题，是 Git 的设计陷阱
+- "Claude Code 可能自创 git worktree，导致变更搁浅在隔离目录"——主工作区没有任何变更，但 worktree 里有完整实现
 
-这些知识无法从官方文档中学到，是金钱和时间换来的。Dynamic Workflow 可以做 100 倍的规模，但它没有这份"血泪清单"。
+这些知识无法从官方文档中学到，是金钱和时间换来的。Dynamic Workflow 可以做 100 倍的规模，但它没有这份"血泪清单"。此外，**Hermes 审查阶段确实零成本**——Explore 和 Propose 阶段有费用，但代码审查本身不需要调用 Claude Code。
 
 ### Dynamic Workflow 的「临界点」
 
@@ -205,5 +215,4 @@ Dynamic Workflow 是 **research preview**。它生成的工作流脚本不完全
 
 ---
 
-*分析基于 Hermes TL Workflow v2.0.0 SKILL.md 全文 + 40+ 篇 reference 文档 + Claude Code 官方
- Dynamic Workflows 文档 (code.claude.com/docs/en/workflows) + 子代理并行调研。*
+*基于 Hermes TL Workflow v2.0.0 SKILL.md 全文 + 40+ 篇 reference 文档（含 pitfall-details.md 59 条陷阱） + Claude Code 官方 Dynamic Workflows 文档 (code.claude.com/docs/en/workflows) + Agents 总览 (code.claude.com/docs/en/agents) + Week 22 Changelog + 子代理双重审查修正。*

@@ -88,13 +88,27 @@ VLM 的架构经历了三个清晰的代际：
 
 | 模型 | 参数 | 亮点 |
 |------|------|------|
-| Qwen2.5-VL | 3B/7B/72B | 动态分辨率 ViT，原生视觉 Agent，文档解析 |
-| InternVL2.5 | 1B-78B | 多尺度动态分辨率，强多图理解 |
+| Qwen2.5-VL | 3B/7B/32B/72B | 动态分辨率 ViT，原生视觉 Agent，文档解析 |
+| InternVL2.5 | 1B-78B | 多尺度动态分辨率，首个 MMMU 破 70% 开源模型 |
 | DeepSeek-VL2 | 3B/16B/27B | MoE 架构，动态分块视觉编码 |
+| CogVLM2 | 19B (8B+11B) | Visual Expert 深度融合，DocVQA 92.3% 超 GPT-4V |
 | LLaVA-NeXT | 7B/13B | 任意分辨率，学术标杆 |
 | Gemma 4 12B | 12B | 本地运行，视觉+语音统一架构 |
 
 **Qwen2.5-VL 3B 是一个标志性模型**：3B 参数即可在边缘设备上跑 VLM，性能超过上一代 7B。这意味着 VLM 正在从云端走向端侧。
+
+### 2.4 2025 下半年重要更新
+
+进入 2025 年下半年，开源 VLM 又经历了一次重大迭代：
+
+| 模型 | 发布时间 | 参数量 | 核心创新 |
+|------|---------|--------|---------|
+| Qwen3-VL | 2025.9 | 2B-235B (Dense+MoE) | DeepStack 多层 ViT 融合、Interleaved-MRoPE 位置编码、3D Grounding、256K 原生上下文、32 语言 OCR |
+| InternVL3.5 | 2025.8 | 1B-241B-A28B (MoE) | CascadeRL 两阶段 RL 训练、开源 SOTA、MoE 激活比极致优化 |
+
+**Qwen3-VL** 的 DeepStack 架构将浅层 ViT 细节与深层语义信息同时注入 LLM，配合 256K 上下文窗口，使其在长视频理解和多页文档分析上大幅超越前代。其 MoE 变体（30B-A3B）仅激活 3B 参数即可达到接近 Qwen2.5-VL-72B 的性能，极致压缩了推理成本。
+
+**InternVL3.5** 家族则以 241B-A28B 的规格登顶开源 VLM 排行榜。其 CascadeRL 训练策略——先离线 RL 后在线 RL——在数学推理（MathVista）和 Agent 任务上都实现了显著提升。值得注意的是，InternVL 系列的迭代速度是所有开源 VLM 中最快的：2024 年底 MMMU 破 70%，2025 年 4 月登顶，8 月再次刷新 SOTA。
 
 ---
 
