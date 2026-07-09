@@ -7,6 +7,7 @@ AI Agent 技术调研与架构分析报告集。
 | 日期 | 报告 | 主题 |
 |------|------|------|
 | 2026-07-09 | [DeepSpec 深度解析](reports/deepspec-report.md) | DeepSeek 推测解码全栈框架——DSpark/DFlash/Eagle3 三大算法、半自回归+置信度调度、DeepSeek-V4 生产验证（60-85% 加速）、9 张架构图+批判性分析 |
+| 2026-07-09 | [AI 大模型服务缓存：Key 创建与命中机制深度解析](reports/llm-cache-key-mechanism-deep-dive.md) | 源码级别分析 GPTCache/vLLM/SGLang 的 Key 生成、存储与命中判定——Embedding 向量/哈希链/基数树三种方案对比，Redis Key 设计模式 |
 | 2026-07-09 | [AI 大模型服务缓存方案调研](reports/llm-cache-solutions-report.md) | 三层缓存架构（API Prompt Cache → 语义缓存 → KV Cache），GPTCache/Anthropic/OpenAI/vLLM/SGLang/Mooncake/LMCache 全方案对比，含架构图和批判性分析 |
 | 2026-07-03 | [计算机视觉与大模型视觉 2024-2026 全景调研](reports/computer-vision-and-vlm-2026-report.md) | VLM 三代架构演进、GPT-4o/Claude/Gemini/Qwen 全景对比、生成式视觉世界模型化、传统 CV 被吞并趋势、视觉 Agent 格局、7 节 8 图 + 批判性分析 |
 | 2026-07-03 | [Hermes TL Workflow vs Claude Dynamic Workflow 深度对比](reports/workflow-comparison-report.md) | 七阶段人工把关 vs JS 脚本编排：架构/规模/质量/成本/场景五维对比，6 张架构图，3 个子代理并行调研，批判性分析与实战建议 |
@@ -241,6 +242,7 @@ hello-wrold/
     ├── context-compression-report.md
     ├── qwen2-vs-qwen3-implementation-report.md
     ├── workflow-comparison-report.md
+    ├── llm-cache-key-mechanism-deep-dive.md
     ├── llm-cache-solutions-report.md
     ├── deepspec-report.md
     ├── computer-vision-and-vlm-2026-report.md
