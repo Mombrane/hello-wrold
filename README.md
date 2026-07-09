@@ -6,6 +6,7 @@ AI Agent 技术调研与架构分析报告集。
 
 | 日期 | 报告 | 主题 |
 |------|------|------|
+| 2026-07-09 | [AI 大模型缓存：实战实现指南](reports/llm-cache-implementation-guide.md) | 零代码到生产——Prompt Cache/Redis/GPTCache/vLLM/Cloudflare 五方案完整配置、端到端召回流程、命中率观测与成本计算 |
 | 2026-07-09 | [DeepSpec 深度解析](reports/deepspec-report.md) | DeepSeek 推测解码全栈框架——DSpark/DFlash/Eagle3 三大算法、半自回归+置信度调度、DeepSeek-V4 生产验证（60-85% 加速）、9 张架构图+批判性分析 |
 | 2026-07-09 | [AI 大模型服务缓存：Key 创建与命中机制深度解析](reports/llm-cache-key-mechanism-deep-dive.md) | 源码级别分析 GPTCache/vLLM/SGLang 的 Key 生成、存储与命中判定——Embedding 向量/哈希链/基数树三种方案对比，Redis Key 设计模式 |
 | 2026-07-09 | [AI 大模型服务缓存方案调研](reports/llm-cache-solutions-report.md) | 三层缓存架构（API Prompt Cache → 语义缓存 → KV Cache），GPTCache/Anthropic/OpenAI/vLLM/SGLang/Mooncake/LMCache 全方案对比，含架构图和批判性分析 |
@@ -242,9 +243,10 @@ hello-wrold/
     ├── context-compression-report.md
     ├── qwen2-vs-qwen3-implementation-report.md
     ├── workflow-comparison-report.md
+    ├── deepspec-report.md
+    ├── llm-cache-implementation-guide.md
     ├── llm-cache-key-mechanism-deep-dive.md
     ├── llm-cache-solutions-report.md
-    ├── deepspec-report.md
     ├── computer-vision-and-vlm-2026-report.md
     └── deerflow-deep-analysis.md
 ```

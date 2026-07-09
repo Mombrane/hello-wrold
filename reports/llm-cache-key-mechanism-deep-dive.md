@@ -340,4 +340,65 @@ SHA-256 哈希链虽然安全高效，但调试起来极其痛苦。当用户问
 
 ---
 
-*本补充报告基于 GPTCache v0.1.x、vLLM v0.24.0、SGLang main 分支的源码分析。数据截至 2026 年 7 月。*
+## 8. 补充：边缘网关缓存与新兴项目
+
+### Cloudflare AI Gateway：边缘层精确匹配
+
+Cloudflare AI Gateway 在 CDN 边缘节点拦截 LLM API 请求，用 **SHA-256 哈希做精确匹配缓存**。这是最"透明"的缓存方案——只需一行 URL 改写即可接入。
+
+**Key 生成逻辑**：
+
+```
+cache_key = SHA-256(provider + endpoint + model + auth_header + request_body)
+```
+
+五个维度全部参与哈希，任何一个维度不同都会产生独立的缓存条目。可以通过 `cf-aig-cache-key` 自定义 Header 覆盖默认 key，实现更灵活的缓存分组。
+
+**命中机制**：
+
+- 请求到达 Cloudflare 边缘节点 → 计算 cache_key → 查 CDN 缓存
+- 响应头 `cf-aig-cache-status: HIT` 或 `MISS`
+- 支持 per-request TTL 控制：`cf-aig-cache-ttl: 3600`（秒），最小 60s，最大 1 个月
+- 可通过 `cf-aig-skip-cache: true` 跳过缓存
+
+**适用场景**：温度=0 的确定性调用、内容生成（非对话）、公共查询。支持 20+ AI 厂商（OpenAI、Anthropic、Google、Replicate 等）。
+
+### Kong AI Gateway：企业级语义缓存
+
+Kong AI Gateway 走的是"语义缓存"路线——不是精确匹配整个 request body，而是对用户提示词做语义相似度匹配，相似的 prompt 也能命中缓存。这更接近 GPTCache 的思路，但集成在 API 网关层面。
+
+Kong 还提供 LLM + MCP + A2A 的全栈治理能力，适合金融、制造等强合规场景。
+
+### 值得关注的新兴项目
+
+除了主流方案，以下两个开源项目提供了差异化的设计思路：
+
+**ModelCache（蚂蚁开源，942⭐）**
+
+- 多租户架构，一个缓存实例服务多个业务线
+- Redis Search 做向量检索加速，延迟控制在 10ms 以内
+- 适合企业内部 AI 中台场景
+
+**PromptCache（Go 实现，236⭐）**
+
+- 独树一帜的三级验证策略：
+  1. 高相似度 → 直接返回缓存
+  2. 灰色区间 → 调用小验证模型确认答案是否适用
+  3. 低相似度 → 直接调用 LLM
+- 零代码侵入的 drop-in 代理模式——应用不改代码，把 LLM 请求指向 PromptCache 代理即可
+- Go 语言实现，部署轻量
+
+### 网关缓存 vs 应用层缓存 vs 推理层缓存
+
+| 维度 | 网关层 (Cloudflare/Kong) | 应用层 (GPTCache/Redis) | 推理层 (vLLM/SGLang) |
+|------|------------------------|------------------------|---------------------|
+| 部署位置 | CDN 边缘 / API Gateway | 应用服务器 | GPU 集群内部 |
+| 缓存什么 | 完整 LLM 响应 | LLM 响应 (文本) | KV Cache 张量 |
+| 节省什么 | API 调用成本 + 网络延迟 | API 调用成本 | GPU 计算时间 |
+| 匹配粒度 | 请求级 (整个 body) | 请求级 (句子) | Block 级 (16 tokens) |
+| 零代码接入 | ✅ (URL 改写) | ❌ (需集成 SDK) | ✅ (框架内置) |
+| 跨模型通用 | ✅ | ✅ | ❌ (引擎绑定) |
+
+---
+
+*本补充报告基于 GPTCache v0.1.x、vLLM v0.24.0、SGLang main 分支的源码分析，以及 Cloudflare AI Gateway 官方文档。数据截至 2026 年 7 月。*
