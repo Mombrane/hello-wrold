@@ -6,6 +6,7 @@ AI Agent 技术调研与架构分析报告集。
 
 | 日期 | 报告 | 主题 |
 |------|------|------|
+| 2026-07-20 | [AI 工程化工具调研：ai-engineering-from-scratch vs code-review-graph](reports/ai-engineering-from-scratch-vs-code-review-graph.md) | 503 节课系统课程 vs 52K 行代码知识图谱——两个开源项目深度对比，含课程体系/架构/数据流/对比四张图 + 批判性分析 |
 | 2026-07-09 | [AI 大模型缓存：实战实现指南](reports/llm-cache-implementation-guide.md) | 零代码到生产——Prompt Cache/Redis/GPTCache/vLLM/Cloudflare 五方案完整配置、端到端召回流程、命中率观测与成本计算 |
 | 2026-07-09 | [DeepSpec 深度解析](reports/deepspec-report.md) | DeepSeek 推测解码全栈框架——DSpark/DFlash/Eagle3 三大算法、半自回归+置信度调度、DeepSeek-V4 生产验证（60-85% 加速）、9 张架构图+批判性分析 |
 | 2026-07-09 | [AI 大模型服务缓存：Key 创建与命中机制深度解析](reports/llm-cache-key-mechanism-deep-dive.md) | 源码级别分析 GPTCache/vLLM/SGLang 的 Key 生成、存储与命中判定——Embedding 向量/哈希链/基数树三种方案对比，Redis Key 设计模式 |
@@ -75,6 +76,11 @@ hello-wrold/
     │   │   ├── bm25-query-flow.png
     │   │   ├── bm25-index-persistence.png
     │   │   └── bm25-rrf-fusion.png
+    │   ├── ai-engineering-vs-code-review-graph/
+    │   │   ├── diagram-1.png
+    │   │   ├── diagram-2.png
+    │   │   ├── diagram-3.png
+    │   │   └── diagram-4.png
     │   ├── headroom/
     │   │   ├── headroom-pipeline.png
     │   │   ├── headroom-kompress-model.png
@@ -216,6 +222,7 @@ hello-wrold/
     ├── coral-protocol-report.md
     ├── agent-loop-implementation-report.md
     ├── agent-loop-research.md
+    ├── ai-engineering-from-scratch-vs-code-review-graph.md
     ├── java-rpc-technology-report.md
     ├── headroom-deep-analysis.md
     ├── headroom-compressor-practice.md
