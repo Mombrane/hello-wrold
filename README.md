@@ -6,6 +6,7 @@ AI Agent 技术调研与架构分析报告集。
 
 | 日期 | 报告 | 主题 |
 |------|------|------|
+| 2026-07-21 | [Jujutsu (jj) 版本控制系统调研报告](reports/jujutsu-vcs-report.md) | 30.5K stars Git 兼容 VCS 深度调研——Merge\<T\> 冲突模型源码分析、Operation Log 撤销机制、Git vs Sapling vs GitButler 三方对比、架构分层图+概念模型对比图+冲突模型图 3 张配图 + 批判性分析 |
 | 2026-07-20 | [Grok Build 综合架构分析](reports/grok-build-analysis.md) | xAI 终端 AI 编码 agent 全栈分析：三层 turn loop、6 工具命名空间(含 Codex/OpenCode 移植)、full-replace 压缩、Git+Jujutsu 双 VCS、Landlock 沙箱、与 Claude Code 对比 |
 | 2026-07-20 | [Grok Build 上下文压缩深度分析](reports/grok-build-compaction-deepdive.md) | full-replace pipeline 6 步详解：prompt→sample(retry+classify)→clean(3步清洗)→assemble(7层重建)、SplitPlan 安全边界、输入阶梯、零宽空格中和、退化检测 |
 | 2026-07-20 | [Grok Build 子代理系统深度分析](reports/grok-build-subagent-deepdive.md) | 17 阶段完整生命周期、MAX_DEPTH=1 硬限制、MCP 继承过滤器(4模式)、block-wait 竞态解决、auto-background 600s、3 种上下文引导 |
@@ -178,6 +179,10 @@ hello-wrold/
     │   │   ├── cmp.png
     │   │   ├── selfimprove.png
     │   │   └── dataflow.png
+    │   ├── jujutsu-vcs/
+    │   │   ├── architecture.png
+    │   │   ├── merge-model.png
+    │   │   └── model-comparison.png
     │   ├── cv-report/
     │   │   ├── arch-evolution.png
     │   │   ├── capability-compare.png
@@ -219,6 +224,7 @@ hello-wrold/
     ├── grok-build-analysis.md
     ├── grok-build-compaction-deepdive.md
     ├── grok-build-subagent-deepdive.md
+    ├── jujutsu-vcs-report.md
     ├── pi-engine-deep-analysis.md
     ├── react-agent-architecture-report.md
     ├── rqgm-technical-report.md
