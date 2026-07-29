@@ -6,6 +6,9 @@ AI Agent 技术调研与架构分析报告集。
 
 | 日期 | 报告 | 主题 |
 |------|------|------|
+| 2026-07-29 | [Per-Head Muon 与 MoonClip：万亿参数模型的优化器进化](reports/per-head-muon-report.md) | AdamW→Muon→Per-Head Muon→MoonClip 四级进化、Newton-Schulz 5步迭代、逐头正交化理论加速325倍、MoonClip 数据效率翻倍（20T→等效40T）|
+| 2026-07-29 | [极限稀疏 MoE 的训练稳定性：Quantile Balancing 与 SiTU-GLU](reports/moe-training-stability-report.md) | QB vs DeepSeek-V3 Bias vs Aux Loss 公式级对比、分位数反推一步到位、SiTU-GLU 软截断（β₁=4,β₂=25 输出界100）、896→16 极限稀疏的工程突破 |
+| 2026-07-29 | [Attention Residuals：用注意力重构深度维信息流动](reports/attnres-report.md) | 十年演进（ResNet→DenseNet→AttnRes）、Block AttnRes 消融（+7.5 GPQA/<2%延迟/1.25倍效率）、block_size=12 周期对齐逻辑、PreNorm dilution 解决方案 |
 | 2026-07-29 | [Kimi K3 线性注意力：KDA 与混合架构深度分析](reports/kda-linear-attention-report.md) | KDA 通道级遗忘门公式演进（Linear Transformer→GDN-2 五阶段）、3:1 混合比消融证据、MXFP4 归因困境、擦写耦合瓶颈批判性分析 + 2 张 SVG 图 |
 | 2026-07-29 | [better-harness：Agent 自我优化的元层次框架深度调研](reports/better-harness-report.md) | 外部 DeepAgent 读取 eval 失败案例→编辑 harness 表面→门控决策，实现 Agent 自动优化 Agent 的元层次框架源码分析（5 文件逐行解读）+ 2 张架构图 + 批判性分析 + 对 CodeBuddy 的 4 条启示 |
 | 2026-07-21 | [Jujutsu (jj) 版本控制系统调研报告](reports/jujutsu-vcs-report.md) | 30.5K stars Git 兼容 VCS 深度调研——Merge\<T\> 冲突模型源码分析、Operation Log 撤销机制、Git vs Sapling vs GitButler 三方对比、架构分层图+概念模型对比图+冲突模型图 3 张配图 + 批判性分析 |
