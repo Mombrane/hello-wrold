@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 500" width="100%" role="img">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#534AB7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="arr-teal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#0F6E56" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="arr-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#854F0B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <title>better-harness 评测注入机制</title>
+  <desc>展示 Variant 如何通过环境变量和 pytest 插件注入到被测 Agent 进程</desc>
+
+  <rect x="0" y="0" width="680" height="500" fill="transparent"/>
+
+  <rect x="40" y="30" width="180" height="56" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+  <text x="130" y="52" font-family="sans-serif" font-size="14px" font-weight="500" fill="#3C3489" text-anchor="middle" dominant-baseline="central">TOML 配置文件</text>
+  <text x="130" y="70" font-family="sans-serif" font-size="12px" fill="#3C3489" text-anchor="middle" dominant-baseline="central">surface · cases · model</text>
+
+  <rect x="260" y="30" width="140" height="56" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+  <text x="330" y="52" font-family="sans-serif" font-size="14px" font-weight="500" fill="#3C3489" text-anchor="middle" dominant-baseline="central">Variant JSON</text>
+  <text x="330" y="70" font-family="sans-serif" font-size="12px" fill="#3C3489" text-anchor="middle" dominant-baseline="central">label + values</text>
+
+  <rect x="440" y="30" width="120" height="56" rx="8" fill="#CECBF6" stroke="#534AB7" stroke-width="0.5"/>
+  <text x="500" y="52" font-family="sans-serif" font-size="14px" font-weight="500" fill="#3C3489" text-anchor="middle" dominant-baseline="central">环境变量</text>
+  <text x="500" y="70" font-family="sans-serif" font-size="12px" fill="#3C3489" text-anchor="middle" dominant-baseline="central">VARIANT_ENV</text>
+
+  <line x1="220" y1="58" x2="260" y2="58" stroke="#534AB7" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="400" y1="58" x2="440" y2="58" stroke="#534AB7" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <text x="500" y="110" font-family="sans-serif" font-size="12px" fill="#5F5E5A" text-anchor="middle">↓ subprocess.run()</text>
+
+  <rect x="40" y="130" width="600" height="340" rx="12" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+  <text x="60" y="156" font-family="sans-serif" font-size="14px" font-weight="500" fill="#085041">pytest 子进程 (每个 case 独立一次)</text>
+
+  <rect x="60" y="175" width="180" height="60" rx="8" fill="#9FE1CB" stroke="#0F6E56" stroke-width="0.5"/>
+  <text x="150" y="198" font-family="sans-serif" font-size="14px" font-weight="500" fill="#085041" text-anchor="middle" dominant-baseline="central">pytest 加载插件</text>
+  <text x="150" y="216" font-family="sans-serif" font-size="12px" fill="#085041" text-anchor="middle" dominant-baseline="central">-p better_harness_plugin</text>
+
+  <rect x="270" y="175" width="180" height="60" rx="8" fill="#9FE1CB" stroke="#0F6E56" stroke-width="0.5"/>
+  <text x="360" y="198" font-family="sans-serif" font-size="14px" font-weight="500" fill="#085041" text-anchor="middle" dominant-baseline="central">patch_from_env()</text>
+  <text x="360" y="216" font-family="sans-serif" font-size="12px" fill="#085041" text-anchor="middle" dominant-baseline="central">从 env 读取 Variant</text>
+
+  <rect x="480" y="175" width="140" height="60" rx="8" fill="#9FE1CB" stroke="#0F6E56" stroke-width="0.5"/>
+  <text x="550" y="198" font-family="sans-serif" font-size="14px" font-weight="500" fill="#085041" text-anchor="middle" dominant-baseline="central">两种注入方式</text>
+  <text x="550" y="216" font-family="sans-serif" font-size="12px" fill="#085041" text-anchor="middle" dominant-baseline="central">↓</text>
+
+  <line x1="240" y1="205" x2="270" y2="205" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arr-teal)"/>
+  <line x1="450" y1="205" x2="480" y2="205" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arr-teal)"/>
+
+  <rect x="60" y="260" width="280" height="90" rx="8" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+  <text x="200" y="282" font-family="sans-serif" font-size="14px" font-weight="500" fill="#633806" text-anchor="middle" dominant-baseline="central">方式一：module_attr</text>
+  <text x="200" y="300" font-family="sans-serif" font-size="12px" fill="#633806" text-anchor="middle" dominant-baseline="central">importlib.import_module(target) →</text>
+  <text x="200" y="316" font-family="sans-serif" font-size="12px" fill="#633806" text-anchor="middle" dominant-baseline="central">setattr(module, attr, new_value)</text>
+  <text x="200" y="336" font-family="sans-serif" font-size="12px" fill="#854F0B" text-anchor="middle" dominant-baseline="central">适用：prompt 文本字符串</text>
+
+  <rect x="370" y="260" width="250" height="90" rx="8" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+  <text x="495" y="282" font-family="sans-serif" font-size="14px" font-weight="500" fill="#633806" text-anchor="middle" dominant-baseline="central">方式二：workspace_file</text>
+  <text x="495" y="300" font-family="sans-serif" font-size="12px" fill="#633806" text-anchor="middle" dominant-baseline="central">备份原文件 → 写入新内容 →</text>
+  <text x="495" y="316" font-family="sans-serif" font-size="12px" fill="#633806" text-anchor="middle" dominant-baseline="central">执行测试 → 恢复原文件</text>
+  <text x="495" y="336" font-family="sans-serif" font-size="12px" fill="#854F0B" text-anchor="middle" dominant-baseline="central">适用：工具代码、中间件代码</text>
+
+  <line x1="550" y1="235" x2="200" y2="260" stroke="#854F0B" stroke-width="1.5" marker-end="url(#arr-amber)"/>
+  <line x1="550" y1="235" x2="495" y2="260" stroke="#854F0B" stroke-width="1.5" marker-end="url(#arr-amber)"/>
+
+  <rect x="200" y="380" width="280" height="50" rx="8" fill="#5DCAA5" stroke="#0F6E56" stroke-width="0.5"/>
+  <text x="340" y="400" font-family="sans-serif" font-size="14px" font-weight="500" fill="#085041" text-anchor="middle" dominant-baseline="central">解析 JUnit XML → CaseOutcome</text>
+  <text x="340" y="418" font-family="sans-serif" font-size="12px" fill="#085041" text-anchor="middle" dominant-baseline="central">passed / failed / failure_message / trace_ref</text>
+
+  <line x1="200" y1="350" x2="200" y2="380" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arr-teal)"/>
+  <line x1="495" y1="350" x2="495" y2="380" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arr-teal)"/>
+
+  <path d="M 340 430 L 340 460 L 560 460 L 560 86 L 500 86" fill="none" stroke="#534AB7" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#arr)"/>
+  <text x="450" y="472" font-family="sans-serif" font-size="12px" fill="#534AB7">返回 SplitResult → 门控决策</text>
+</svg>
