@@ -1,0 +1,52 @@
+<svg viewBox="0 0 680 520" width="100%" role="img">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <title>线性注意力公式演进：Linear Transformer → GDN-2</title>
+  <desc>五阶段演进：Linear Transformer, DeltaNet, Gated DeltaNet, KDA, Gated DeltaNet-2</desc>
+  <style>
+    .th { font-family: system-ui, sans-serif; font-size: 14px; font-weight: 500; fill: var(--color-text-primary, #1a1a1a); }
+    .ts { font-family: system-ui, sans-serif; font-size: 12px; font-weight: 400; }
+  </style>
+  <rect x="40" y="30" width="600" height="470" rx="16" fill="var(--color-background-secondary, #f5f5f5)" stroke="var(--color-border-tertiary, #e0e0e0)" stroke-width="0.5"/>
+  <text class="th" x="340" y="56" text-anchor="middle">线性注意力家族：公式演进与门控机制</text>
+
+  <rect x="60" y="75" width="560" height="62" rx="8" fill="var(--color-background-primary, #fff)" stroke="var(--color-border-tertiary, #e0e0e0)" stroke-width="0.5"/>
+  <text class="th" x="80" y="96" fill="#185fa5">Linear Transformer</text>
+  <text class="ts" x="80" y="116" font-family="monospace" font-size="12px">S_t = S_{t-1} + k_t ⊗ v_t^⊤</text>
+  <text class="ts" x="80" y="132" fill="var(--color-text-secondary, #666)">纯线性累加，无遗忘机制，无门控</text>
+
+  <line x1="340" y1="137" x2="340" y2="150" stroke="var(--color-border-primary, #999)" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <rect x="60" y="155" width="560" height="62" rx="8" fill="var(--color-background-primary, #fff)" stroke="var(--color-border-tertiary, #e0e0e0)" stroke-width="0.5"/>
+  <text class="th" x="80" y="176" fill="#185fa5">DeltaNet</text>
+  <text class="ts" x="80" y="196" font-family="monospace" font-size="12px">S_t = (I − β_t k_t k_t^⊤) S_{t-1} + β_t k_t v_t^⊤</text>
+  <text class="ts" x="80" y="212" fill="var(--color-text-secondary, #666)">引入delta规则：先擦除旧信息，再写入新信息</text>
+  <text class="ts" x="440" y="196" fill="#d85a30" font-weight="500">标量 β_t = 擦写耦合</text>
+
+  <line x1="340" y1="217" x2="340" y2="230" stroke="var(--color-border-primary, #999)" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <rect x="60" y="235" width="560" height="62" rx="8" fill="var(--color-background-primary, #fff)" stroke="var(--color-border-tertiary, #e0e0e0)" stroke-width="0.5"/>
+  <text class="th" x="80" y="256" fill="#185fa5">Gated DeltaNet</text>
+  <text class="ts" x="80" y="276" font-family="monospace" font-size="12px">S_t = α_t · (I − β_t k_t k_t^⊤) S_{t-1} + β_t k_t v_t^⊤</text>
+  <text class="ts" x="80" y="292" fill="var(--color-text-secondary, #666)">增加标量遗忘门 α_t，遗忘与擦写分离</text>
+  <text class="ts" x="440" y="276" fill="#d85a30" font-weight="500">标量 α_t + β_t</text>
+
+  <line x1="340" y1="297" x2="340" y2="310" stroke="var(--color-border-primary, #999)" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <rect x="60" y="315" width="560" height="62" rx="8" fill="#e6f1fb" stroke="#378add" stroke-width="1.5"/>
+  <text class="th" x="80" y="336" fill="#0c447c">KDA (Kimi K3)</text>
+  <text class="ts" x="80" y="356" font-family="monospace" font-size="12px">S_t = (I − β_t k_t k_t^⊤) · Diag(α_t) · S_{t-1} + β_t k_t v_t^⊤</text>
+  <text class="ts" x="80" y="372" fill="var(--color-text-secondary, #666)">通道级遗忘门 α_t ∈ [0,1]^{d_k}，擦写仍耦合</text>
+  <text class="ts" x="465" y="356" fill="#0c447c" font-weight="500">向量 α_t ∈ ℝ^{d_k}</text>
+
+  <line x1="340" y1="377" x2="340" y2="390" stroke="var(--color-border-primary, #999)" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <rect x="60" y="395" width="560" height="62" rx="8" fill="var(--color-background-primary, #fff)" stroke="var(--color-border-tertiary, #e0e0e0)" stroke-width="0.5"/>
+  <text class="th" x="80" y="416" fill="#185fa5">Gated DeltaNet-2</text>
+  <text class="ts" x="80" y="436" font-family="monospace" font-size="11px">S_t = Diag(1-b_t)·(I−β_t k_t k_t^⊤)·Diag(α_t)·S_{t-1} + Diag(w_t)·(β_t k_t v_t^⊤)</text>
+  <text class="ts" x="80" y="452" fill="var(--color-text-secondary, #666)">通道级擦写解耦：独立遗忘 α_t、擦除 b_t、写入 w_t</text>
+  <text class="ts" x="465" y="436" fill="#d85a30" font-weight="500">三向量 α_t, b_t, w_t</text>
+</svg>
