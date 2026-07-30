@@ -1,0 +1,26 @@
+<svg viewBox="0 0 680 400" width="100%" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>三层构建法：原子操作到推理循环</title>
+  <desc>自底向上：原子操作层（Attention COPY/MEAN + FFN乘法/查找表）→ 推理步骤层（定位→计算→替换，5层/步）→ 自回归循环层（O(n) 步串联）</desc>
+  <defs>
+    <marker id="arrow2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#888780" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <text x="340" y="32" text-anchor="middle" style="font-size:15px;fill:#2C2C2A;font-weight:500;font-family:sans-serif">构造性证明：三层组装法</text>
+  <rect x="210" y="75" width="260" height="44" rx="8" fill="#EAF3DE" stroke="#3B6D11" stroke-width="0.5"/>
+  <text x="340" y="97" text-anchor="middle" dominant-baseline="central" style="font-size:13px;fill:#173404;font-weight:500;font-family:sans-serif">自回归循环：O(n) 步串联</text>
+  <rect x="165" y="155" width="350" height="56" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+  <text x="340" y="175" text-anchor="middle" dominant-baseline="central" style="font-size:13px;fill:#085041;font-weight:500;font-family:sans-serif">推理步骤：定位 → 计算 → 替换</text>
+  <text x="340" y="195" text-anchor="middle" dominant-baseline="central" style="font-size:12px;fill:#0F6E56;font-family:sans-serif">5 层 Transformer 完成一步原子推理</text>
+  <rect x="50" y="250" width="580" height="120" rx="12" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+  <rect x="70" y="268" width="240" height="86" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+  <text x="190" y="290" text-anchor="middle" dominant-baseline="central" style="font-size:12px;fill:#0C447C;font-weight:500;font-family:sans-serif">注意力层原子操作</text>
+  <text x="190" y="312" text-anchor="middle" dominant-baseline="central" style="font-size:11px;fill:#185FA5;font-family:sans-serif">条件 COPY：定位并复制</text>
+  <text x="190" y="330" text-anchor="middle" dominant-baseline="central" style="font-size:11px;fill:#185FA5;font-family:sans-serif">条件 MEAN：批量求均值</text>
+  <rect x="345" y="268" width="260" height="86" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+  <text x="475" y="290" text-anchor="middle" dominant-baseline="central" style="font-size:12px;fill:#0C447C;font-weight:500;font-family:sans-serif">FFN 层原子操作</text>
+  <text x="475" y="312" text-anchor="middle" dominant-baseline="central" style="font-size:11px;fill:#185FA5;font-family:sans-serif">乘法 (GeLU 二次近似)</text>
+  <text x="475" y="330" text-anchor="middle" dominant-baseline="central" style="font-size:11px;fill:#185FA5;font-family:sans-serif">查找表 + 条件选择</text>
+  <path d="M340 119 L340 148" stroke="#888780" stroke-width="1" fill="none" marker-end="url(#arrow2)"/>
+  <path d="M340 211 L340 242" stroke="#888780" stroke-width="1" fill="none" marker-end="url(#arrow2)"/>
+</svg>

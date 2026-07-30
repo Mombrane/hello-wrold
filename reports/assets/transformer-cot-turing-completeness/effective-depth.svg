@@ -1,0 +1,52 @@
+<svg viewBox="0 0 680 380" width="100%" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>有效深度跃迁：无CoT vs 有CoT</title>
+  <desc>左侧无CoT——固定L层深度，能力上限TC0。右侧有CoT——自回归循环将有效深度从O(L)扩展到O(T*K)，突破TC0限制</desc>
+  <defs>
+    <marker id="arrow3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#888780" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <text x="340" y="30" text-anchor="middle" style="font-size:15px;fill:#2C2C2A;font-weight:500;font-family:sans-serif">有效计算深度：无 CoT vs 有 CoT</text>
+  <g>
+    <text x="170" y="58" text-anchor="middle" style="font-size:12px;fill:#712B13;font-weight:500;font-family:sans-serif">无 CoT：output = gL(...g1(x))</text>
+    <rect x="80" y="70" width="180" height="32" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+    <text x="170" y="86" text-anchor="middle" dominant-baseline="central" style="font-size:11px;fill:#0C447C;font-family:sans-serif">x: 输入 tokens</text>
+    <path d="M170 102 L170 112" stroke="#888780" stroke-width="0.5" fill="none" marker-end="url(#arrow3)"/>
+    <rect x="100" y="114" width="140" height="28" rx="4" fill="#FAECE7" stroke="#993C1D" stroke-width="0.3"/>
+    <text x="170" y="128" text-anchor="middle" dominant-baseline="central" style="font-size:11px;fill:#712B13;font-family:sans-serif">L1: Attention + FFN</text>
+    <path d="M170 142 L170 150" stroke="#888780" stroke-width="0.3" fill="none" marker-end="url(#arrow3)"/>
+    <rect x="100" y="152" width="140" height="28" rx="4" fill="#FAECE7" stroke="#993C1D" stroke-width="0.3"/>
+    <text x="170" y="166" text-anchor="middle" dominant-baseline="central" style="font-size:11px;fill:#712B13;font-family:sans-serif">L2: Attention + FFN</text>
+    <path d="M170 180 L170 188" stroke="#888780" stroke-width="0.3" fill="none" marker-end="url(#arrow3)"/>
+    <text x="170" y="200" text-anchor="middle" style="font-size:11px;fill:#888780;font-family:sans-serif">...</text>
+    <path d="M170 210 L170 218" stroke="#888780" stroke-width="0.3" fill="none" marker-end="url(#arrow3)"/>
+    <rect x="100" y="220" width="140" height="28" rx="4" fill="#FAECE7" stroke="#993C1D" stroke-width="0.3"/>
+    <text x="170" y="234" text-anchor="middle" dominant-baseline="central" style="font-size:11px;fill:#712B13;font-family:sans-serif">LL: Attention + FFN</text>
+    <path d="M170 248 L170 260" stroke="#888780" stroke-width="0.5" fill="none" marker-end="url(#arrow3)"/>
+    <rect x="70" y="262" width="200" height="32" rx="6" fill="#FCEBEB" stroke="#791F1F" stroke-width="0.5"/>
+    <text x="170" y="278" text-anchor="middle" dominant-baseline="central" style="font-size:11px;fill:#501313;font-weight:500;font-family:sans-serif">深度 = L (常数) → TC0</text>
+  </g>
+  <line x1="340" y1="66" x2="340" y2="330" stroke="#D3D1C7" stroke-width="1" stroke-dasharray="4,4"/>
+  <g>
+    <text x="510" y="58" text-anchor="middle" style="font-size:12px;fill:#085041;font-weight:500;font-family:sans-serif">有 CoT：zK = gT(x, z1, ..., zK-1)</text>
+    <rect x="420" y="70" width="180" height="32" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+    <text x="510" y="86" text-anchor="middle" dominant-baseline="central" style="font-size:11px;fill:#0C447C;font-family:sans-serif">x: 输入 tokens</text>
+    <path d="M510 102 L510 112" stroke="#888780" stroke-width="0.5" fill="none" marker-end="url(#arrow3)"/>
+    <rect x="420" y="114" width="180" height="40" rx="6" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="510" y="130" text-anchor="middle" dominant-baseline="central" style="font-size:11px;fill:#085041;font-weight:500;font-family:sans-serif">CoT 第 1 步</text>
+    <text x="510" y="146" text-anchor="middle" dominant-baseline="central" style="font-size:10px;fill:#0F6E56;font-family:sans-serif">T 层，z1 回填到上下文</text>
+    <path d="M510 154 L510 164" stroke="#888780" stroke-width="0.5" fill="none" marker-end="url(#arrow3)"/>
+    <rect x="420" y="166" width="180" height="40" rx="6" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="510" y="182" text-anchor="middle" dominant-baseline="central" style="font-size:11px;fill:#085041;font-weight:500;font-family:sans-serif">CoT 第 2 步</text>
+    <text x="510" y="198" text-anchor="middle" dominant-baseline="central" style="font-size:10px;fill:#0F6E56;font-family:sans-serif">T 层，注意力关注 z1</text>
+    <path d="M510 206 L510 214" stroke="#888780" stroke-width="0.3" fill="none" marker-end="url(#arrow3)"/>
+    <text x="510" y="226" text-anchor="middle" style="font-size:11px;fill:#888780;font-family:sans-serif">...</text>
+    <path d="M510 236 L510 244" stroke="#888780" stroke-width="0.3" fill="none" marker-end="url(#arrow3)"/>
+    <rect x="420" y="246" width="180" height="40" rx="6" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="510" y="262" text-anchor="middle" dominant-baseline="central" style="font-size:11px;fill:#085041;font-weight:500;font-family:sans-serif">CoT 第 K 步</text>
+    <text x="510" y="278" text-anchor="middle" dominant-baseline="central" style="font-size:10px;fill:#0F6E56;font-family:sans-serif">T 层，关注所有前序步骤</text>
+    <path d="M510 286 L510 298" stroke="#888780" stroke-width="0.5" fill="none" marker-end="url(#arrow3)"/>
+    <rect x="395" y="300" width="230" height="36" rx="6" fill="#EAF3DE" stroke="#3B6D11" stroke-width="0.5"/>
+    <text x="510" y="318" text-anchor="middle" dominant-baseline="central" style="font-size:11px;fill:#173404;font-weight:500;font-family:sans-serif">有效深度 = T x K  →  突破 TC0</text>
+  </g>
+</svg>

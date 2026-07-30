@@ -6,6 +6,7 @@ AI Agent 技术调研与架构分析报告集。
 
 | 日期 | 报告 | 主题 |
 |------|------|------|
+| 2026-07-30 | [Transformer+CoT 的图灵完备性：Feng et al. (2023) 深度分析](reports/transformer-cot-turing-completeness-report.md) | 电路复杂度框架证明 CoT 将 Transformer 有效深度从 O(L) 拉升至 O(CoT步数)，突破 TC0 上限——双线证明策略、三层组装法、DP 通用框架，3 张 SVG + 批判性分析 |
 | 2026-07-29 | [Per-Head Muon 与 MoonClip：万亿参数模型的优化器进化](reports/per-head-muon-report.md) | AdamW→Muon→Per-Head Muon→MoonClip 四级进化、Newton-Schulz 5步迭代、逐头正交化理论加速325倍、MoonClip 数据效率翻倍（20T→等效40T）|
 | 2026-07-29 | [极限稀疏 MoE 的训练稳定性：Quantile Balancing 与 SiTU-GLU](reports/moe-training-stability-report.md) | QB vs DeepSeek-V3 Bias vs Aux Loss 公式级对比、分位数反推一步到位、SiTU-GLU 软截断（β₁=4,β₂=25 输出界100）、896→16 极限稀疏的工程突破 |
 | 2026-07-29 | [Attention Residuals：用注意力重构深度维信息流动](reports/attnres-report.md) | 十年演进（ResNet→DenseNet→AttnRes）、Block AttnRes 消融（+7.5 GPQA/<2%延迟/1.25倍效率）、block_size=12 周期对齐逻辑、PreNorm dilution 解决方案 |
