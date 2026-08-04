@@ -1,0 +1,42 @@
+<svg viewBox="0 0 680 320" width="100%" role="img">
+  <title>Pi 自我扩展机制</title>
+  <desc>用户请求 → Agent 编写 TS 扩展 → jiti 热重载 → 立即使用新工具的循环流程</desc>
+  <defs>
+    <marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#534AB7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <text x="340" y="35" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="500" fill="#2C2C2A">Pi 自我扩展机制：Agent 写自己的工具</text>
+
+  <rect x="40" y="70" width="160" height="60" rx="8" fill="#E6F1FB" stroke="#85B7EB" stroke-width="0.5"/>
+  <text x="120" y="95" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#0C447C">用户请求</text>
+  <text x="120" y="115" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#5F5E5A">"加一个 run_tests"</text>
+
+  <line x1="200" y1="100" x2="260" y2="100" stroke="#534AB7" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+  <rect x="260" y="70" width="160" height="60" rx="8" fill="#EEEDFE" stroke="#AFA9EC" stroke-width="0.5"/>
+  <text x="340" y="95" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#3C3489">Agent 写扩展</text>
+  <text x="340" y="115" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#5F5E5A">生成 TS 文件 + registerTool()</text>
+
+  <line x1="420" y1="100" x2="480" y2="100" stroke="#534AB7" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+  <rect x="480" y="70" width="160" height="60" rx="8" fill="#E1F5EE" stroke="#5DCAA5" stroke-width="0.5"/>
+  <text x="560" y="95" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#085041">jiti 热重载</text>
+  <text x="560" y="115" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#5F5E5A">零构建、即时生效</text>
+
+  <path d="M560 130 Q560 180 340 180 Q120 180 120 130" fill="none" stroke="#D85A30" stroke-width="1.5" marker-end="url(#arr2)" stroke-dasharray="6,3"/>
+  <text x="340" y="200" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#D85A30">agent 即刻拥有第 N+1 个工具，开始使用</text>
+
+  <rect x="60" y="230" width="170" height="60" rx="8" fill="#FAECE7" stroke="#F0997B" stroke-width="0.5"/>
+  <text x="145" y="255" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#712B13">Skills（Markdown）</text>
+  <text x="145" y="275" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#5F5E5A">操作说明书，按需加载</text>
+
+  <rect x="255" y="230" width="170" height="60" rx="8" fill="#EEEDFE" stroke="#AFA9EC" stroke-width="0.5"/>
+  <text x="340" y="255" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#3C3489">Extensions（TS）</text>
+  <text x="340" y="275" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#5F5E5A">注册新工具/命令，热重载</text>
+
+  <rect x="450" y="230" width="170" height="60" rx="8" fill="#E1F5EE" stroke="#5DCAA5" stroke-width="0.5"/>
+  <text x="535" y="255" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#085041">Packages（npm）</text>
+  <text x="535" y="275" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#5F5E5A">npm/git 分发，团队共享</text>
+</svg>
