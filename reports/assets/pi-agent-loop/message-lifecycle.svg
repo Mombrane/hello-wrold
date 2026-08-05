@@ -1,0 +1,71 @@
+<svg viewBox="0 0 680 380" width="100%" role="img">
+  <title>Pi 消息生命周期</title>
+  <desc>AgentMessage 类型到 LLM Message 的转换管道</desc>
+  <defs>
+    <marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#378ADD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <text x="340" y="30" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="500" fill="#2C2C2A">消息生命周期：AgentMessage → convertToLlm → LLM Message</text>
+
+  <text x="130" y="65" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#5F5E5A">AgentMessage（内部类型）</text>
+
+  <rect x="30" y="80" width="200" height="34" rx="6" fill="#E6F1FB" stroke="#85B7EB" stroke-width="0.5"/>
+  <text x="130" y="101" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#185FA5">user（用户输入）</text>
+
+  <rect x="30" y="125" width="200" height="34" rx="6" fill="#E6F1FB" stroke="#85B7EB" stroke-width="0.5"/>
+  <text x="130" y="146" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#185FA5">assistant（LLM 输出）</text>
+
+  <rect x="30" y="170" width="200" height="34" rx="6" fill="#E6F1FB" stroke="#85B7EB" stroke-width="0.5"/>
+  <text x="130" y="191" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#185FA5">toolResult（工具结果）</text>
+
+  <rect x="30" y="215" width="200" height="34" rx="6" fill="#FAECE7" stroke="#F0997B" stroke-width="0.5"/>
+  <text x="130" y="236" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#712B13">bashExecution（!命令）</text>
+
+  <rect x="30" y="260" width="200" height="34" rx="6" fill="#FAECE7" stroke="#F0997B" stroke-width="0.5"/>
+  <text x="130" y="281" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#712B13">compactionSummary</text>
+
+  <rect x="30" y="305" width="200" height="34" rx="6" fill="#FAECE7" stroke="#F0997B" stroke-width="0.5"/>
+  <text x="130" y="326" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#712B13">branchSummary</text>
+
+  <rect x="30" y="340" width="200" height="30" rx="6" fill="#FAECE7" stroke="#F0997B" stroke-width="0.5"/>
+  <text x="130" y="359" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#712B13">custom（扩展注入）</text>
+
+  <rect x="260" y="140" width="160" height="110" rx="10" fill="#EEEDFE" stroke="#AFA9EC" stroke-width="0.5"/>
+  <text x="340" y="170" text-anchor="middle" font-family="monospace" font-size="12" font-weight="500" fill="#3C3489">convertToLlm()</text>
+  <text x="340" y="190" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#7F77DD">AgentMessage[]</text>
+  <text x="340" y="210" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#7F77DD">    → Message[]</text>
+  <text x="340" y="235" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#5F5E5A">messages.ts:148-195</text>
+
+  <text x="510" y="65" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#5F5E5A">Message（LLM 标准格式）</text>
+
+  <rect x="450" y="80" width="200" height="34" rx="6" fill="#EAF3DE" stroke="#97C459" stroke-width="0.5"/>
+  <text x="550" y="101" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#27500A">user（透传）</text>
+
+  <rect x="450" y="125" width="200" height="34" rx="6" fill="#EAF3DE" stroke="#97C459" stroke-width="0.5"/>
+  <text x="550" y="146" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#27500A">assistant（透传）</text>
+
+  <rect x="450" y="170" width="200" height="34" rx="6" fill="#EAF3DE" stroke="#97C459" stroke-width="0.5"/>
+  <text x="550" y="191" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#27500A">toolResult（透传）</text>
+
+  <rect x="450" y="215" width="200" height="34" rx="6" fill="#FAEEDA" stroke="#EF9F27" stroke-width="0.5"/>
+  <text x="550" y="236" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#854F0B">user（格式化后）</text>
+
+  <rect x="450" y="260" width="200" height="34" rx="6" fill="#FAEEDA" stroke="#EF9F27" stroke-width="0.5"/>
+  <text x="550" y="281" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#854F0B">user（XML 包裹）</text>
+
+  <rect x="450" y="305" width="200" height="34" rx="6" fill="#FAEEDA" stroke="#EF9F27" stroke-width="0.5"/>
+  <text x="550" y="326" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#854F0B">user（XML 包裹）</text>
+
+  <rect x="450" y="340" width="200" height="30" rx="6" fill="#FAEEDA" stroke="#EF9F27" stroke-width="0.5"/>
+  <text x="550" y="359" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#854F0B">user（原样）</text>
+
+  <line x1="230" y1="97" x2="446" y2="97" stroke="#378ADD" stroke-width="0.5"/>
+  <line x1="230" y1="142" x2="446" y2="142" stroke="#378ADD" stroke-width="0.5"/>
+  <line x1="230" y1="187" x2="446" y2="187" stroke="#378ADD" stroke-width="0.5"/>
+  <line x1="230" y1="232" x2="446" y2="232" stroke="#D85A30" stroke-width="0.5" stroke-dasharray="3,2"/>
+  <line x1="230" y1="277" x2="446" y2="277" stroke="#D85A30" stroke-width="0.5" stroke-dasharray="3,2"/>
+  <line x1="230" y1="322" x2="446" y2="322" stroke="#D85A30" stroke-width="0.5" stroke-dasharray="3,2"/>
+  <line x1="230" y1="355" x2="446" y2="355" stroke="#D85A30" stroke-width="0.5" stroke-dasharray="3,2"/>
+</svg>

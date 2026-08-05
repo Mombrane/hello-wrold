@@ -1,0 +1,67 @@
+<svg viewBox="0 0 680 520" width="100%" role="img">
+  <title>Pi Agent Loop 双层循环</title>
+  <desc>外层 run 循环和内层 turn 循环的控制流，包含 LLM 调用、工具执行、steering 和 followUp 队列</desc>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#534AB7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#D85A30" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <text x="340" y="30" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="500" fill="#2C2C2A">Pi Agent Loop：双层循环控制流</text>
+
+  <rect x="40" y="50" width="600" height="450" rx="16" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="0.5"/>
+  <text x="340" y="75" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#5F5E5A">外层循环（Run 级）：处理 follow-up 消息队列</text>
+
+  <rect x="70" y="90" width="540" height="380" rx="12" fill="#E6F1FB" stroke="#85B7EB" stroke-width="0.5"/>
+  <text x="340" y="115" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#185FA5">内层循环（Turn 级）：LLM → 工具 → 工具结果 → 继续</text>
+
+  <rect x="100" y="135" width="120" height="36" rx="6" fill="#EAF3DE" stroke="#97C459" stroke-width="0.5"/>
+  <text x="160" y="157" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#27500A">Turn 开始</text>
+  <line x1="220" y1="153" x2="280" y2="153" stroke="#534AB7" stroke-width="1" marker-end="url(#arr)"/>
+
+  <path d="M160 171 L160 195" stroke="#D85A30" stroke-width="1" stroke-dasharray="4,3"/>
+  <rect x="100" y="195" width="120" height="36" rx="6" fill="#FAECE7" stroke="#F0997B" stroke-width="0.5"/>
+  <text x="160" y="217" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#712B13">注入 pending 消息</text>
+  <line x1="220" y1="213" x2="280" y2="213" stroke="#534AB7" stroke-width="1" marker-end="url(#arr)"/>
+
+  <rect x="280" y="135" width="140" height="36" rx="6" fill="#EEEDFE" stroke="#AFA9EC" stroke-width="0.5"/>
+  <text x="350" y="157" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#3C3489">streamAssistant</text>
+
+  <rect x="280" y="195" width="140" height="36" rx="6" fill="#E1F5EE" stroke="#5DCAA5" stroke-width="0.5"/>
+  <text x="350" y="217" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#085041">executeToolCalls</text>
+  <line x1="350" y1="171" x2="350" y2="191" stroke="#534AB7" stroke-width="1" marker-end="url(#arr)"/>
+
+  <path d="M420 213 L460 213 L460 153 L460 130" stroke="#534AB7" stroke-width="1" fill="none"/>
+  <text x="458" y="175" font-family="sans-serif" font-size="10" fill="#534AB7">hasMore?</text>
+
+  <path d="M160 231 L160 280 L470 280 L470 213" stroke="#534AB7" stroke-width="1" stroke-dasharray="5,3" fill="none" marker-end="url(#arr)"/>
+  <text x="315" y="275" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#534AB7">toolResult 追加到 context → 回到 LLM 调用</text>
+
+  <rect x="100" y="300" width="120" height="36" rx="6" fill="#FAEEDA" stroke="#EF9F27" stroke-width="0.5"/>
+  <text x="160" y="322" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#854F0B">Turn 结束</text>
+  <line x1="160" y1="231" x2="160" y2="296" stroke="#D85A30" stroke-width="1" marker-end="url(#arr2)"/>
+
+  <rect x="280" y="300" width="140" height="36" rx="6" fill="#FCEBEB" stroke="#F09595" stroke-width="0.5"/>
+  <text x="350" y="317" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#791F1F">stopReason check</text>
+  <line x1="220" y1="318" x2="276" y2="318" stroke="#D85A30" stroke-width="1" marker-end="url(#arr2)"/>
+
+  <line x1="420" y1="318" x2="480" y2="318" stroke="#534AB7" stroke-width="1"/>
+  <text x="450" y="312" font-family="sans-serif" font-size="10" fill="#534AB7">stop / no toolCalls</text>
+
+  <rect x="100" y="360" width="180" height="36" rx="6" fill="#FAECE7" stroke="#F0997B" stroke-width="0.5"/>
+  <text x="190" y="382" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#712B13">getFollowUpMessages?</text>
+
+  <path d="M280 378 L350 378 L350 340" stroke="#D85A30" stroke-width="1" fill="none"/>
+  <text x="315" y="372" font-family="sans-serif" font-size="10" fill="#D85A30">有 → 重新进入内层</text>
+
+  <rect x="430" y="355" width="160" height="46" rx="6" fill="#C0DD97" stroke="#639922" stroke-width="0.5"/>
+  <text x="510" y="377" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#27500A">agent_end</text>
+  <text x="510" y="393" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#3B6D11">队列为空，退出</text>
+  <line x1="280" y1="378" x2="426" y2="378" stroke="#534AB7" stroke-width="1" marker-end="url(#arr)"/>
+
+  <line x1="350" y1="318" x2="510" y2="270" stroke="#A32D2D" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="430" y="285" font-family="sans-serif" font-size="10" fill="#A32D2D">error/aborted</text>
+</svg>
