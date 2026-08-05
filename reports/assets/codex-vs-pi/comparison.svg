@@ -1,0 +1,62 @@
+<svg viewBox="0 0 680 420" width="100%" role="img">
+  <title>Codex vs Pi Agent Loop 对比</title>
+  <desc>Codex 的三层循环（SQ/EQ 异步）与 Pi 的双层循环（同步 EventStream）的结构对比</desc>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <text x="340" y="30" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="500" fill="#2C2C2A">Codex vs Pi：Agent Loop 结构对比</text>
+
+  <rect x="25" y="50" width="310" height="350" rx="12" fill="#E6F1FB" stroke="#85B7EB" stroke-width="0.5"/>
+  <text x="180" y="75" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="500" fill="#0C447C">Codex CLI（Rust，549K 行）</text>
+
+  <rect x="40" y="90" width="280" height="36" rx="6" fill="#EEEDFE" stroke="#AFA9EC" stroke-width="0.5"/>
+  <text x="180" y="112" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#3C3489">Session 级：ThreadManager + CodexThread</text>
+
+  <line x1="180" y1="126" x2="180" y2="140" stroke="#185FA5" stroke-width="0.8" marker-end="url(#ar)"/>
+
+  <rect x="40" y="140" width="280" height="36" rx="6" fill="#EEEDFE" stroke="#AFA9EC" stroke-width="0.5"/>
+  <text x="180" y="162" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#3C3489">Run 级：RegularTask::run() 循环</text>
+
+  <line x1="180" y1="176" x2="180" y2="190" stroke="#185FA5" stroke-width="0.8" marker-end="url(#ar)"/>
+
+  <rect x="40" y="190" width="280" height="36" rx="6" fill="#EEEDFE" stroke="#AFA9EC" stroke-width="0.5"/>
+  <text x="180" y="212" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#3C3489">Turn 级：run_turn() 内 loop</text>
+
+  <line x1="180" y1="226" x2="180" y2="240" stroke="#185FA5" stroke-width="0.8" marker-end="url(#ar)"/>
+
+  <rect x="40" y="240" width="280" height="36" rx="6" fill="#EEEDFE" stroke="#AFA9EC" stroke-width="0.5"/>
+  <text x="180" y="262" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#3C3489">采样级：try_run_sampling_request()</text>
+
+  <text x="180" y="300" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#378ADD">通信：SQ/EQ 异步双通道</text>
+  <text x="180" y="318" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#5F5E5A">tx_sub (Op) / tx_event (Event)</text>
+  <text x="180" y="336" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#378ADD">审批：Guardian AI + execpolicy</text>
+  <text x="180" y="354" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#378ADD">沙箱：Seatbelt/Landlock/Seccomp</text>
+  <text x="180" y="380" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#185FA5">停止：needs_follow_up + cancellation_token</text>
+
+  <rect x="345" y="50" width="310" height="350" rx="12" fill="#E1F5EE" stroke="#5DCAA5" stroke-width="0.5"/>
+  <text x="500" y="75" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="500" fill="#085041">Pi Agent（TypeScript，1,500 行）</text>
+
+  <rect x="360" y="90" width="280" height="36" rx="6" fill="#FAECE7" stroke="#F0997B" stroke-width="0.5"/>
+  <text x="500" y="112" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#712B13">Session 级：AgentSession 类</text>
+
+  <line x1="500" y1="126" x2="500" y2="140" stroke="#185FA5" stroke-width="0.8" marker-end="url(#ar)"/>
+
+  <rect x="360" y="140" width="280" height="36" rx="6" fill="#FAECE7" stroke="#F0997B" stroke-width="0.5"/>
+  <text x="500" y="162" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#712B13">Run 级：外层 while(true) + followUp 队列</text>
+
+  <line x1="500" y1="176" x2="500" y2="190" stroke="#185FA5" stroke-width="0.8" marker-end="url(#ar)"/>
+
+  <rect x="360" y="190" width="280" height="72" rx="6" fill="#FAECE7" stroke="#F0997B" stroke-width="0.5"/>
+  <text x="500" y="215" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#712B13">Turn 级：内层 while(hasMoreToolCalls</text>
+  <text x="500" y="235" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#712B13">|| pendingMessages.length > 0)</text>
+  <text x="500" y="253" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#5F5E5A">（Turn + 采样合并为一层）</text>
+
+  <text x="500" y="300" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#1D9E75">通信：同步 EventStream</text>
+  <text x="500" y="318" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#5F5E5A">agent.prompt() → await runAgentLoop()</text>
+  <text x="500" y="336" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#1D9E75">审批：无（透明透明）</text>
+  <text x="500" y="354" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#1D9E75">沙箱：无内置（按需容器化）</text>
+  <text x="500" y="380" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#1D9E75">停止：五级分层判断 + 模型自决</text>
+</svg>
