@@ -1,0 +1,60 @@
+<svg viewBox="0 0 680 520" width="100%" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>LoopX 六层控制平面架构图</title>
+  <desc>展示 LoopX 从目标到配额的完整控制层次：注册表、目标状态、运行日志、运行历史、注意力队列、计算配额</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#534AB7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- Layer 1: Registry -->
+  <rect x="40" y="30" width="600" height="70" rx="10" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+  <text x="340" y="50" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="500" fill="#26215C">1. Registry 注册表</text>
+  <text x="340" y="70" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#534AB7">goal_id / repos / adapters / authority sources / guards</text>
+  <text x="340" y="88" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#3C3489">持久身份 + 仓库边界 + 守卫规则</text>
+
+  <!-- Arrow 1→2 -->
+  <line x1="340" y1="100" x2="340" y2="120" stroke="#534AB7" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Layer 2: Goal State -->
+  <rect x="40" y="120" width="600" height="70" rx="10" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+  <text x="340" y="140" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="500" fill="#04342C">2. Goal State 目标状态</text>
+  <text x="340" y="160" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#0F6E56">current belief / priority stack / non-goals / next action</text>
+  <text x="340" y="178" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#085041">单目标的活跃状态文件——不成为完整日记</text>
+
+  <!-- Arrow 2→3 -->
+  <line x1="340" y1="190" x2="340" y2="210" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Layer 3: Run Log -->
+  <rect x="40" y="210" width="600" height="60" rx="10" fill="#EAF3DE" stroke="#3B6D11" stroke-width="0.5"/>
+  <text x="340" y="230" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="500" fill="#173404">3. Run Log 运行日志</text>
+  <text x="340" y="250" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#639922">JSON + Markdown 格式报告，可审计的证据轨迹</text>
+
+  <!-- Arrow 3→4 -->
+  <line x1="340" y1="270" x2="340" y2="290" stroke="#3B6D11" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Layer 4: Run History -->
+  <rect x="40" y="290" width="600" height="60" rx="10" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+  <text x="340" y="310" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="500" fill="#412402">4. Run History 运行历史</text>
+  <text x="340" y="330" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#EF9F27">紧凑索引，跨会话保留证据，Agent / 心跳 / UI 消费</text>
+
+  <!-- Arrow 4→5 -->
+  <line x1="340" y1="350" x2="340" y2="370" stroke="#854F0B" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Layer 5: Status / Attention Queue -->
+  <rect x="40" y="370" width="600" height="60" rx="10" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/>
+  <text x="340" y="390" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="500" fill="#4A1B0C">5. Status / Attention Queue 注意力队列</text>
+  <text x="340" y="410" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#D85A30">首屏摘要：谁需要下一步？契约失败 / 等待选择 / 准备就绪 / 只读目标</text>
+
+  <!-- Arrow 5→6 -->
+  <line x1="340" y1="430" x2="340" y2="450" stroke="#993C1D" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Layer 6: Compute Quota -->
+  <rect x="40" y="450" width="600" height="60" rx="10" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+  <text x="340" y="470" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="500" fill="#042C53">6. Compute Quota 计算配额</text>
+  <text x="340" y="490" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#378ADD">本地策略：每个目标可消耗多少自动 Agent 计算资源，内核决策</text>
+
+  <!-- Side annotation -->
+  <rect x="10" y="280" width="20" height="200" rx="3" fill="#534AB7" opacity="0.15"/>
+  <text x="20" y="390" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#534AB7" transform="rotate(-90, 20, 390)">持久化控制平面</text>
+</svg>

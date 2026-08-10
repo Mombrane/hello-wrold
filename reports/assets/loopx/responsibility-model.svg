@@ -1,0 +1,69 @@
+<svg viewBox="0 0 680 420" width="100%" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>LoopX 四角色责任分离模型</title>
+  <desc>展示 Agent、Provider、Capability、Kernel 四层运行时责任方的拥有项和边界</desc>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#534AB7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- Agent -->
+  <rect x="30" y="30" width="145" height="130" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+  <text x="102" y="52" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="500" fill="#26215C">Agent 代理</text>
+  <line x1="40" y1="60" x2="165" y2="60" stroke="#534AB7" stroke-width="0.3"/>
+  <text x="102" y="78" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#3C3489">拥有：规划、分析、工具使用、</text>
+  <text x="102" y="94" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#3C3489">一次有界执行</text>
+  <rect x="48" y="105" width="110" height="22" rx="4" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+  <text x="103" y="120" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#791F1F">不拥有：持久化目标生命周期</text>
+  <rect x="48" y="130" width="110" height="22" rx="4" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+  <text x="103" y="145" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#791F1F">不拥有：无范围效果授权</text>
+
+  <!-- Arrow Agent→Provider -->
+  <line x1="175" y1="95" x2="215" y2="95" stroke="#534AB7" stroke-width="1.2" marker-end="url(#arr)"/>
+
+  <!-- Provider -->
+  <rect x="220" y="30" width="145" height="130" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+  <text x="292" y="52" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="500" fill="#04342C">Provider 提供者</text>
+  <line x1="230" y1="60" x2="355" y2="60" stroke="#0F6E56" stroke-width="0.3"/>
+  <text x="292" y="78" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#085041">拥有：外部调用、有界观察、</text>
+  <text x="292" y="94" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#085041">效果结果、回读</text>
+  <rect x="238" y="105" width="110" height="22" rx="4" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+  <text x="293" y="120" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#791F1F">不拥有：领域转换策略</text>
+  <rect x="238" y="130" width="110" height="22" rx="4" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+  <text x="293" y="145" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#791F1F">不拥有：LoopX Todo 状态</text>
+
+  <!-- Arrow Provider→Capability -->
+  <line x1="365" y1="95" x2="405" y2="95" stroke="#0F6E56" stroke-width="1.2" marker-end="url(#arr)"/>
+
+  <!-- Capability -->
+  <rect x="410" y="30" width="145" height="130" rx="8" fill="#EAF3DE" stroke="#3B6D11" stroke-width="0.5"/>
+  <text x="482" y="52" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="500" fill="#173404">Capability 能力</text>
+  <line x1="420" y1="60" x2="545" y2="60" stroke="#3B6D11" stroke-width="0.3"/>
+  <text x="482" y="78" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#27500A">拥有：调用方结果契约、领域</text>
+  <text x="482" y="94" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#27500A">策略、验证、类型化转换提案</text>
+  <rect x="428" y="105" width="110" height="22" rx="4" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+  <text x="483" y="120" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#791F1F">不拥有：持久化调度、声明</text>
+  <rect x="428" y="130" width="110" height="22" rx="4" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+  <text x="483" y="145" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#791F1F">不拥有：门控、直接生命周期写入</text>
+
+  <!-- Arrow Capability→Kernel -->
+  <line x1="555" y1="95" x2="595" y2="95" stroke="#3B6D11" stroke-width="1.2" marker-end="url(#arr)"/>
+
+  <!-- Kernel -->
+  <rect x="40" y="190" width="600" height="80" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+  <text x="340" y="212" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="500" fill="#042C53">Kernel 内核——唯一持久化控制权威</text>
+  <text x="340" y="232" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#378ADD">目标 · Todo · 声明 · 门控 · 监控 · 配额 · 写回 · 恢复 · 调度</text>
+  <text x="340" y="252" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#185FA5">不拥有：领域特定推理、提供者实现细节</text>
+
+  <!-- Key constraints box -->
+  <rect x="40" y="290" width="600" height="120" rx="8" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/>
+  <text x="340" y="312" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="500" fill="#4A1B0C">关键安全约束</text>
+  <rect x="60" y="322" width="270" height="36" rx="5" fill="#FFFFFF" stroke="#D85A30" stroke-width="0.5"/>
+  <text x="195" y="344" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#993C1D">观察（observation）≠ 转换（transition）</text>
+  <rect x="350" y="322" width="270" height="36" rx="5" fill="#FFFFFF" stroke="#D85A30" stroke-width="0.5"/>
+  <text x="485" y="344" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#993C1D">提供者收据 ≠ 已接受的进展</text>
+  <rect x="60" y="366" width="270" height="36" rx="5" fill="#FFFFFF" stroke="#D85A30" stroke-width="0.5"/>
+  <text x="195" y="388" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#993C1D">验证前不写入目标状态</text>
+  <rect x="350" y="366" width="270" height="36" rx="5" fill="#FFFFFF" stroke="#D85A30" stroke-width="0.5"/>
+  <text x="485" y="388" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#993C1D">领域状态是交换制品，非所有者</text>
+</svg>

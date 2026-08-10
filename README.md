@@ -6,6 +6,7 @@ AI Agent 技术调研与架构分析报告集。
 
 | 日期 | 报告 | 主题 |
 |------|------|------|
+| 2026-08-10 | [LoopX 深度调研：面向长程 AI Agent 的轻量级控制平面](reports/loopx-report.md) | 3,810 Stars 开源项目全解析：六层控制平面架构、效果解释器模型、四角色责任分离、7 种 Agent 宿主生态、vs LangGraph/CrewAI/AutoGPT 十维对比、3 张 SVG + 批判性分析 + 对 CodeBuddy 的 3 条启示 |
 | 2026-08-05 | [Codex CLI vs Pi Agent：Agent Loop 实现对比分析](reports/codex-vs-pi-report.md) | 双源码对比：三层 vs 双层循环、SQ/EQ 异步队列对 vs EventStream、Guardian AI 审批 vs 无审批、OS 沙箱 vs 无沙箱、8 维对比 + 1 张 SVG + 5 条启示 |
 | 2026-08-05 | [Pi Agent 运行机制深度分析：Agent Loop、上下文组装与 ReAct 架构](reports/pi-agent-loop-report.md) | 源码级拆解：双层 while 循环（793 行 agent-loop.ts）、convertToLlm 消息转换管道（7 种 AgentMessage→3 种 LLM Message）、五级停止识别、隐式 ReAct 映射、3 张 SVG + 批判性分析 + 对 Agent 开发的 4 条启示 |
 | 2026-08-04 | [Pi Agent 技术深度调研：极简主义如何重新定义 AI 编码代理](reports/pi-agent-report.md) | 83K Stars 极简编码代理框架全解析：4 工具/&lt;1K token/15+ 模型支持、四层架构拆解、Skills+Extensions+Packages 自扩展系统、与 Claude Code/Codex/Cursor 六维对比、3 张 SVG 插图 + 批判性分析 + 对 WorkBuddy 的 5 条启示 |
