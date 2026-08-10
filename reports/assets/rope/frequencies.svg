@@ -1,0 +1,30 @@
+<svg role="img" viewBox="0 0 680 360" width="100%" xmlns="http://www.w3.org/2000/svg">
+  <title>RoPE 的多尺度频率设计：不同维度对被分配不同的旋转频率</title>
+  <desc>head_dim=128 时，64 对维度的频率从 1.0 降至约 0.000115，分别捕获局部和全局位置信息</desc>
+
+  <text x="340" y="24" text-anchor="middle" fill="#2C2C2A" font-family="sans-serif" font-size="14px" font-weight="500">RoPE 多尺度频率设计 (theta=10000, head_dim=128)</text>
+
+  <rect x="40" y="40" width="600" height="50" rx="8" fill="#E6F1FB" stroke="#378ADD" stroke-width="0.5"/>
+  <text x="60" y="58" fill="#0C447C" font-family="sans-serif" font-size="12px">维度对 i=0, 频率=1.000</text>
+  <text x="60" y="76" fill="#185FA5" font-family="sans-serif" font-size="12px">旋转最快, 约 6 tokens 一个周期, 捕获相邻 token 的精细位置差</text>
+
+  <rect x="40" y="100" width="600" height="50" rx="8" fill="#CECBF6" stroke="#534AB7" stroke-width="0.5"/>
+  <text x="60" y="118" fill="#534AB7" font-family="sans-serif" font-size="12px">维度对 i=16, 频率=0.100</text>
+  <text x="60" y="136" fill="#7F77DD" font-family="sans-serif" font-size="12px">中频, 约 63 tokens 一个周期, 覆盖句子级上下文</text>
+
+  <rect x="40" y="160" width="600" height="50" rx="8" fill="#EEEDFE" stroke="#AFA9EC" stroke-width="0.5"/>
+  <text x="60" y="178" fill="#534AB7" font-family="sans-serif" font-size="12px">维度对 i=32, 频率=0.010</text>
+  <text x="60" y="196" fill="#7F77DD" font-family="sans-serif" font-size="12px">低频, 约 628 tokens 一个周期, 覆盖段落级长程依赖</text>
+
+  <rect x="40" y="220" width="600" height="50" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+  <text x="60" y="238" fill="#085041" font-family="sans-serif" font-size="12px">维度对 i=48, 频率=0.0010</text>
+  <text x="60" y="256" fill="#1D9E75" font-family="sans-serif" font-size="12px">极低频, 约 6283 tokens 一个周期, 用于区分长文档中的全局位置</text>
+
+  <rect x="40" y="280" width="600" height="50" rx="8" fill="#9FE1CB" stroke="#0F6E56" stroke-width="0.5"/>
+  <text x="60" y="298" fill="#085041" font-family="sans-serif" font-size="12px">维度对 i=63, 频率≈0.000115</text>
+  <text x="60" y="316" fill="#1D9E75" font-family="sans-serif" font-size="12px">最慢旋转, 约 54410 tokens 一个周期, 防止超长上下文中位置编码退化</text>
+
+  <rect x="160" y="336" width="360" height="18" rx="4" fill="#FAEEDA" stroke="#EF9F27" stroke-width="0.5"/>
+  <text x="340" y="348" text-anchor="middle" dominant-baseline="central" fill="#854F0B" font-family="sans-serif" font-size="12px">theta=500000 (Llama 3) 时低频退化更慢, 支持 128K 上下文</text>
+
+</svg>
