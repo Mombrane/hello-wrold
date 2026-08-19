@@ -1,0 +1,48 @@
+<svg viewBox="0 0 680 380" width="100%" role="img" xmlns="http://www.w3.org/2000/svg" style="font-family: var(--font-sans)">
+  <title>Pi 自我进化闭环</title>
+  <desc>agent 编写扩展或技能文件，重载后新能力注入 LLM，能力增强后继续编写更复杂的能力</desc>
+  <defs>
+    <marker id="arrowC" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <text x="40" y="36" font-size="15" font-weight="500" fill="#444441">自我进化闭环：写能力 → 重载 → 注入 → 变强</text>
+  <g>
+    <rect x="40" y="60" width="290" height="62" rx="12" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="185" y="82" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#085041">1. agent 写能力代码</text>
+    <text x="185" y="102" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#0F6E56">用内置工具（write/edit/bash/read）</text>
+  </g>
+  <g>
+    <rect x="350" y="60" width="290" height="62" rx="12" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="495" y="82" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#085041">2. 两种能力载体</text>
+    <text x="495" y="102" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#0F6E56">扩展 .ts（注册工具）+ SKILL.md（技能）</text>
+  </g>
+  <path d="M332 91 L348 91" fill="none" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrowC)"/>
+  <g>
+    <rect x="40" y="156" width="290" height="62" rx="12" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+    <text x="185" y="178" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#633806">3. /reload 热重载</text>
+    <text x="185" y="198" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#854F0B">jiti 重新加载 · 清扩展缓存</text>
+  </g>
+  <g>
+    <rect x="350" y="156" width="290" height="62" rx="12" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+    <text x="495" y="178" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#633806">4. 新能力注入 LLM</text>
+    <text x="495" y="198" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#854F0B">addedToolNames + deferred loading</text>
+  </g>
+  <path d="M332 187 L348 187" fill="none" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrowC)"/>
+  <g>
+    <rect x="195" y="252" width="290" height="56" rx="12" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="340" y="274" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#085041">5. 能力增长，写更复杂的能力</text>
+    <text x="340" y="294" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#0F6E56">回到第 1 步（自举循环）</text>
+  </g>
+  <path d="M495 220 L495 250" fill="none" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrowC)"/>
+  <path d="M185 220 L185 250" fill="none" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrowC)"/>
+  <path d="M340 310 C 340 340, 120 340, 120 320" fill="none" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arrowC)"/>
+  <g>
+    <rect x="40" y="330" width="290" height="40" rx="10" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
+    <text x="185" y="350" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="500" fill="#444441">Skills：SKILL.md → &lt;skill&gt; 块注入 prompt</text>
+  </g>
+  <g>
+    <rect x="350" y="330" width="290" height="40" rx="10" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
+    <text x="495" y="350" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="500" fill="#444441">扩展：registerTool() 注册新工具 / 命令 / 提供商</text>
+  </g>
+</svg>

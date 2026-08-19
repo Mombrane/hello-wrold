@@ -1,0 +1,46 @@
+<svg viewBox="0 0 680 270" width="100%" role="img" xmlns="http://www.w3.org/2000/svg" style="font-family: var(--font-sans)">
+  <title>Pi 扩展加载管线</title>
+  <desc>扩展文件经发现规则、jiti 加载、工厂函数执行后注册进工具集并注入 LLM</desc>
+  <defs>
+    <marker id="arrowA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <text x="40" y="36" font-size="15" font-weight="500" fill="#444441">扩展加载管线：从文件到 LLM 工具集（loader.ts）</text>
+  <g>
+    <rect x="40" y="60" width="180" height="56" rx="10" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="130" y="80" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#085041">1. 扩展文件</text>
+    <text x="130" y="98" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#0F6E56">extensions/*.ts</text>
+  </g>
+  <g>
+    <rect x="250" y="60" width="180" height="56" rx="10" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="340" y="80" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#085041">2. 发现规则</text>
+    <text x="340" y="98" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#0F6E56">项目 .pi / 全局 / 配置</text>
+  </g>
+  <g>
+    <rect x="460" y="60" width="180" height="56" rx="10" fill="#9FE1CB" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="550" y="80" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#04342C">3. jiti 动态加载</text>
+    <text x="550" y="98" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#085041">二进制内嵌 virtualModules</text>
+  </g>
+  <path d="M222 88 L248 88" fill="none" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrowA)"/>
+  <path d="M432 88 L458 88" fill="none" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrowA)"/>
+  <path d="M550 118 L550 166" fill="none" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrowA)"/>
+  <g>
+    <rect x="460" y="168" width="180" height="56" rx="10" fill="#9FE1CB" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="550" y="188" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#04342C">4. factory(api) 执行</text>
+    <text x="550" y="206" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#085041">注册型 API 写进扩展对象</text>
+  </g>
+  <path d="M458 196 L432 196" fill="none" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrowA)"/>
+  <g>
+    <rect x="250" y="168" width="180" height="56" rx="10" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="340" y="188" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#085041">5. registerTool()</text>
+    <text x="340" y="206" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#0F6E56">注入工具定义集合</text>
+  </g>
+  <path d="M248 196 L222 196" fill="none" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrowA)"/>
+  <g>
+    <rect x="40" y="168" width="180" height="56" rx="10" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+    <text x="130" y="188" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#633806">6. 注入 LLM 工具集</text>
+    <text x="130" y="206" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#854F0B">下一轮即可被调用</text>
+  </g>
+  <text x="40" y="252" font-size="12" fill="#5F5E5A">/reload 或 ctx.reload() 触发 clearExtensionCache() 全量重扫</text>
+</svg>
