@@ -1,0 +1,28 @@
+<svg viewBox="0 0 680 238" width="100%" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>Qwen3.8-27B 与 DeepSeek V4 Flash 0731 第三方指数对比</title>
+  <desc>Qwen3.8-27B 智能指数 52 与 DeepSeek V4 Flash 0731 的 51.8 几乎打平，Agentic 指数 Qwen 51 领先 DeepSeek 48</desc>
+  <text x="40" y="28" font-size="15" font-weight="500" fill="#2C2C2A" font-family="var(--font-sans)">第三方评测对比（Artificial Analysis，2026-08-20 榜）</text>
+  <text x="40" y="54" font-size="14" font-weight="500" fill="#2C2C2A" font-family="var(--font-sans)">AII 智能指数（9 项综合）</text>
+  <text x="40" y="72" font-size="13" font-weight="500" fill="#26215C" font-family="var(--font-sans)">Qwen3.8-27B</text>
+  <text x="40" y="88" font-size="11" fill="#5F5E5A" font-family="var(--font-sans)">27B dense</text>
+  <rect x="140" y="62" width="416" height="18" rx="4" fill="#AFA9EC" stroke="#534AB7" stroke-width="0.5"/>
+  <text x="566" y="74" font-size="13" font-weight="500" fill="#2C2C2A" font-family="var(--font-sans)">52</text>
+  <text x="40" y="112" font-size="13" font-weight="500" fill="#0C447C" font-family="var(--font-sans)">DeepSeek V4 Flash 0731</text>
+  <text x="40" y="128" font-size="11" fill="#5F5E5A" font-family="var(--font-sans)">284B MoE / 13B 激活</text>
+  <rect x="140" y="102" width="414" height="18" rx="4" fill="#85B7EB" stroke="#185FA5" stroke-width="0.5"/>
+  <text x="564" y="114" font-size="13" font-weight="500" fill="#2C2C2A" font-family="var(--font-sans)">51.8</text>
+  <line x1="556" y1="56" x2="556" y2="124" stroke="#888780" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="140" y1="124" x2="640" y2="124" stroke="#B4B2A9" stroke-width="0.5"/>
+  <text x="140" y="140" font-size="11" fill="#5F5E5A" font-family="var(--font-sans)">0</text>
+  <text x="293" y="140" font-size="11" fill="#5F5E5A" font-family="var(--font-sans)">20</text>
+  <text x="446" y="140" font-size="11" fill="#5F5E5A" font-family="var(--font-sans)">40</text>
+  <text x="632" y="140" font-size="11" fill="#5F5E5A" font-family="var(--font-sans)">60</text>
+  <text x="40" y="166" font-size="14" font-weight="500" fill="#2C2C2A" font-family="var(--font-sans)">Agentic 指数（智能体任务）</text>
+  <text x="40" y="184" font-size="13" font-weight="500" fill="#26215C" font-family="var(--font-sans)">Qwen3.8-27B</text>
+  <rect x="140" y="170" width="408" height="18" rx="4" fill="#AFA9EC" stroke="#534AB7" stroke-width="0.5"/>
+  <text x="558" y="183" font-size="13" font-weight="500" fill="#2C2C2A" font-family="var(--font-sans)">51</text>
+  <text x="40" y="216" font-size="13" font-weight="500" fill="#0C447C" font-family="var(--font-sans)">DeepSeek V4 Flash 0731</text>
+  <rect x="140" y="202" width="384" height="18" rx="4" fill="#85B7EB" stroke="#185FA5" stroke-width="0.5"/>
+  <text x="534" y="215" font-size="13" font-weight="500" fill="#2C2C2A" font-family="var(--font-sans)">48</text>
+  <text x="40" y="230" font-size="11" fill="#888780" font-family="var(--font-sans)">虚线 = GPT-5.6 Luna (max) 52 分参考线</text>
+</svg>

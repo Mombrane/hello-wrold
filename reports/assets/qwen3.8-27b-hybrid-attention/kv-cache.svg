@@ -1,0 +1,21 @@
+<svg viewBox="0 0 680 210" width="100%" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>KV 缓存账本对比</title>
+  <desc>262K 上下文下 64 层全注意力需 64 GiB，Qwen 3:1 混合只需 16 GiB，约四倍节省</desc>
+  <text x="40" y="28" font-size="15" font-weight="500" fill="#2C2C2A" font-family="var(--font-sans)">KV 缓存对比（BF16，全注意力层 GQA 4 KV 头 × 256 维）</text>
+  <text x="40" y="56" font-size="13" font-weight="500" fill="#2C2C2A" font-family="var(--font-sans)">上下文 262K</text>
+  <text x="70" y="80" font-size="12" fill="#5F5E5A" font-family="var(--font-sans)">64 层全注意力</text>
+  <rect x="200" y="70" width="77" height="16" rx="4" fill="#F5C4B3" stroke="#993C1D" stroke-width="0.5"/>
+  <text x="285" y="81" font-size="12" font-weight="500" fill="#993C1D" font-family="var(--font-sans)">64 GiB</text>
+  <text x="70" y="102" font-size="12" fill="#5F5E5A" font-family="var(--font-sans)">Qwen 3:1 混合</text>
+  <rect x="200" y="92" width="19" height="16" rx="4" fill="#9FE1CB" stroke="#0F6E56" stroke-width="0.5"/>
+  <text x="227" y="103" font-size="12" font-weight="500" fill="#0F6E56" font-family="var(--font-sans)">16 GiB</text>
+  <text x="330" y="103" font-size="12" font-weight="500" fill="#0F6E56" font-family="var(--font-sans)">≈ 4× 节省</text>
+  <line x1="40" y1="120" x2="640" y2="120" stroke="#D3D1C7" stroke-width="0.5"/>
+  <text x="40" y="144" font-size="13" font-weight="500" fill="#2C2C2A" font-family="var(--font-sans)">上下文 1M</text>
+  <text x="70" y="168" font-size="12" fill="#5F5E5A" font-family="var(--font-sans)">64 层全注意力</text>
+  <rect x="200" y="158" width="307" height="16" rx="4" fill="#F5C4B3" stroke="#993C1D" stroke-width="0.5"/>
+  <text x="515" y="169" font-size="12" font-weight="500" fill="#993C1D" font-family="var(--font-sans)">256 GiB</text>
+  <text x="70" y="192" font-size="12" fill="#5F5E5A" font-family="var(--font-sans)">Qwen 3:1 混合</text>
+  <rect x="200" y="182" width="77" height="16" rx="4" fill="#9FE1CB" stroke="#0F6E56" stroke-width="0.5"/>
+  <text x="285" y="193" font-size="12" font-weight="500" fill="#0F6E56" font-family="var(--font-sans)">64 GiB</text>
+</svg>

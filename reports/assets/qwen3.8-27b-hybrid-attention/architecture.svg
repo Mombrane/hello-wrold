@@ -1,0 +1,30 @@
+<svg viewBox="0 0 680 170" width="100%" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>Qwen3.8-27B 混合注意力布局</title>
+  <desc>64 层由 16 组三比一混合构成：48 层 Gated DeltaNet 线性注意力加 16 层 Gated Attention</desc>
+  <text x="40" y="28" font-size="15" font-weight="500" fill="#2C2C2A" font-family="var(--font-sans)">Qwen3.8-27B 混合注意力布局（64 层语言模型）</text>
+  <text x="40" y="48" font-size="12" fill="#5F5E5A" font-family="var(--font-sans)">一个重复单元 = 3 层线性注意力 + 1 层全注意力，循环 16 次</text>
+  <rect x="70" y="64" width="92" height="34" rx="6" fill="#AFA9EC" stroke="#534AB7" stroke-width="0.5"/>
+  <text x="116" y="77" font-size="12" font-weight="500" fill="#26215C" text-anchor="middle" font-family="var(--font-sans)">Gated</text>
+  <text x="116" y="91" font-size="12" font-weight="500" fill="#26215C" text-anchor="middle" font-family="var(--font-sans)">DeltaNet</text>
+  <rect x="172" y="64" width="92" height="34" rx="6" fill="#AFA9EC" stroke="#534AB7" stroke-width="0.5"/>
+  <text x="218" y="77" font-size="12" font-weight="500" fill="#26215C" text-anchor="middle" font-family="var(--font-sans)">Gated</text>
+  <text x="218" y="91" font-size="12" font-weight="500" fill="#26215C" text-anchor="middle" font-family="var(--font-sans)">DeltaNet</text>
+  <rect x="274" y="64" width="92" height="34" rx="6" fill="#AFA9EC" stroke="#534AB7" stroke-width="0.5"/>
+  <text x="320" y="77" font-size="12" font-weight="500" fill="#26215C" text-anchor="middle" font-family="var(--font-sans)">Gated</text>
+  <text x="320" y="91" font-size="12" font-weight="500" fill="#26215C" text-anchor="middle" font-family="var(--font-sans)">DeltaNet</text>
+  <rect x="376" y="64" width="92" height="34" rx="6" fill="#85B7EB" stroke="#185FA5" stroke-width="0.5"/>
+  <text x="422" y="77" font-size="12" font-weight="500" fill="#0C447C" text-anchor="middle" font-family="var(--font-sans)">Gated</text>
+  <text x="422" y="91" font-size="12" font-weight="500" fill="#0C447C" text-anchor="middle" font-family="var(--font-sans)">Attention</text>
+  <rect x="70" y="104" width="92" height="14" rx="3" fill="#D3D1C7" stroke="#5F5E5A" stroke-width="0.5"/>
+  <rect x="172" y="104" width="92" height="14" rx="3" fill="#D3D1C7" stroke="#5F5E5A" stroke-width="0.5"/>
+  <rect x="274" y="104" width="92" height="14" rx="3" fill="#D3D1C7" stroke="#5F5E5A" stroke-width="0.5"/>
+  <rect x="376" y="104" width="92" height="14" rx="3" fill="#D3D1C7" stroke="#5F5E5A" stroke-width="0.5"/>
+  <text x="116" y="114" font-size="11" fill="#2C2C2A" text-anchor="middle" font-family="var(--font-sans)">FFN</text>
+  <text x="218" y="114" font-size="11" fill="#2C2C2A" text-anchor="middle" font-family="var(--font-sans)">FFN</text>
+  <text x="320" y="114" font-size="11" fill="#2C2C2A" text-anchor="middle" font-family="var(--font-sans)">FFN</text>
+  <text x="422" y="114" font-size="11" fill="#2C2C2A" text-anchor="middle" font-family="var(--font-sans)">FFN</text>
+  <text x="500" y="83" font-size="13" font-weight="500" fill="#2C2C2A" font-family="var(--font-sans)">× 16 组</text>
+  <text x="500" y="101" font-size="12" fill="#5F5E5A" font-family="var(--font-sans)">= 64 层</text>
+  <text x="40" y="146" font-size="12" fill="#5F5E5A" font-family="var(--font-sans)">紫 = Gated DeltaNet（48 层，线性注意力，状态固定）</text>
+  <text x="352" y="146" font-size="12" fill="#5F5E5A" font-family="var(--font-sans)">蓝 = Gated Attention（16 层，全注意力）</text>
+</svg>

@@ -6,6 +6,7 @@ AI Agent 技术调研与架构分析报告集。
 
 | 日期 | 报告 | 主题 |
 |------|------|------|
+| 2026-08-20 | [Qwen3.8-27B 混合注意力架构深度分析：27B 稠密模型如何打出前沿智能](reports/qwen3.8-27b-hybrid-attention-report.md) | 3:1 混合注意力拆解（48 GatedDeltaNet + 16 GatedAttention、KV 缓存 4 倍节省、GatedDeltaNet 橡皮擦+铅笔记忆管理、MTP/多模态/后训练 RL）+ vs DeepSeek V4 Flash 0731 路线对比（状态压缩 vs 参数稀疏）+ 4 张 SVG + 批判性分析 + 对 Hermes 的 4 条启示 |
 | 2026-08-19 | [Pi Agent 自我进化机制深度剖析：addedToolNames 运行时注入与自举闭环](reports/pi-self-extension-report.md) | 93.5K Stars 自扩展闭环源码级拆解：扩展加载管线（jiti + virtualModules + 三层发现）、addedToolNames 三层注入链路（wrapper→agent-loop→provider deferred loading，不毁缓存前缀）、SKILL.md 双载体、本地实测 v0.84.2、3 张 SVG + 批判性分析 + 对 Hermes 的 5 条启示 |
 | 2026-08-10 | [RoPE 旋转位置编码：原理、实现与长上下文扩展](reports/rope-report.md) | 数学原理（2D→d 维分块旋转、矩阵乘积消去绝对位置）+ HuggingFace LLaMA 源码逐函数分析（rotate_half 技巧、惰性 cos/sin 缓存、KV Cache 偏移）+ 5 种长上下文扩展方案对比（Linear/NTK/YaRN/LongRoPE/iRoPE）+ 批判性分析与 3 条可迁移设计 |
 | 2026-08-10 | [LoopX 深度调研：面向长程 AI Agent 的轻量级控制平面](reports/loopx-report.md) | 3,810 Stars 开源项目全解析：六层控制平面架构、效果解释器模型、四角色责任分离、7 种 Agent 宿主生态、vs LangGraph/CrewAI/AutoGPT 十维对比、3 张 SVG + 批判性分析 + 对 CodeBuddy 的 3 条启示 |
