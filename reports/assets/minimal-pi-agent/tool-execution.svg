@@ -1,0 +1,46 @@
+<svg viewBox="0 0 680 440" width="100%" role="img" xmlns="http://www.w3.org/2000/svg" style="font-family: var(--font-sans)">
+  <title>minimal-pi 工具执行管线</title>
+  <desc>工具调用经注册表查找、参数解析、执行与截断后以字符串回灌 LLM，所有失败走错误回灌而非崩溃</desc>
+  <defs>
+    <marker id="arrowM2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <text x="40" y="36" font-size="15" font-weight="500" fill="#444441">工具执行管线：所有失败都回灌错误文本，让 LLM 自愈而非崩溃</text>
+  <g>
+    <rect x="60" y="56" width="560" height="44" rx="10" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="340" y="78" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#085041">LLM 返回 tool_call（name + arguments JSON 字符串）</text>
+  </g>
+  <path d="M340 102 L340 122" fill="none" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrowM2)"/>
+  <g>
+    <rect x="60" y="124" width="360" height="44" rx="10" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="240" y="146" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#085041">查注册表 TOOLS[name]</text>
+  </g>
+  <g>
+    <rect x="460" y="124" width="160" height="44" rx="10" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+    <text x="540" y="146" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#791F1F">未知 → Error 回灌</text>
+  </g>
+  <path d="M422 146 L458 146" fill="none" stroke="#A32D2D" stroke-width="1.5" marker-end="url(#arrowM2)"/>
+  <path d="M240 170 L240 190" fill="none" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrowM2)"/>
+  <g>
+    <rect x="60" y="192" width="360" height="44" rx="10" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+    <text x="240" y="214" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#633806">解析 arguments（坏 JSON → Error 回灌）</text>
+  </g>
+  <g>
+    <rect x="460" y="192" width="160" height="44" rx="10" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+    <text x="540" y="214" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#791F1F">缺参/坏 JSON → Error</text>
+  </g>
+  <path d="M422 214 L458 214" fill="none" stroke="#A32D2D" stroke-width="1.5" marker-end="url(#arrowM2)"/>
+  <path d="M240 238 L240 258" fill="none" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrowM2)"/>
+  <g>
+    <rect x="60" y="260" width="560" height="44" rx="10" fill="#9FE1CB" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="340" y="282" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#04342C">执行工具（read/write/edit/bash · bash 带 (exit N) 退出码）</text>
+  </g>
+  <path d="M340 306 L340 326" fill="none" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrowM2)"/>
+  <g>
+    <rect x="60" y="328" width="560" height="44" rx="10" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="340" y="350" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#085041">结果截断 8000 字符 → 字符串回灌（tool_call_id 配对）</text>
+  </g>
+  <path d="M340 374 C 340 398, 130 398, 130 372" fill="none" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arrowM2)"/>
+  <text x="130" y="412" text-anchor="middle" font-size="11" fill="#0F6E56">回灌后回到循环：LLM 基于结果继续或给出最终答案</text>
+</svg>
