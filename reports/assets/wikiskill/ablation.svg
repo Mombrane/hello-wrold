@@ -1,0 +1,50 @@
+<svg viewBox="0 0 680 320" width="100%" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>wiki 访问权限消融实验结果</title>
+  <desc>横向条形图：五种 wiki 访问配置下 Gemini-3.5-Flash 在四个基准上的平均准确率。仅 Skill Proposer 读 wiki 的默认配置得分最高（63.7%）。</desc>
+  <text x="40" y="34" font-family="sans-serif" font-size="13" fill="#5F5E5A">wiki 访问权限消融（Gemini-3.5-Flash，四基准平均准确率 %）</text>
+
+  <g stroke="#D3D1C7" stroke-width="0.5">
+    <line x1="200" y1="56" x2="200" y2="286"/>
+    <line x1="305" y1="56" x2="305" y2="286"/>
+    <line x1="410" y1="56" x2="410" y2="286"/>
+    <line x1="515" y1="56" x2="515" y2="286"/>
+    <line x1="620" y1="56" x2="620" y2="286"/>
+  </g>
+  <g font-family="sans-serif" font-size="11" fill="#888780" text-anchor="middle">
+    <text x="200" y="302">0</text>
+    <text x="305" y="302">17.5</text>
+    <text x="410" y="302">35</text>
+    <text x="515" y="302">52.5</text>
+    <text x="620" y="302">70</text>
+  </g>
+
+  <g font-family="sans-serif" font-size="12" fill="#444441" text-anchor="end">
+    <text x="190" y="74" dominant-baseline="central">无技能基线</text>
+    <rect x="200" y="62" width="242.4" height="26" rx="4" fill="#B4B2A9" stroke="#5F5E5A" stroke-width="0.5"/>
+    <text x="450" y="75" dominant-baseline="central">40.4</text>
+  </g>
+
+  <g font-family="sans-serif" font-size="12" fill="#444441" text-anchor="end">
+    <text x="190" y="118" dominant-baseline="central">仅推理 Agent 读</text>
+    <rect x="200" y="106" width="271.8" height="26" rx="4" fill="#B4B2A9" stroke="#5F5E5A" stroke-width="0.5"/>
+    <text x="480" y="119" dominant-baseline="central">45.3</text>
+  </g>
+
+  <g font-family="sans-serif" font-size="12" fill="#444441" text-anchor="end">
+    <text x="190" y="162" dominant-baseline="central">两者都不读</text>
+    <rect x="200" y="150" width="292.2" height="26" rx="4" fill="#B4B2A9" stroke="#5F5E5A" stroke-width="0.5"/>
+    <text x="500" y="163" dominant-baseline="central">48.7</text>
+  </g>
+
+  <g font-family="sans-serif" font-size="12" fill="#444441" text-anchor="end">
+    <text x="190" y="206" dominant-baseline="central">推理 + Proposer 都读</text>
+    <rect x="200" y="194" width="365.4" height="26" rx="4" fill="#5DCAA5" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="573" y="207" dominant-baseline="central">60.9</text>
+  </g>
+
+  <g font-family="sans-serif" font-size="12" fill="#085041" font-weight="500" text-anchor="end">
+    <text x="190" y="250" dominant-baseline="central">仅 Proposer 读（默认）</text>
+    <rect x="200" y="238" width="382.2" height="26" rx="4" fill="#1D9E75" stroke="#0F6E56" stroke-width="1.5"/>
+    <text x="590" y="251" dominant-baseline="central" fill="#085041">63.7</text>
+  </g>
+</svg>

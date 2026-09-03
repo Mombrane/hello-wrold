@@ -1,0 +1,91 @@
+<svg viewBox="0 0 680 400" width="100%" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>五个模型上各方法五基准平均准确率对比</title>
+  <desc>分组柱状图：每个模型三根柱子分别代表无技能、最强基线（Trace2Skill/EvoSkill/SkillOpt 中该模型最优者）与 WikiSkill 的五基准平均准确率。WikiSkill 在全部五个模型上均为最高。</desc>
+  <defs>
+    <pattern id="diag" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
+      <rect width="6" height="6" fill="#B5D4F4"/>
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#185FA5" stroke-width="1.5"/>
+    </pattern>
+  </defs>
+
+  <g font-family="sans-serif" font-size="12" fill="#444441">
+    <rect x="220" y="18" width="12" height="12" rx="2" fill="#B4B2A9"/>
+    <text x="238" y="24" dominant-baseline="central">无技能</text>
+    <rect x="310" y="18" width="12" height="12" rx="2" fill="url(#diag)" stroke="#185FA5" stroke-width="0.5"/>
+    <text x="328" y="24" dominant-baseline="central">最强基线</text>
+    <rect x="418" y="18" width="12" height="12" rx="2" fill="#5DCAA5"/>
+    <text x="436" y="24" dominant-baseline="central">WikiSkill</text>
+  </g>
+
+  <g stroke="#D3D1C7" stroke-width="0.5">
+    <line x1="60" y1="340" x2="640" y2="340"/>
+    <line x1="60" y1="300" x2="640" y2="300"/>
+    <line x1="60" y1="260" x2="640" y2="260"/>
+    <line x1="60" y1="220" x2="640" y2="220"/>
+    <line x1="60" y1="180" x2="640" y2="180"/>
+    <line x1="60" y1="140" x2="640" y2="140"/>
+    <line x1="60" y1="100" x2="640" y2="100"/>
+    <line x1="60" y1="60" x2="640" y2="60"/>
+  </g>
+  <g font-family="sans-serif" font-size="11" fill="#888780" text-anchor="end">
+    <text x="54" y="343">0</text>
+    <text x="54" y="303">10</text>
+    <text x="54" y="263">20</text>
+    <text x="54" y="223">30</text>
+    <text x="54" y="183">40</text>
+    <text x="54" y="143">50</text>
+    <text x="54" y="103">60</text>
+    <text x="54" y="63">70</text>
+  </g>
+  <text x="30" y="200" font-family="sans-serif" font-size="12" fill="#5F5E5A" text-anchor="middle" transform="rotate(-90 30 200)">平均准确率（%）</text>
+
+  <g>
+    <rect x="73" y="235.2" width="26" height="104.8" fill="#B4B2A9" stroke="#5F5E5A" stroke-width="0.5"/>
+    <rect x="105" y="199.2" width="26" height="140.8" fill="url(#diag)" stroke="#185FA5" stroke-width="0.5"/>
+    <rect x="137" y="186" width="26" height="154" fill="#5DCAA5" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="86" y="229" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#444441">26.2</text>
+    <text x="118" y="193" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#444441">35.2</text>
+    <text x="150" y="180" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#0F6E56" font-weight="500">38.5</text>
+    <text x="118" y="362" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#444441">Qwen-3.5-4B</text>
+  </g>
+
+  <g>
+    <rect x="189" y="220.4" width="26" height="119.6" fill="#B4B2A9" stroke="#5F5E5A" stroke-width="0.5"/>
+    <rect x="221" y="170.8" width="26" height="169.2" fill="url(#diag)" stroke="#185FA5" stroke-width="0.5"/>
+    <rect x="253" y="150.4" width="26" height="189.6" fill="#5DCAA5" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="202" y="214" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#444441">29.9</text>
+    <text x="234" y="165" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#444441">42.3</text>
+    <text x="266" y="144" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#0F6E56" font-weight="500">47.4</text>
+    <text x="234" y="362" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#444441">Qwen-3.5-9B</text>
+  </g>
+
+  <g>
+    <rect x="305" y="182.4" width="26" height="157.6" fill="#B4B2A9" stroke="#5F5E5A" stroke-width="0.5"/>
+    <rect x="337" y="126.8" width="26" height="213.2" fill="url(#diag)" stroke="#185FA5" stroke-width="0.5"/>
+    <rect x="369" y="86.8" width="26" height="253.2" fill="#5DCAA5" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="318" y="176" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#444441">39.4</text>
+    <text x="350" y="121" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#444441">53.3</text>
+    <text x="382" y="81" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#0F6E56" font-weight="500">63.3</text>
+    <text x="350" y="362" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#444441">Qwen-3.6-27B</text>
+  </g>
+
+  <g>
+    <rect x="421" y="174.8" width="26" height="165.2" fill="#B4B2A9" stroke="#5F5E5A" stroke-width="0.5"/>
+    <rect x="453" y="143.6" width="26" height="196.4" fill="url(#diag)" stroke="#185FA5" stroke-width="0.5"/>
+    <rect x="485" y="120.4" width="26" height="219.6" fill="#5DCAA5" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="434" y="169" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#444441">41.3</text>
+    <text x="466" y="138" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#444441">49.1</text>
+    <text x="498" y="114" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#0F6E56" font-weight="500">54.9</text>
+    <text x="466" y="362" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#444441">Gemma-4-31B</text>
+  </g>
+
+  <g>
+    <rect x="537" y="142" width="26" height="198" fill="#B4B2A9" stroke="#5F5E5A" stroke-width="0.5"/>
+    <rect x="569" y="115.6" width="26" height="224.4" fill="url(#diag)" stroke="#185FA5" stroke-width="0.5"/>
+    <rect x="601" y="67.6" width="26" height="272.4" fill="#5DCAA5" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="550" y="136" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#444441">49.5</text>
+    <text x="582" y="110" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#444441">56.1</text>
+    <text x="614" y="62" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#0F6E56" font-weight="500">68.1</text>
+    <text x="582" y="362" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#444441">Gemini-3.5-Flash</text>
+  </g>
+</svg>

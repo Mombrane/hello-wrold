@@ -1,0 +1,67 @@
+<svg viewBox="0 0 680 360" width="100%" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>WikiSkill 三层存储与四步演化循环</title>
+  <desc>上图展示 WikiSkill 的演化循环（推理、维护、提案、门控四步）与三层持久化存储（raw、wiki、skills）。Wiki Layer 永不回滚是核心设计。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <text x="40" y="32" font-family="sans-serif" font-size="13" fill="#5F5E5A">演化循环（每轮迭代执行一次）</text>
+
+  <g>
+    <rect x="40" y="48" width="135" height="56" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+    <text x="107.5" y="70" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="500" fill="#0C447C" dominant-baseline="central">① 推理 Agent</text>
+    <text x="107.5" y="89" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#444441" dominant-baseline="central">跑训练集 · 写轨迹</text>
+  </g>
+  <g>
+    <rect x="195" y="48" width="135" height="56" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+    <text x="262.5" y="70" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="500" fill="#0C447C" dominant-baseline="central">② Wiki 维护者</text>
+    <text x="262.5" y="89" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#444441" dominant-baseline="central">根因分析 · 写模式页</text>
+  </g>
+  <g>
+    <rect x="350" y="48" width="135" height="56" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+    <text x="417.5" y="70" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="500" fill="#0C447C" dominant-baseline="central">③ 技能提案者</text>
+    <text x="417.5" y="89" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#444441" dominant-baseline="central">读 wiki · 改技能</text>
+  </g>
+  <g>
+    <rect x="505" y="48" width="135" height="56" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+    <text x="572.5" y="70" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="500" fill="#0C447C" dominant-baseline="central">④ 验证门控</text>
+    <text x="572.5" y="89" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#444441" dominant-baseline="central">涨则留 · 跌则回滚</text>
+  </g>
+
+  <line x1="175" y1="76" x2="193" y2="76" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="330" y1="76" x2="348" y2="76" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="485" y1="76" x2="503" y2="76" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <path d="M572 106 L572 136 L107 136 L107 108" fill="none" stroke="#5F5E5A" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+  <text x="340" y="154" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#888780">下一轮迭代 · wiki 不重置，技能按验证结果保留或回滚</text>
+
+  <text x="40" y="182" font-family="sans-serif" font-size="13" fill="#5F5E5A">三层持久化存储</text>
+
+  <g>
+    <rect x="40" y="194" width="180" height="130" rx="10" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
+    <text x="130" y="220" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="500" fill="#444441" dominant-baseline="central">Raw Layer（raw/）</text>
+    <text x="130" y="240" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#5F5E5A" dominant-baseline="central">不可变执行轨迹</text>
+    <text x="130" y="258" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#5F5E5A" dominant-baseline="central">推理 · 提案可读</text>
+    <rect x="55" y="274" width="150" height="26" rx="6" fill="#D3D1C7"/>
+    <text x="130" y="287" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#444441" dominant-baseline="central">①写入 · 只增不改</text>
+  </g>
+
+  <g>
+    <rect x="250" y="194" width="180" height="130" rx="10" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1.5"/>
+    <text x="340" y="220" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="500" fill="#085041" dominant-baseline="central">Wiki Layer（wiki/）</text>
+    <text x="340" y="240" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#0F6E56" dominant-baseline="central">模式页·日志·影响追踪</text>
+    <text x="340" y="258" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#0F6E56" dominant-baseline="central">跨迭代复利积累</text>
+    <rect x="265" y="274" width="150" height="26" rx="6" fill="#9FE1CB"/>
+    <text x="340" y="287" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#085041" dominant-baseline="central">②维护 ③读 · 永不回滚</text>
+  </g>
+
+  <g>
+    <rect x="460" y="194" width="180" height="130" rx="10" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/>
+    <text x="550" y="220" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="500" fill="#633806" dominant-baseline="central">Skill Layer（skills/）</text>
+    <text x="550" y="240" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#854F0B" dominant-baseline="central">SKILL.md + PURPOSE.md</text>
+    <text x="550" y="258" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#854F0B" dominant-baseline="central">注入推理 Agent 提示词</text>
+    <rect x="475" y="274" width="150" height="26" rx="6" fill="#FAC775"/>
+    <text x="550" y="287" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#633806" dominant-baseline="central">③写 ④裁决 · 可回滚</text>
+  </g>
+</svg>

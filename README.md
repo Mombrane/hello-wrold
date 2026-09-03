@@ -6,6 +6,7 @@ AI Agent 技术调研与架构分析报告集。
 
 | 日期 | 报告 | 主题 |
 |------|------|------|
+| 2026-09-03 | [WikiSkill：把 Agent 经验编译成永不重置的知识库](reports/wikiskill-report.md) | arXiv:2608.27454 深度解读：三层架构（raw/wiki/skills）+ 四步演化循环、技能可回滚而 wiki 永不回滚的非对称设计、5 基准×5 模型全面领先（较最强基线 +3.3~12.0 点）、消融显示持久知识贡献 +15 个点且推理 Agent 读 wiki 有害、跨模型技能迁移与负迁移归因（发现≠执行能力分离）、优化器调用 O(1) 分析、3 张 SVG + 批判性分析 + 对 Hermes 的 3 条启示 |
 | 2026-09-03 | [SKILL.state：用显式执行状态替代 append-only 对话历史](reports/skill-state-report.md) | arXiv:2608.26263v2 深度解读：三件套输入（P+Σt+Ot）、深合并算子与 null 删除语义、推理链永久丢弃、T=10~200 完整 token 数据表、噪声/状态恢复/公开基准四组实验、与 Agent Memory 的时间尺度边界辨析、3 张 SVG + 本地可运行样板实测 + 批判性分析 + 对 Hermes 的 5 条启示 |
 | 2026-08-20 | [Qwen3.8-27B 混合注意力架构深度分析：27B 稠密模型如何打出前沿智能](reports/qwen3.8-27b-hybrid-attention-report.md) | 3:1 混合注意力拆解（48 GatedDeltaNet + 16 GatedAttention、KV 缓存 4 倍节省、GatedDeltaNet 橡皮擦+铅笔记忆管理、MTP/多模态/后训练 RL）+ vs DeepSeek V4 Flash 0731 路线对比（状态压缩 vs 参数稀疏）+ 4 张 SVG + 批判性分析 + 对 Hermes 的 4 条启示 |
 | 2026-08-20 | [从零实现最小编码 Agent：minimal-pi 的设计与实测](reports/minimal-pi-agent-report.md) | 457 行 Python 复现 Pi 骨架一手实测：单循环 30 行 + 四工具（schema/execute 双份注册表）+ 四段消息协议 + 错误回灌 + JSONL 会话持久化 + TERM_SESSION_ID 同终端继承、代码审查 11 处修复复盘（MAX_TURNS/密钥过滤/白名单回灌）、Pi 12 万行 src vs 457 行 260 倍差距、3 张 SVG + 批判性分析 + 对 Hermes 的 5 条启示 |
