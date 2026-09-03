@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 680 360" width="100%" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>四种运行时的累计 token 消耗随执行步数变化</title>
+<desc>在仓库管理场景中，Prompt、Memory、Stateful 三种基线的累计 token 消耗随步数呈平方级增长，T=200 时分别达到 261 万、618 万、504 万；SKILL.state 保持线性增长，T=200 时仅 12.2 万，四条曲线在步数较小时几乎重合，差距在长程才拉开。</desc>
+
+<text x="80" y="30" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#5F5E5A">累计 token 消耗</text>
+
+<path d="M80 300H620" fill="none" stroke="#888780" stroke-width="1"/>
+<path d="M80 44V300" fill="none" stroke="#888780" stroke-width="1"/>
+<path d="M80 259H620" fill="none" stroke="#E5E5E0" stroke-width="0.5"/>
+<path d="M80 217H620" fill="none" stroke="#E5E5E0" stroke-width="0.5"/>
+<path d="M80 176H620" fill="none" stroke="#E5E5E0" stroke-width="0.5"/>
+<path d="M80 135H620" fill="none" stroke="#E5E5E0" stroke-width="0.5"/>
+<path d="M80 94H620" fill="none" stroke="#E5E5E0" stroke-width="0.5"/>
+<path d="M80 52H620" fill="none" stroke="#E5E5E0" stroke-width="0.5"/>
+
+<text x="72" y="300" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#5F5E5A" text-anchor="end" dominant-baseline="central">0</text>
+<text x="72" y="259" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#5F5E5A" text-anchor="end" dominant-baseline="central">1M</text>
+<text x="72" y="217" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#5F5E5A" text-anchor="end" dominant-baseline="central">2M</text>
+<text x="72" y="176" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#5F5E5A" text-anchor="end" dominant-baseline="central">3M</text>
+<text x="72" y="135" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#5F5E5A" text-anchor="end" dominant-baseline="central">4M</text>
+<text x="72" y="94" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#5F5E5A" text-anchor="end" dominant-baseline="central">5M</text>
+<text x="72" y="52" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#5F5E5A" text-anchor="end" dominant-baseline="central">6M</text>
+
+<polyline points="90,300 223,298 355,293 488,249 620,192" fill="none" stroke="#A32D2D" stroke-width="2"/>
+<circle cx="90" cy="300" r="3" fill="#A32D2D"/>
+<circle cx="223" cy="298" r="3" fill="#A32D2D"/>
+<circle cx="355" cy="293" r="3" fill="#A32D2D"/>
+<circle cx="488" cy="249" r="3" fill="#A32D2D"/>
+<circle cx="620" cy="192" r="4" fill="#A32D2D"/>
+
+<polyline points="90,300 223,298 355,295 488,255 620,45" fill="none" stroke="#BA7517" stroke-width="2" stroke-dasharray="6 3"/>
+<circle cx="90" cy="300" r="3" fill="#BA7517"/>
+<circle cx="223" cy="298" r="3" fill="#BA7517"/>
+<circle cx="355" cy="295" r="3" fill="#BA7517"/>
+<circle cx="488" cy="255" r="3" fill="#BA7517"/>
+<circle cx="620" cy="45" r="4" fill="#BA7517"/>
+
+<polyline points="90,300 223,298 355,293 488,256 620,92" fill="none" stroke="#185FA5" stroke-width="2" stroke-dasharray="2 2"/>
+<circle cx="90" cy="300" r="3" fill="#185FA5"/>
+<circle cx="223" cy="298" r="3" fill="#185FA5"/>
+<circle cx="355" cy="293" r="3" fill="#185FA5"/>
+<circle cx="488" cy="256" r="3" fill="#185FA5"/>
+<circle cx="620" cy="92" r="4" fill="#185FA5"/>
+
+<polyline points="90,300 223,299 355,299 488,297 620,295" fill="none" stroke="#0F6E56" stroke-width="3"/>
+<circle cx="90" cy="300" r="3" fill="#0F6E56"/>
+<circle cx="223" cy="299" r="3" fill="#0F6E56"/>
+<circle cx="355" cy="299" r="3" fill="#0F6E56"/>
+<circle cx="488" cy="297" r="3" fill="#0F6E56"/>
+<circle cx="620" cy="295" r="4" fill="#0F6E56"/>
+
+<text x="610" y="45" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#854F0B" text-anchor="end" dominant-baseline="central">Memory 6.2M</text>
+<text x="610" y="92" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#185FA5" text-anchor="end" dominant-baseline="central">Stateful 5.0M</text>
+<text x="610" y="192" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#A32D2D" text-anchor="end" dominant-baseline="central">ReAct 2.6M</text>
+<text x="610" y="295" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#0F6E56" text-anchor="end" dominant-baseline="central">SKILL.state 0.12M</text>
+
+<text x="90" y="318" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#5F5E5A" text-anchor="middle">10</text>
+<text x="223" y="318" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#5F5E5A" text-anchor="middle">25</text>
+<text x="355" y="318" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#5F5E5A" text-anchor="middle">50</text>
+<text x="488" y="318" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#5F5E5A" text-anchor="middle">100</text>
+<text x="620" y="318" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#5F5E5A" text-anchor="middle">200</text>
+
+<text x="355" y="340" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#5F5E5A" text-anchor="middle">执行步数 T（Warehouse Management，Gemini-3-Flash，5 seeds）</text>
+</svg>

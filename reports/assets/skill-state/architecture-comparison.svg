@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 680 360" width="100%" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>传统 append-only 运行时与 SKILL.state 的架构对比</title>
+<desc>上排传统运行时每一步都把此前全部历史重发给模型，提示词随步数膨胀；下排 SKILL.state 每步只发送不变的技能说明书、当前结构化状态和最新观察，提示词保持恒定。</desc>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+
+<text x="40" y="30" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#2C2C2A">A 传统运行时：append-only 历史</text>
+<text x="40" y="50" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#5F5E5A">每一步都把此前全部内容重发给模型</text>
+
+<rect x="44" y="64" width="58" height="36" rx="8" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+<text x="73" y="82" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#791F1F" text-anchor="middle" dominant-baseline="central">User</text>
+<path d="M104 82L116 82" fill="none" stroke="#A32D2D" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="118" y="64" width="58" height="36" rx="8" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+<text x="147" y="82" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#791F1F" text-anchor="middle" dominant-baseline="central">t1</text>
+<path d="M178 82L190 82" fill="none" stroke="#A32D2D" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="192" y="64" width="58" height="36" rx="8" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+<text x="221" y="82" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#791F1F" text-anchor="middle" dominant-baseline="central">t2</text>
+<path d="M252 82L264 82" fill="none" stroke="#A32D2D" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="266" y="64" width="58" height="36" rx="8" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+<text x="295" y="82" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#791F1F" text-anchor="middle" dominant-baseline="central">t3</text>
+<path d="M326 82L338 82" fill="none" stroke="#A32D2D" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="340" y="64" width="58" height="36" rx="8" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+<text x="369" y="82" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#791F1F" text-anchor="middle" dominant-baseline="central">…</text>
+<path d="M400 82L412 82" fill="none" stroke="#A32D2D" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="414" y="64" width="58" height="36" rx="8" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+<text x="443" y="82" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#791F1F" text-anchor="middle" dominant-baseline="central">t500</text>
+<path d="M474 82L486 82" fill="none" stroke="#A32D2D" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="488" y="64" width="58" height="36" rx="8" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+<text x="517" y="82" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#791F1F" text-anchor="middle" dominant-baseline="central">t501</text>
+<path d="M548 82L560 82" fill="none" stroke="#A32D2D" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="562" y="64" width="58" height="36" rx="8" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+<text x="591" y="82" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#791F1F" text-anchor="middle" dominant-baseline="central">Out</text>
+
+<text x="40" y="120" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#5F5E5A">每步输入 = 全部历史（观察 + 推理 + 动作）→ 提示词线性膨胀，累计 O(T²)</text>
+
+<text x="40" y="164" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#2C2C2A">B SKILL.state：显式执行状态</text>
+<text x="40" y="184" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#5F5E5A">每步只发三样：不变说明书 + 当前状态 + 最新观察</text>
+
+<rect x="44" y="200" width="576" height="30" rx="8" fill="#F1EFE8" stroke="#888780" stroke-width="0.5"/>
+<text x="332" y="215" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#444441" text-anchor="middle" dominant-baseline="central">P 技能说明书（每步原样重发，全程不变）</text>
+
+<path d="M140 232L140 260" fill="none" stroke="#888780" stroke-width="0.5" stroke-dasharray="3 3"/>
+<path d="M280 232L280 260" fill="none" stroke="#888780" stroke-width="0.5" stroke-dasharray="3 3"/>
+<path d="M420 232L420 260" fill="none" stroke="#888780" stroke-width="0.5" stroke-dasharray="3 3"/>
+<path d="M560 232L560 260" fill="none" stroke="#888780" stroke-width="0.5" stroke-dasharray="3 3"/>
+
+<rect x="126" y="262" width="58" height="36" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text x="155" y="280" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#085041" text-anchor="middle" dominant-baseline="central">Σ1</text>
+<path d="M186 280L198 280" fill="none" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="200" y="262" width="58" height="36" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text x="229" y="280" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#085041" text-anchor="middle" dominant-baseline="central">Σ2</text>
+<path d="M260 280L272 280" fill="none" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="274" y="262" width="58" height="36" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text x="303" y="280" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#085041" text-anchor="middle" dominant-baseline="central">Σ3</text>
+<path d="M334 280L346 280" fill="none" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="348" y="262" width="58" height="36" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text x="377" y="280" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#085041" text-anchor="middle" dominant-baseline="central">…</text>
+<path d="M408 280L420 280" fill="none" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="422" y="262" width="58" height="36" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text x="451" y="280" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#085041" text-anchor="middle" dominant-baseline="central">Σn</text>
+<path d="M482 280L494 280" fill="none" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="496" y="262" width="58" height="36" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text x="525" y="280" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#085041" text-anchor="middle" dominant-baseline="central">Out</text>
+
+<text x="40" y="318" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#5F5E5A">Σt+1 = Σt ⊕ ΔΣt（JSON 补丁深合并）· 推理链 Rt 校验后立即丢弃</text>
+<text x="40" y="338" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#5F5E5A">提示词恒定 O(1)，累计 O(T)</text>
+</svg>
